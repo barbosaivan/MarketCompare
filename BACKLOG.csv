@@ -8,10 +8,10 @@ MC-006,G1,Define domain and price provenance model,Data Agent,P0,DONE,MC-005,Pur
 MC-007,G1,Define receipt parser contract,OCR Agent,P1,DONE,MC-005,Raw OCR evidence confidence and manual review contract documented,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
 MC-008,G1,Define design system and navigation map,UI Agent,P1,DONE,MC-005,Material 3 tokens components and routes documented,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
 MC-009,G1,Define testing strategy and test fixtures,QA Agent,P1,DONE,MC-005,Parser money data API and UI tests planned with anonymized fixtures,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
-MC-010,G2,Create runnable Compose Multiplatform project,Tech Lead,P0,DONE,MC-005,Debug build succeeds using verified compatible versions,feat/MC-010-project-scaffold,,LOCAL_COMMITS_READY,,APPROVED
-MC-011,G2,Set up Material 3 theme and string resources,UI Agent,P1,DONE,MC-008,No hardcoded UI strings or colors; light/dark theme works,feat/MC-010-project-scaffold,,LOCAL_COMMITS_READY,,APPROVED
-MC-012,G2,Set up navigation and screen state pattern,UI Agent,P1,DONE,MC-010;MC-011,Loading empty error and success states defined,feat/MC-010-project-scaffold,,LOCAL_COMMITS_READY,,APPROVED
-MC-013,G2,Set up Room schema and migrations,Data Agent,P0,DONE,MC-006;MC-010,Entities and migrations compile and DAO tests pass,feat/MC-010-project-scaffold,,LOCAL_COMMITS_READY,,APPROVED
+MC-010,G2,Create runnable Compose Multiplatform project,Tech Lead,P0,DONE,MC-005,Debug build succeeds using verified compatible versions,feat/MC-010-project-scaffold,0d6bb7c,LOCAL_COMMITS_READY,,APPROVED
+MC-011,G2,Set up Material 3 theme and string resources,UI Agent,P1,DONE,MC-008,No hardcoded UI strings or colors; light/dark theme works,feat/MC-010-project-scaffold,0d6bb7c,LOCAL_COMMITS_READY,,APPROVED
+MC-012,G2,Set up navigation and screen state pattern,UI Agent,P1,DONE,MC-010;MC-011,Loading empty error and success states defined,feat/MC-010-project-scaffold,0d6bb7c,LOCAL_COMMITS_READY,,APPROVED
+MC-013,G2,Set up Room schema and migrations,Data Agent,P0,DONE,MC-006;MC-010,Entities and migrations compile and DAO tests pass,feat/MC-010-project-scaffold,0d6bb7c,LOCAL_COMMITS_READY,,APPROVED
 MC-014,G3,Implement image/document selection,OCR Agent,P1,TODO,MC-010,Camera/photo/PDF inputs are validated and cancellable,,,NOT_STARTED,,NOT_STARTED
 MC-015,G3,Implement OCR for image and scanned PDF,OCR Agent,P0,TODO,MC-014,ML Kit extracts text; resource cleanup and failure states tested,,,NOT_STARTED,,NOT_STARTED
 MC-016,G3,Implement text extraction for text PDFs,OCR Agent,P1,TODO,MC-014,Selectable-text PDF avoids unnecessary OCR; malformed PDF handled,,,NOT_STARTED,,NOT_STARTED
