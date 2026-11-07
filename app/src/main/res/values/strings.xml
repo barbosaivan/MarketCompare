@@ -2,7 +2,8 @@
 <resources>
     <string name="app_name">MarketCompare</string>
     
-    <!-- Navegación -->
+    <!-- Navegación y acciones comunes -->
+    <string name="action_back">Volver</string>
     <string name="nav_history">Historial</string>
     <string name="nav_scan">Escanear</string>
     <string name="nav_shopping_list">Lista</string>
@@ -21,16 +22,21 @@
     <string name="scan_processing">Extrayendo texto y procesando factura…</string>
     <string name="scan_permission_camera_required">Se requiere permiso de cámara para capturar facturas.</string>
     <string name="scan_permission_grant">Conceder permiso</string>
+    <string name="scan_error_image">Error al procesar la imagen seleccionada</string>
+    <string name="scan_error_pdf">Error al procesar el archivo PDF</string>
+    <string name="scan_error_camera">Error al leer el texto de la foto capturada</string>
     
     <!-- Revisión de factura -->
     <string name="review_title">Revisar Factura</string>
     <string name="review_store_label">Establecimiento</string>
+    <string name="review_default_store">Supermercado</string>
     <string name="review_date_label">Fecha de compra</string>
     <string name="review_total_label">Total a pagar</string>
     <string name="review_items_detected">Artículos detectados (%1$d)</string>
     <string name="review_save_purchase">Confirmar y Guardar Compra</string>
     <string name="review_item_unit_price">Precio unitario</string>
     <string name="review_item_discount">Descuento</string>
+    <string name="review_item_discount_tag">Descuento: -%1$s</string>
     <string name="review_item_final">Final</string>
     <string name="review_confidence_low">Confianza baja: verificar valores</string>
     
@@ -46,4 +52,3 @@
     <string name="state_error">Ocurrió un error inesperado</string>
     <string name="state_retry">Reintentar</string>
 </resources>
-
