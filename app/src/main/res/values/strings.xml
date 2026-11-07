@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MarketCompare</string>
+    
+    <!-- Navegación -->
+    <string name="nav_history">Historial</string>
+    <string name="nav_scan">Escanear</string>
+    <string name="nav_shopping_list">Lista</string>
+    
+    <!-- Historial de compras -->
+    <string name="history_title">Mis Compras Confirmadas</string>
+    <string name="history_empty">No hay compras registradas aún.\nToca el botón de escaneo para registrar tu primera factura.</string>
+    <string name="history_total_spent">Gasto total registrado</string>
+    <string name="history_receipts_count">%1$d facturas</string>
+    
+    <!-- Escaneo y selección de documento -->
+    <string name="scan_title">Importar Factura</string>
+    <string name="scan_action_camera">Tomar foto con cámara</string>
+    <string name="scan_action_gallery">Seleccionar imagen de galería</string>
+    <string name="scan_action_pdf">Seleccionar factura PDF</string>
+    <string name="scan_processing">Extrayendo texto y procesando factura…</string>
+    <string name="scan_permission_camera_required">Se requiere permiso de cámara para capturar facturas.</string>
+    <string name="scan_permission_grant">Conceder permiso</string>
+    
+    <!-- Revisión de factura -->
+    <string name="review_title">Revisar Factura</string>
+    <string name="review_store_label">Establecimiento</string>
+    <string name="review_date_label">Fecha de compra</string>
+    <string name="review_total_label">Total a pagar</string>
+    <string name="review_items_detected">Artículos detectados (%1$d)</string>
+    <string name="review_save_purchase">Confirmar y Guardar Compra</string>
+    <string name="review_item_unit_price">Precio unitario</string>
+    <string name="review_item_discount">Descuento</string>
+    <string name="review_item_final">Final</string>
+    <string name="review_confidence_low">Confianza baja: verificar valores</string>
+    
+    <!-- Comparación de precios -->
+    <string name="compare_title">Comparativa de Precios</string>
+    <string name="compare_local_source">Tu compra real</string>
+    <string name="compare_external_source">Referencia externa (Tiempo real)</string>
+    <string name="compare_external_offline">Servicio de cotización externa no disponible</string>
+    <string name="compare_disclaimer_ephemeral">Los precios externos son referencias temporales en vivo y no se almacenan en el dispositivo.</string>
+    
+    <!-- Estados comunes -->
+    <string name="state_loading">Cargando…</string>
+    <string name="state_error">Ocurrió un error inesperado</string>
+    <string name="state_retry">Reintentar</string>
+</resources>
+
