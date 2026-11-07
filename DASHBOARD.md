@@ -38,14 +38,17 @@
 | G5 Autocompletado y descuentos | TODO | Auditor sénior |
 | G6 Calidad final | TODO | Auditor sénior + usuario |
 
-## Control de Versiones y Git
+## Control de Versiones, Git y CI/CD
 | Campo | Estado |
 |---|---|
-| Rama activa | `feat/MC-010-project-scaffold` |
+| Rama base de releases | `main` (protegida para versiones estables con tags) |
+| Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
+| Rama de trabajo activa | `feat/ci-github-actions` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
-| Push remoto | `PUSHED` (`main`, `docs/MC-005-architecture-adr`, `feat/MC-010-project-scaffold`) |
-| Pull Request | Listo para PR de Gate 2 |
+| Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
+| Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
+| Push remoto | `PUSHED` (`main`, `develop`, ramas de hitos) |
 
 ## Registro de cambios (Changelog)
 - **2026-11-07 17:50:**
