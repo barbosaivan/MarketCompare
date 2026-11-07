@@ -12,14 +12,14 @@ MC-010,G2,Create runnable Compose Multiplatform project,Tech Lead,P0,DONE,MC-005
 MC-011,G2,Set up Material 3 theme and string resources,UI Agent,P1,DONE,MC-008,No hardcoded UI strings or colors; light/dark theme works,feat/MC-010-project-scaffold,0d6bb7c,PUSHED,,APPROVED
 MC-012,G2,Set up navigation and screen state pattern,UI Agent,P1,DONE,MC-010;MC-011,Loading empty error and success states defined,feat/MC-010-project-scaffold,0d6bb7c,PUSHED,,APPROVED
 MC-013,G2,Set up Room schema and migrations,Data Agent,P0,DONE,MC-006;MC-010,Entities and migrations compile and DAO tests pass,feat/MC-010-project-scaffold,0d6bb7c,PUSHED,,APPROVED
-MC-014,G3,Implement image/document selection,OCR Agent,P1,TODO,MC-010,Camera/photo/PDF inputs are validated and cancellable,,,NOT_STARTED,,NOT_STARTED
-MC-015,G3,Implement OCR for image and scanned PDF,OCR Agent,P0,TODO,MC-014,ML Kit extracts text; resource cleanup and failure states tested,,,NOT_STARTED,,NOT_STARTED
-MC-016,G3,Implement text extraction for text PDFs,OCR Agent,P1,TODO,MC-014,Selectable-text PDF avoids unnecessary OCR; malformed PDF handled,,,NOT_STARTED,,NOT_STARTED
-MC-017,G3,Implement receipt parser and line classifier,OCR Agent,P0,TODO,MC-015;MC-016;MC-007,Items distinguished from totals/tax/payment lines; parser tests pass,,,NOT_STARTED,,NOT_STARTED
-MC-018,G3,Implement editable receipt review UI,UI Agent,P0,TODO,MC-012;MC-017,User can edit/select/exclude items before saving,,,NOT_STARTED,,NOT_STARTED
-MC-019,G3,Implement transactional receipt persistence,Data Agent,P0,TODO,MC-013;MC-018,Confirmed receipt and items save atomically; no implicit save,,,NOT_STARTED,,NOT_STARTED
-MC-020,G3,Implement purchase history and price observations,Data Agent,P1,TODO,MC-019,History contains only confirmed local purchases with provenance,,,NOT_STARTED,,NOT_STARTED
-MC-021,G3,Implement exact money and unit conversion,Data Agent,P0,TODO,MC-006,No Double money calculations; unit comparison tests pass,,,NOT_STARTED,,NOT_STARTED
+MC-014,G3,Implement image/document selection,OCR Agent,P1,DONE,MC-010,Camera/photo/PDF inputs are validated and cancellable,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
+MC-015,G3,Implement OCR for image and scanned PDF,OCR Agent,P0,DONE,MC-014,ML Kit extracts text; resource cleanup and failure states tested,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
+MC-016,G3,Implement text extraction for text PDFs,OCR Agent,P1,DONE,MC-014,Selectable-text PDF avoids unnecessary OCR; malformed PDF handled,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
+MC-017,G3,Implement receipt parser and line classifier,OCR Agent,P0,DONE,MC-015;MC-016;MC-007,Items distinguished from totals/tax/payment lines; parser tests pass,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
+MC-018,G3,Implement editable receipt review UI,UI Agent,P0,DONE,MC-012;MC-017,User can edit/select/exclude items before saving,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
+MC-019,G3,Implement transactional receipt persistence,Data Agent,P0,DONE,MC-013;MC-018,Confirmed receipt and items save atomically; no implicit save,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
+MC-020,G3,Implement purchase history and price observations,Data Agent,P1,DONE,MC-019,History contains only confirmed local purchases with provenance,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
+MC-021,G3,Implement exact money and unit conversion,Data Agent,P0,DONE,MC-006,No Double money calculations; unit comparison tests pass,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
 MC-022,G4,Implement external API DTO and provider,API Agent,P0,BLOCKED,MC-003;MC-006,Uses documented contract only; tests cover mapping and errors,,,NOT_STARTED,,NOT_STARTED
 MC-023,G4,Enforce no-cache/no-persistence API policy,API Agent,P0,BLOCKED,MC-022,No Room DataStore files logs analytics or HTTP cache stores external prices,,,NOT_STARTED,,NOT_STARTED
 MC-024,G4,Implement comparison screen with source labels,UI Agent,P1,TODO,MC-020;MC-022,Purchase and API prices visually distinct and never merged in history,,,NOT_STARTED,,NOT_STARTED
@@ -33,7 +33,7 @@ MC-031,G6,Run full automated test suite,QA Agent,P0,TODO,MC-019;MC-025;MC-028;MC
 MC-032,G6,Senior independent code and privacy audit,Senior Auditor,P0,TODO,MC-030;MC-031,No P0/P1 defects; evidence and findings report attached,,,NOT_STARTED,,NOT_STARTED
 MC-033,G6,Finalize docs and dashboard,Documentation,P1,TODO,MC-032,Setup architecture known issues and test commands accurate,,,NOT_STARTED,,NOT_STARTED
 MC-034,G6,User acceptance and release approval,Tech Lead,P0,TODO,MC-033,User approves; no signing or publication without explicit authorization,,,NOT_STARTED,,NOT_STARTED
-MC-035,DOCS,Establish documentation source of truth,Documentation,P0,TODO,MC-005,docs index and domain docs aligned with approved architecture,,,,,
-MC-036,DOCS,Keep root README onboarding current,Documentation,P1,TODO,MC-010,README contains verified setup build test structure features and docs links,,,,,
-MC-037,DOCS,Update docs in every implementation PR,All Agents,P0,TODO,MC-035,Changed behavior architecture data UI config and tests have matching docs updates,,,,,
+MC-035,DOCS,Establish documentation source of truth,Documentation,P0,DONE,MC-005,docs index and domain docs aligned with approved architecture,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
+MC-036,DOCS,Keep root README onboarding current,Documentation,P1,DONE,MC-010,README contains verified setup build test structure features and docs links,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
+MC-037,DOCS,Update docs in every implementation PR,All Agents,P0,DONE,MC-035,Changed behavior architecture data UI config and tests have matching docs updates,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
 MC-038,DOCS,Senior documentation consistency audit,Senior Auditor,P1,TODO,MC-032;MC-037,Docs match source code backlog tests dependencies and actual commands,,,,,
