@@ -55,3 +55,4 @@ Se implementa una arquitectura **Clean Architecture en un solo módulo de aplica
 ## Consecuencias
 - **Positivas:** Capa de dominio altamente testeable con JUnit estándar sin emuladores; componentes de UI desacoplados; fácil migración de persistencia o red sin tocar las reglas de negocio.
 - **Negativas:** Requiere mapeos manuales entre modelos de entidad Room, modelos de dominio y modelos de UI.
+

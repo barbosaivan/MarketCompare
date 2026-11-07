@@ -1,13 +1,13 @@
 ID,Phase,Title,Owner,Priority,Status,DependsOn,AcceptanceCriteria,GitBranch,CommitHash,PushStatus,PullRequest,ReviewStatus
-MC-001,G0,Inspect repository and Git state,Tech Lead,P0,DONE,,Working tree and existing changes documented; no user work overwritten,main,f64d7cc,LOCAL_COMMITS_READY,,APPROVED
-MC-002,G0,Record toolchain and device availability,Architecture,P0,DONE,MC-001,JDK Android Studio Gradle Kotlin AGP and emulator/device recorded,main,f64d7cc,LOCAL_COMMITS_READY,,APPROVED
+MC-001,G0,Inspect repository and Git state,Tech Lead,P0,DONE,,Working tree and existing changes documented; no user work overwritten,main,f64d7cc,PUSHED,,APPROVED
+MC-002,G0,Record toolchain and device availability,Architecture,P0,DONE,MC-001,JDK Android Studio Gradle Kotlin AGP and emulator/device recorded,main,f64d7cc,PUSHED,,APPROVED
 MC-003,G0,Obtain external API documentation,API Agent,P0,BLOCKED,,"Official base URL auth schema rate limits license and storage terms documented; no endpoint guessed",main,,NOT_STARTED,,NOT_STARTED
-MC-004,G0,Approve MVP scope and product rules,Tech Lead,P0,DONE,MC-001,User approves scope and quality gates,main,f64d7cc,LOCAL_COMMITS_READY,,APPROVED
-MC-005,G1,Write architecture ADR,Architecture,P0,DONE,MC-002;MC-004,Layer boundaries and dependencies documented and approved,docs/MC-005-architecture-adr,eb71a39,LOCAL_COMMITS_READY,,APPROVED
-MC-006,G1,Define domain and price provenance model,Data Agent,P0,DONE,MC-005,Purchase prices and external quotes have separate types and lifecycle,docs/MC-005-architecture-adr,eb71a39,LOCAL_COMMITS_READY,,APPROVED
-MC-007,G1,Define receipt parser contract,OCR Agent,P1,DONE,MC-005,Raw OCR evidence confidence and manual review contract documented,docs/MC-005-architecture-adr,eb71a39,LOCAL_COMMITS_READY,,APPROVED
-MC-008,G1,Define design system and navigation map,UI Agent,P1,DONE,MC-005,Material 3 tokens components and routes documented,docs/MC-005-architecture-adr,eb71a39,LOCAL_COMMITS_READY,,APPROVED
-MC-009,G1,Define testing strategy and test fixtures,QA Agent,P1,DONE,MC-005,Parser money data API and UI tests planned with anonymized fixtures,docs/MC-005-architecture-adr,eb71a39,LOCAL_COMMITS_READY,,APPROVED
+MC-004,G0,Approve MVP scope and product rules,Tech Lead,P0,DONE,MC-001,User approves scope and quality gates,main,f64d7cc,PUSHED,,APPROVED
+MC-005,G1,Write architecture ADR,Architecture,P0,DONE,MC-002;MC-004,Layer boundaries and dependencies documented and approved,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
+MC-006,G1,Define domain and price provenance model,Data Agent,P0,DONE,MC-005,Purchase prices and external quotes have separate types and lifecycle,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
+MC-007,G1,Define receipt parser contract,OCR Agent,P1,DONE,MC-005,Raw OCR evidence confidence and manual review contract documented,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
+MC-008,G1,Define design system and navigation map,UI Agent,P1,DONE,MC-005,Material 3 tokens components and routes documented,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
+MC-009,G1,Define testing strategy and test fixtures,QA Agent,P1,DONE,MC-005,Parser money data API and UI tests planned with anonymized fixtures,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
 MC-010,G2,Create runnable Compose Multiplatform project,Tech Lead,P0,TODO,MC-005,Debug build succeeds using verified compatible versions,,,NOT_STARTED,,NOT_STARTED
 MC-011,G2,Set up Material 3 theme and string resources,UI Agent,P1,TODO,MC-008,No hardcoded UI strings or colors; light/dark theme works,,,NOT_STARTED,,NOT_STARTED
 MC-012,G2,Set up navigation and screen state pattern,UI Agent,P1,TODO,MC-010;MC-011,Loading empty error and success states defined,,,NOT_STARTED,,NOT_STARTED

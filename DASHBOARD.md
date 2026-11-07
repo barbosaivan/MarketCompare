@@ -38,11 +38,11 @@
 ## Control de Versiones y Git
 | Campo | Estado |
 |---|---|
-| Rama activa | `docs/MC-005-architecture-adr` |
-| Estado de repositorio | Local (100% en disco local, sin remotos configurados) |
-| Commits locales | Listos para commit de Gate 1 |
-| Push remoto | `PUSH_BLOCKED` (sin remoto configurado aún) |
-| Pull Request | No aplica (preparación local de repositorio base) |
+| Rama activa | `main` |
+| Estado de repositorio | Conectado y sincronizado con GitHub |
+| Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
+| Push remoto | `PUSHED` (`main` y `docs/MC-005-architecture-adr`) |
+| Pull Request | Listo para Gate 2 |
 
 ## Documentación viva
 | Documento | Estado | Responsable |

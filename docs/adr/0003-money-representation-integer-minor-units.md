@@ -23,3 +23,4 @@ En Colombia (moneda COP), los importes en tickets comerciales se expresan en pes
 ## Consecuencias
 - **Positivas:** Cero discrepancias en balances y sumas de recibos; trazabilidad matemática auditable; compatibilidad nativa con bases de datos SQL (almacenado como `INTEGER`/`BIGINT` en SQLite/Room).
 - **Negativas:** Exige conversión al mostrar o parsear entradas de texto manuales.
+
