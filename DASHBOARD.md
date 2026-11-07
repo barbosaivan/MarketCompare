@@ -44,7 +44,7 @@
 | Rama activa | `feat/MC-010-project-scaffold` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
-| Push remoto | `LOCAL_COMMITS_READY` (pendiente commit y push de Gate 2) |
+| Push remoto | `PUSHED` (`main`, `docs/MC-005-architecture-adr`, `feat/MC-010-project-scaffold`) |
 | Pull Request | Listo para PR de Gate 2 |
 
 ## Registro de cambios (Changelog)
