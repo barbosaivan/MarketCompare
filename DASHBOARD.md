@@ -18,17 +18,17 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 38 |
-| DONE con evidencia | 25 (MC-001, MC-002, MC-004 a MC-021, MC-026, MC-027, MC-035, MC-036, MC-037) |
+| DONE con evidencia | 26 (MC-001, MC-002, MC-004 a MC-021, MC-026, MC-027, MC-028, MC-035, MC-036, MC-037) |
 | En revisión | 0 |
 | Bloqueadas | 1 (MC-003 - API externa sin proveedor oficial) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (24/24 tests pasados: ProductAutocompleteEngineTest, ProductNormalizerTest, PurchaseRepositoryTest, MoneyTest, ReceiptParserTest) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (29/29 tests pasados: DiscountClassifierTest, ReceiptParserTest, ProductAutocompleteEngineTest, ProductNormalizerTest, PurchaseRepositoryTest, MoneyTest) |
 | Hito Gate 0 (Entorno y alcance) | APROBADO (2026-11-07) |
 | Hito Gate 1 (Arquitectura y modelado) | COMPLETADO (2026-11-07) |
 | Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
 | Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
-| Hito Gate 5 (Producto y descuentos) | IN PROGRESS (MC-026 y MC-027 completadas) |
+| Hito Gate 5 (Producto y descuentos) | IN PROGRESS (MC-026, MC-027 y MC-028 completadas) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -38,7 +38,7 @@
 | G2 Esqueleto ejecutable | DONE | Auditor sénior + usuario |
 | G3 Compras locales y OCR | DONE | Tech Lead + QA |
 | G4 API temporal | BLOCKED | Documentación API + auditor sénior |
-| G5 Autocompletado y descuentos | TODO | Auditor sénior |
+| G5 Autocompletado y descuentos | IN PROGRESS | Auditor sénior |
 | G6 Calidad final | TODO | Auditor sénior + usuario |
 
 ## Control de Versiones, Git y CI/CD
@@ -46,14 +46,20 @@
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
 | Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `feat/MC-014-receipt-pipeline` |
+| Rama de trabajo activa | `feat/MC-028-discount-provenance` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
-| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`) |
+| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`, `feat/MC-028-discount-provenance`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-07 22:15:**
+  - `MC-028` (G5): Implementada clasificación de procedencia de descuentos (`DiscountClassifier`: `LOYALTY_MEMBER`, `PROMOTION_2X1`, `EXPLICIT_LINE`, `DERIVED`, `UNKNOWN`).
+  - Integrada evidencia textual OCR en el modelo y UI (`discountEvidence`) con auditoría interactiva (`DiscountAuditDialog`).
+  - En la pantalla de revisión (`ReceiptReviewScreen`), el usuario puede ver la procedencia de cada descuento detectado, modificar su tipo o importe, o remover falsos positivos recalculando el precio final con exactitud (`Money`).
+  - Mostrado el ahorro total acumulado en descuentos en la barra inferior de confirmación.
+  - Verificación: 29/29 pruebas unitarias exitosas (+5 tests en `DiscountClassifierTest` y +1 en `ReceiptParserTest`) y `assembleDebug` exitoso.
 - **2026-11-07 21:45:**
   - `MC-027` (G5): Implementado motor de autocompletado con ranking ponderado (`ProductAutocompleteEngine`: alias exacto > prefijo canónico > tokens > propuesta heurística).
   - Implementada protección contra fusión silenciosa de variantes incompatibles: la UI (`ProductAutocompleteField`) detecta discrepancias de peso o presentación y muestra un diálogo de confirmación explícito antes de vincular.

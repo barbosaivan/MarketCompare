@@ -26,7 +26,7 @@ MC-024,G4,Implement comparison screen with source labels,UI Agent,P1,TODO,MC-020
 MC-025,G4,Test cancellation and transient quote lifecycle,QA Agent,P0,TODO,MC-023;MC-024,Quotes cleared after leaving screen; offline state does not reuse stale quote,,,NOT_STARTED,,NOT_STARTED
 MC-026,G5,Implement product normalization and alias matching,Data Agent,P1,DONE,MC-006;MC-017,Brand type size unit and presentation distinguish variants,feat/MC-026-product-normalization,eea02bd,PUSHED,,APPROVED
 MC-027,G5,Implement product name autocomplete,UI Agent,P1,DONE,MC-026,Suggestions ranked; uncertain matches never silently merge variants,feat/MC-027-product-autocomplete,b4c5edb,PUSHED,,APPROVED
-MC-028,G5,Implement discount provenance and review,OCR Agent,P0,TODO,MC-017;MC-021,Explicit/derived/unknown discounts distinct and evidence retained,,,NOT_STARTED,,NOT_STARTED
+MC-028,G5,Implement discount provenance and review,OCR Agent,P0,DONE,MC-017;MC-021,Explicit/derived/unknown discounts distinct and evidence retained,feat/MC-028-discount-provenance,65511aa,PUSHED,,APPROVED
 MC-029,G5,Implement shopping list and estimated basket,UI Agent,P2,TODO,MC-020;MC-021;MC-027,Estimate uses local purchase data and clearly labels stale/unknown prices,,,NOT_STARTED,,NOT_STARTED
 MC-030,G6,Run static analysis and dependency audit,QA Agent,P0,TODO,MC-010,Deprecated APIs dead code unused dependencies and avoidable warnings reviewed,,,NOT_STARTED,,NOT_STARTED
 MC-031,G6,Run full automated test suite,QA Agent,P0,TODO,MC-019;MC-025;MC-028;MC-029,All critical tests pass or failures explicitly block release,,,NOT_STARTED,,NOT_STARTED
