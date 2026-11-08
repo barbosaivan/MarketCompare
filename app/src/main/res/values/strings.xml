@@ -92,8 +92,18 @@
     <string name="dialog_variant_mismatch_message">El producto seleccionado:\n• %1$s\n\nDifiere en tamaño o empaque del detectado en el recibo:\n• %2$s\n\nLas comparativas de precios requieren presentaciones equivalentes. ¿Confirmas que deseas asociar esta variante deliberadamente?</string>
     <string name="dialog_variant_mismatch_confirm">Asignar variante</string>
     
-    <!-- Comparación de precios -->
+    <!-- Comparación de precios (MC-045) -->
     <string name="compare_title">Comparativa de Precios</string>
+    <string name="compare_sheet_title">Comparativa Multicomercio</string>
+    <string name="compare_sheet_best_deal_title">Mejor precio encontrado</string>
+    <string name="compare_sheet_savings">Ahorras hasta %1$s (%2$.1f%%) en %3$s</string>
+    <string name="compare_sheet_single_store">Solo registrado en %1$s</string>
+    <string name="compare_sheet_stores_count">%1$d comercios comparados</string>
+    <string name="compare_sheet_add_to_list">Agregar a lista de compras</string>
+    <string name="compare_sheet_rank">#%1$d</string>
+    <string name="compare_sheet_price_delta">+%1$s (+%2$.1f%%)</string>
+    <string name="compare_sheet_cheapest_badge">Más económico</string>
+    <string name="compare_sheet_close">Cerrar</string>
     <string name="compare_local_source">Tu compra real</string>
     <string name="compare_external_source">Referencia externa (Tiempo real)</string>
     <string name="compare_external_offline">Servicio de cotización externa no disponible</string>

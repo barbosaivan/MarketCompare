@@ -8,11 +8,15 @@ import com.barbosa.marketcompare.data.local.entity.ReceiptItemEntity
 import com.barbosa.marketcompare.data.local.entity.ShoppingListItemEntity
 import com.barbosa.marketcompare.data.local.entity.StoreEntity
 import com.barbosa.marketcompare.data.local.entity.toDomain
+import com.barbosa.marketcompare.data.local.entity.toEntity
 import com.barbosa.marketcompare.domain.basket.BasketEstimator
+import com.barbosa.marketcompare.domain.comparison.CrossStoreComparisonCalculator
+import com.barbosa.marketcompare.domain.comparison.PriceComparisonRecord
 import com.barbosa.marketcompare.domain.model.BasketEstimate
 import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
+import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
 import com.barbosa.marketcompare.domain.model.ProductResolution
 import com.barbosa.marketcompare.domain.model.Receipt
@@ -75,6 +79,21 @@ class PurchaseRepositoryImpl(
         return storeDao.getAllStoreNames()
     }
 
+    override suspend fun getCrossStoreComparison(productName: String): ProductComparisonSummary? {
+        val trimmed = productName.trim()
+        if (trimmed.isEmpty()) return null
+
+        val observations = receiptDao.getPriceObservationsForProduct(trimmed)
+        val records = observations.map {
+            PriceComparisonRecord(
+                storeName = it.storeName,
+                unitPriceMinor = it.unitPriceMinor,
+                timestamp = it.purchaseTimestamp
+            )
+        }
+        return CrossStoreComparisonCalculator.calculate(trimmed, records)
+    }
+
     override suspend fun saveConfirmedPurchase(store: Store, receipt: Receipt) {
         storeDao.insertStore(
             StoreEntity(
@@ -95,23 +114,7 @@ class PurchaseRepositoryImpl(
             )
         )
 
-        val itemEntities = receipt.items.map { item ->
-            ReceiptItemEntity(
-                id = item.id,
-                receiptId = receipt.id,
-                productId = item.productId,
-                rawDescription = item.rawDescription,
-                quantityValue = item.quantity.value,
-                quantityUnit = item.quantity.unit.name,
-                listPriceMinor = item.listPrice?.amountMinor,
-                discountMinor = item.discount?.amountMinor,
-                finalPriceMinor = item.finalPrice.amountMinor,
-                discountType = item.discountType.name,
-                discountEvidence = item.discountEvidence,
-                confidenceScore = item.confidenceScore,
-                userConfirmed = item.userConfirmed
-            )
-        }
+        val itemEntities = receipt.items.map { it.toEntity() }
         if (itemEntities.isNotEmpty()) {
             receiptDao.insertItems(itemEntities)
         }
@@ -220,17 +223,7 @@ class PurchaseRepositoryImpl(
                         storeName = it.storeName
                     )
                 }
-                val unitType = runCatching { UnitType.valueOf(entity.unit) }.getOrDefault(UnitType.UNIT)
-                ShoppingListItem(
-                    id = entity.id,
-                    name = entity.name,
-                    productId = entity.productId,
-                    quantity = entity.quantity,
-                    unit = unitType,
-                    isChecked = entity.isChecked,
-                    estimatedPrice = observation,
-                    createdAtTimestamp = entity.createdAtTimestamp
-                )
+                entity.toDomain(observation)
             }
         }
     }

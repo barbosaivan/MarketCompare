@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.barbosa.marketcompare.domain.model.BasketEstimate
 import com.barbosa.marketcompare.domain.model.Money
+import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ReceiptDraft
 import com.barbosa.marketcompare.presentation.components.AppBottomNavigationBar
 import com.barbosa.marketcompare.presentation.navigation.AppNavigator
@@ -49,12 +50,17 @@ class MainActivity : ComponentActivity() {
                     val scope = rememberCoroutineScope()
                     val navigator = remember { AppNavigator() }
                     var activeDraft by remember { mutableStateOf<ReceiptDraft?>(null) }
+                    var activeComparison by remember { mutableStateOf<ProductComparisonSummary?>(null) }
 
-                    BackHandler(enabled = navigator.canGoBack) {
-                        if (navigator.currentRoute == Screen.Review.route) {
-                            activeDraft = null
+                    BackHandler(enabled = navigator.canGoBack || activeComparison != null) {
+                        if (activeComparison != null) {
+                            activeComparison = null
+                        } else {
+                            if (navigator.currentRoute == Screen.Review.route) {
+                                activeDraft = null
+                            }
+                            navigator.popBack()
                         }
-                        navigator.popBack()
                     }
 
                     val receipts by repository.getAllReceipts().collectAsState(initial = emptyList())
@@ -104,6 +110,21 @@ class MainActivity : ComponentActivity() {
                                         },
                                         onReceiptClick = { receiptId ->
                                             // Detalle de recibo
+                                        },
+                                        onProductClick = { productName ->
+                                            scope.launch {
+                                                activeComparison = repository.getCrossStoreComparison(productName)
+                                            }
+                                        },
+                                        comparisonSummary = activeComparison,
+                                        onDismissComparison = {
+                                            activeComparison = null
+                                        },
+                                        onAddToList = { productName ->
+                                            scope.launch {
+                                                repository.addShoppingListItem(name = productName)
+                                                activeComparison = null
+                                            }
                                         }
                                     )
                                 }

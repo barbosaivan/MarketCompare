@@ -260,5 +260,36 @@ class PurchaseRepositoryTest {
         assertEquals("Ara", result[0])
         assertEquals("Jumbo", result[3])
     }
+
+    @Test
+    fun `getCrossStoreComparison fetches observations and calculates cross-store savings`() = runTest {
+        val now = System.currentTimeMillis()
+        val observations = listOf(
+            PriceObservationItemEntity(
+                id = "obs-1",
+                productId = "prod-1",
+                rawDescription = "Huevos AA x30",
+                unitPriceMinor = 18000L,
+                purchaseTimestamp = now,
+                storeName = "Éxito"
+            ),
+            PriceObservationItemEntity(
+                id = "obs-2",
+                productId = "prod-1",
+                rawDescription = "Huevos AA x30",
+                unitPriceMinor = 15500L,
+                purchaseTimestamp = now,
+                storeName = "D1"
+            )
+        )
+        coEvery { receiptDao.getPriceObservationsForProduct("Huevos AA x30") } returns observations
+
+        val summary = repository.getCrossStoreComparison("Huevos AA x30")
+
+        org.junit.Assert.assertNotNull(summary)
+        assertEquals("D1", summary?.cheapestStore)
+        assertEquals(Money(15500L, "COP"), summary?.lowestPrice)
+        assertEquals(Money(2500L, "COP"), summary?.maxSavings)
+    }
 }
 
