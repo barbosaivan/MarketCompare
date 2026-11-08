@@ -54,14 +54,14 @@ Aprobación humana requerida antes de una implementación amplia.
 - [x] Usuario aprueba la entrega final (MC-034): Aprobado formalmente bajo la versión v1.0.0-rc1.
 
 ## Gate 7 — Sistema de Diseño M3, Navegación Persistente y Backstack (v2.0)
-- [ ] Protocolo multi-agente y checklist de calidad pre-commit formalmente adoptados.
-- [ ] Nueva paleta de colores Material 3 implementada (Deep Pine, Warm Amber, Electric Indigo) con soporte de temas claro/oscuro y tonal surfaces.
-- [ ] Barra de navegación inferior (`NavigationBar`) persistente sin ocultarse al navegar en vistas secundarias.
-- [ ] Gestión del botón atrás (`BackHandler`) predecible: retrocede ordenadamente entre pantallas sin salir de la aplicación.
-- [ ] Componentes UI reutilizables y modulares extraídos en `presentation/components/`.
-- [ ] Métodos < 50 líneas y clases < 300 líneas en todos los archivos afectados.
-- [ ] Pruebas unitarias actualizadas y `lintDebug` con 0 errores y 0 warnings.
-- [ ] Auditor sénior firma el informe de compuerta.
+- [x] Protocolo multi-agente y checklist de calidad pre-commit formalmente adoptados (MC-039).
+- [x] Nueva paleta de colores Material 3 implementada (Deep Pine, Warm Amber, Electric Indigo) con soporte de temas claro/oscuro y tonal surfaces (MC-040).
+- [x] Barra de navegación inferior (`NavigationBar`) persistente sin ocultarse al navegar en vistas secundarias (MC-041).
+- [x] Gestión del botón atrás (`BackHandler`) predecible: retrocede ordenadamente entre pantallas sin salir de la aplicación (MC-042).
+- [x] Componentes UI reutilizables y modulares extraídos en `presentation/components/` (MC-043).
+- [x] Métodos < 50 líneas y clases < 300 líneas en todos los archivos afectados (MC-043).
+- [x] Pruebas unitarias actualizadas (53/53 pasadas al 100%) y `lintDebug` con 0 errores y 0 warnings (MC-043).
+- [x] Auditor sénior firma el informe de compuerta (PASS verificado).
 
 ## Gate 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (v2.0)
 - [ ] Pantalla principal reorientada a consulta y comparación de precios (eliminando el protagonismo del gasto total).

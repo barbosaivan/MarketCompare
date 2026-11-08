@@ -20,16 +20,17 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 36 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-042) |
+| DONE con evidencia | 37 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-043) |
 | En progreso | 0 |
-| Pendientes (TODO) | 21 (MC-043 a MC-058) |
+| Pendientes (TODO) | 20 (MC-044 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**53/53 tests pasados**: MoneyTest (10), PurchaseRepositoryTest (6), ProductNormalizerTest (10), ProductAutocompleteEngineTest (7), DiscountClassifierTest (6), ReceiptParserTest (4), BasketEstimatorTest (4), AppNavigatorTest (6)) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**53/53 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
-| Hito Gate 7 (Diseño M3, Navegación y Backstack) | IN PROGRESS (MC-039, MC-040, MC-041 y MC-042 completadas) |
+| Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
+| Hito Gate 8 (Dashboard de Precios y Tiendas) | PENDING (Listo para iniciar con MC-044) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | PENDING |
 | Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
@@ -44,7 +45,7 @@
 | G4 API temporal | BLOCKED | Documentación API + auditor sénior |
 | G5 Autocompletado y descuentos | DONE | Auditor sénior |
 | G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
-| G7 Sistema M3, Navegación y Backstack | IN PROGRESS | Auditor sénior + Tech Lead |
+| G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G8 Dashboard de Precios y Tiendas | TODO | Auditor sénior + Tech Lead |
 | G9 Ingreso Manual y Medidas Estándar | TODO | Auditor sénior + Tech Lead |
 | G10 OCR Visual y Bounding Boxes | TODO | Auditor sénior + Usuario |
@@ -62,6 +63,12 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 17:15:**
+  - `MC-043` (G7): Refactorización y extracción exhaustiva de componentes en la capa de presentación.
+  - Creación de componentes reutilizables: `DiscountAuditDialog`, `EditableReceiptItemCard`, `ReceiptReviewBottomBar`, `BasketSummaryCard`, `ShoppingListItemRow` y `ShoppingListAddCard`.
+  - Reducción drástica del tamaño de archivos: `ReceiptReviewScreen.kt` pasó de 573 a 153 líneas; `ShoppingListScreen.kt` pasó de 442 a 133 líneas. Todos los archivos de la capa de UI se encuentran ahora estrictamente bajo el límite de 260 líneas (< 300 líneas) y métodos < 50 líneas.
+  - **Hito Gate 7 completado al 100%** satisfaciendo todos sus criterios de calidad y usabilidad.
+  - Verificación: 53/53 pruebas unitarias exitosas y `lintDebug` aprobado con 0 errores y 0 warnings.
 - **2026-11-08 16:50:**
   - `MC-042` (G7): Implementación del gestor de historial de navegación `AppNavigator` y del manejador de botón atrás nativo `BackHandler` en Compose.
   - La aplicación gestiona una pila de navegación histórica ordenada: presionar "Atrás" o el botón de retroceso de la barra superior regresa ordenadamente a la pantalla previa (por ejemplo, de Revisión a Escaneo y de Escaneo a Historial) en lugar de cerrar la app.
