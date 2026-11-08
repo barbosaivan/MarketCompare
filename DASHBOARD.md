@@ -20,16 +20,16 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 33 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-038) |
-| En progreso | 1 (MC-039 - Adopción de gobernanza multi-agente y reglas pre-commit) |
-| Pendientes (TODO) | 23 (MC-040 a MC-058) |
+| DONE con evidencia | 34 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-040) |
+| En progreso | 0 |
+| Pendientes (TODO) | 23 (MC-041 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
 | Última suite de tests | `testDebugUnitTest` EXITOSA (**47/47 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
-| Hito Gate 7 (Diseño M3, Navegación y Backstack) | IN PROGRESS |
+| Hito Gate 7 (Diseño M3, Navegación y Backstack) | IN PROGRESS (MC-039 y MC-040 completadas) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | PENDING |
 | Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
@@ -62,6 +62,11 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 15:50:**
+  - `MC-040` (G7): Implementación de la paleta moderna Material 3 en `Color.kt` y `Theme.kt` (Deep Pine como primario, Warm Amber como secundario, Electric Indigo como terciario).
+  - Incorporados tokens de elevación tonal M3 (`surfaceContainerLowest` hasta `surfaceContainerHighest`) para tema claro y tema oscuro.
+  - Creado proveedor semántico `MaterialTheme.semanticColors` (`LocalMarketCompareSemanticColors`) para categorías OCR y semáforo de frescura sin hardcodear colores en componentes.
+  - Verificación: 47/47 pruebas unitarias exitosas y `lintDebug` aprobado con 0 errores y 0 advertencias.
 - **2026-11-08 15:40:**
   - Inicio de la **Fase v2.0**: Incorporación de los 14 nuevos requerimientos acordados con el usuario.
   - `MC-039` (G7): Formalización del protocolo de revisión multi-agente en 7 etapas y adopción de la política de calidad pre-commit obligatoria en `PROJECT_RULES.md` y `AGENT_TEAM.md`.
