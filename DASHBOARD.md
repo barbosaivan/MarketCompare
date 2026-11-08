@@ -1,15 +1,16 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Gate 2 (Esqueleto Ejecutable) completado. El proyecto compila y empaqueta APK de depuración con éxito, y la suite de pruebas unitarias pasa con código de salida 0.
+> Estado actual: Release v1.0.0-rc1 formalmente aprobado por el usuario. Gate 6 (Calidad final, suite de pruebas automatizadas con 47/47 tests, análisis estático Android Lint con 0 errores/warnings, auditoría sénior PASS, y sincronización documental exhaustiva) completado y aprobado. Compilación limpia y empaquetado de release listo.
 
 ## Resumen
-- Fase actual: `GATE 2 — Esqueleto ejecutable (Completada)` -> Listo para `GATE 3 — Compras locales y OCR`
-- Estado global: `IN PROGRESS`
-- Rama activa: `feat/MC-010-project-scaffold`
-- Bloqueos conocidos: API externa de precios (`MC-003` - BLOCKED por falta de proveedor documentado).
-- Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4).
-- Persistencia: Room local exclusiva para compras confirmadas (`MarketCompareDatabase`).
-- Precios externos: Consulta efímera en memoria (no persistente en Room, archivos, logs ni caché).
+- Fase actual: `RELEASED — v1.0.0-rc1` (Gate 6 COMPLETADO Y APROBADO; Gate 4 permanece BLOQUEADO a la espera de credenciales/clave API oficial de `losprecios.co`).
+- Estado global: `RELEASED`
+- Rama de integración activa: `develop`
+- Rama de release estable: `main` (Tag `v1.0.0-rc1`)
+- Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
+- Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
+- Persistencia: Room local exclusiva para compras confirmadas y lista de compras (`MarketCompareDatabase`).
+- Precios externos: Consulta efímera en memoria (no persistente en Room, archivos, logs ni caché - ADR 0001).
 - Responsable de integración: Tech Lead.
 - Auditor final: Auditor sénior independiente.
 
@@ -17,15 +18,19 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 38 |
-| DONE con evidencia | 12 (MC-001, MC-002, MC-004, MC-005, MC-006, MC-007, MC-008, MC-009, MC-010, MC-011, MC-012, MC-013) |
-| En revisión | 0 |
-| Bloqueadas | 1 (MC-003 - API externa sin proveedor oficial) |
+| DONE con evidencia | 33 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-038) |
+| En revisión / Release | 0 |
+| Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
-| Última compilación | `assembleDebug` EXITOSA (APK generado 64.7 MB) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (MoneyTest, PurchaseRepositoryTest) |
+| Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
+| Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**47/47 tests pasados**: MoneyTest (10), PurchaseRepositoryTest (6), ProductNormalizerTest (10), ProductAutocompleteEngineTest (7), DiscountClassifierTest (6), ReceiptParserTest (4), BasketEstimatorTest (4)) |
 | Hito Gate 0 (Entorno y alcance) | APROBADO (2026-11-07) |
 | Hito Gate 1 (Arquitectura y modelado) | COMPLETADO (2026-11-07) |
 | Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
+| Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
+| Hito Gate 5 (Producto y descuentos) | COMPLETADO (2026-11-08) |
+| Hito Gate 6 (Calidad final y release) | APROBADO (2026-11-08 bajo v1.0.0-rc1) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -33,27 +38,73 @@
 | G0 Entorno y alcance | DONE | Usuario (Aprobado 2026-11-07) |
 | G1 Arquitectura | DONE | Usuario + Tech Lead |
 | G2 Esqueleto ejecutable | DONE | Auditor sénior + usuario |
-| G3 Compras locales y OCR | TODO | Auditor sénior + usuario |
+| G3 Compras locales y OCR | DONE | Tech Lead + QA |
 | G4 API temporal | BLOCKED | Documentación API + auditor sénior |
-| G5 Autocompletado y descuentos | TODO | Auditor sénior |
-| G6 Calidad final | TODO | Auditor sénior + usuario |
+| G5 Autocompletado y descuentos | DONE | Auditor sénior |
+| G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
 
 ## Control de Versiones, Git y CI/CD
 | Campo | Estado |
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
 | Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `feat/ci-github-actions` |
+| Rama de trabajo activa | `docs/MC-033-finalize-documentation` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
-| Push remoto | `PUSHED` (`main`, `develop`, ramas de hitos) |
+| Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
-- **2026-11-07 17:50:**
-  - `MC-010` (G2): Creado proyecto ejecutable con Gradle 9.4.1, AGP 9.2.1, Kotlin 2.2.10 y Version Catalog (`gradle/libs.versions.toml`).
-  - `MC-011` (G2): Configurado tema Material 3 (`MarketCompareTheme`), esquema claro/oscuro y recursos centralizados en `strings.xml`. Cero cadenas o colores hardcodeados.
-  - `MC-012` (G2): Definida navegación tipada (`Screen`), `MainActivity` y `HistoryScreen` con estados vacío y poblado.
-  - `MC-013` (G2): Implementada base de datos Room (`MarketCompareDatabase`), entidades (`StoreEntity`, `ReceiptEntity`, `ReceiptItemEntity`, `ProductEntity`, `ProductAliasEntity`), DAOs y `PurchaseRepositoryImpl`.
-  - Verificación: `assembleDebug` completado con éxito y pruebas unitarias (`MoneyTest`, `PurchaseRepositoryTest`) aprobadas con 100% de éxito.
+- **2026-11-08 14:40:**
+  - `MC-034` (G6): Aprobación formal de entrega y release por parte del usuario bajo la versión `v1.0.0-rc1`.
+  - Gate 6 cerrado formalmente con 100% de criterios aprobados.
+  - Fusión de versión estable a `main` y etiquetado Git con tag semántico `v1.0.0-rc1`.
+- **2026-11-08 14:30:**
+  - `MC-033` & `MC-038` (G6): Cierre y sincronización documental completa de todas las especificaciones técnicas del proyecto.
+  - Actualización de `docs/README.md`, `docs/DATA_MODEL.md`, `docs/PRODUCT_OVERVIEW.md`, `docs/FUNCTIONALITY.md`, `docs/ARCHITECTURE.md`, `docs/QUALITY_AND_TESTING.md`, `docs/CHANGELOG_TECHNICAL.md`, `docs/GLOSSARY.md`, `docs/INTEGRATIONS.md`, y raíz `README.md`.
+  - Auditoría sénior de consistencia documental (`MC-038`): Verificación exhaustiva de alineación entre código fuente, tests (47/47), reportes de lint (0/0) y documentación de arquitectura.
+  - Hito Gate 6 cerrado con éxito. Proyecto preparado para `MC-034` (Aprobación final de release por parte del usuario).
+- **2026-11-08 14:10:**
+  - `MC-032` (G6): Auditoría sénior independiente de código, arquitectura y privacidad completada con veredicto **PASS** ([`docs/AUDIT_REPORT.md`](docs/AUDIT_REPORT.md)).
+  - Verificación formal: 0 defectos P0, 0 defectos P1, 0 secretos expuestos, 100% cumplimiento de ADR 0001 (privacidad y no-persistencia de cotizaciones externas) y ADR 0003 (aritmética financiera exacta sin punto flotante).
+- **2026-11-08 13:58:**
+  - `MC-031` (G6): Ejecución y certificación de la suite completa de pruebas automatizadas (`docs/TEST_SUITE_REPORT.md`).
+  - Cobertura expandida a 47 pruebas unitarias sin fallos ni errores (100% de éxito en ~3.8s).
+  - Casos de borde validados: operaciones entre divisas distintas, divisiones por cero, formateo monetario COP, eliminación y consulta histórica de observaciones de precios en el repositorio de compras.
+  - Verificación: `testDebugUnitTest` (47/47 pasados) y `assembleDebug` completado en 2s.
+- **2026-11-08 13:50:**
+  - `MC-030` (G6): Auditoría completa de análisis estático y dependencias (`docs/STATIC_ANALYSIS_AUDIT.md`).
+  - Android Lint ejecutado y depurado al 100%: **0 errores y 0 advertencias**.
+  - Corrección de directrices Compose en `ProductAutocompleteField` (parámetro `modifier` ordenado como primer opcional).
+  - Sustitución de plataforma `Bitmap.createBitmap` por extensión KTX en `DocumentTextExtractor`.
+  - Incorporada capa `<monochrome>` en íconos adaptativos launcher para compatibilidad con Android 13+.
+  - Eliminado código muerto XML de colores (`colors.xml`) en favor del sistema de diseño Compose M3.
+  - Creado `app/lint.xml` con exclusiones controladas y justificadas.
+  - Verificación: 45/45 pruebas unitarias exitosas y `assembleDebug` limpio (13s).
+- **2026-11-07 22:40:**
+  - `MC-029` (G5): Implementada lista de compras y canasta estimada (`ShoppingListScreen`, `BasketEstimator`, `ShoppingListDao`).
+  - Estimación de presupuesto en tiempo real basada exclusivamente en compras locales confirmadas de la base de datos Room.
+  - Distinción rigurosa de frescura de precios: confirmados recientes (<= 30 días con comercio y fecha), desactualizados (> 30 días advertidos explícitamente en UI y cálculos) y sin historial previo.
+  - Soporte para agregar artículos con autocompletado desde el catálogo, marcar como comprados/tachados, y limpiar lista.
+  - Navegación principal mediante `NavigationBar` (Historial, Escaneo, Lista de Compras).
+  - Verificación: 45/45 pruebas unitarias exitosas (+7 tests en `BasketEstimatorTest` y +3 en `PurchaseRepositoryTest`) y `assembleDebug` limpio sin deprecaciones.
+- **2026-11-07 22:15:**
+  - `MC-028` (G5): Implementada clasificación de procedencia de descuentos (`DiscountClassifier`: `LOYALTY_MEMBER`, `PROMOTION_2X1`, `EXPLICIT_LINE`, `DERIVED`, `UNKNOWN`).
+  - Integrada evidencia textual OCR en el modelo y UI (`discountEvidence`) con auditoría interactiva (`DiscountAuditDialog`).
+  - En la pantalla de revisión (`ReceiptReviewScreen`), el usuario puede ver la procedencia de cada descuento detectado, modificar su tipo o importe, o remover falsos positivos recalculando el precio final con exactitud (`Money`).
+  - Mostrado el ahorro total acumulado en descuentos en la barra inferior de confirmación.
+  - Verificación: 29/29 pruebas unitarias exitosas (+5 tests en `DiscountClassifierTest` y +1 en `ReceiptParserTest`) y `assembleDebug` exitoso.
+- **2026-11-07 21:45:**
+  - `MC-027` (G5): Implementado motor de autocompletado con ranking ponderado (`ProductAutocompleteEngine`: alias exacto > prefijo canónico > tokens > propuesta heurística).
+  - Implementada protección contra fusión silenciosa de variantes incompatibles: la UI (`ProductAutocompleteField`) detecta discrepancias de peso o presentación y muestra un diálogo de confirmación explícito antes de vincular.
+  - Integrado el campo de autocompletado en `ReceiptReviewScreen` para vinculación directa de ítems de factura con el catálogo de productos local.
+  - Verificación: 24/24 pruebas unitarias exitosas (+5 tests en `ProductAutocompleteEngineTest`) y compilación `assembleDebug` limpia sin advertencias de deprecación.
+- **2026-11-07 18:55:**
+  - `MC-026` (G5): Implementado `ProductNormalizer` para extracción inteligente de marca (marcas colombianas comunes), presentación (Bolsa, Vaso, Botella, Lata, Caja, etc.), cantidad base y unidad (`kg`, `g`, `ml`, `l`, `und`).
+  - Implementada clave única `variantFingerprint` y regla estricta `areVariantsCompatible` para garantizar que presentaciones o tamaños distintos nunca se fusionen como el mismo producto.
+  - Implementada búsqueda y registro de alias en `PurchaseRepositoryImpl` y `ProductDao`.
+  - Verificación: 19/19 pruebas unitarias exitosas (+7 tests en `ProductNormalizerTest` y +2 en `PurchaseRepositoryTest`) y `assembleDebug` exitoso.
+- **2026-11-07 18:25:**
+  - `MC-014` (G3): Implementada selección multicanal de facturas (CameraX con archivo temporal y `FileProvider`, Photo Picker de galería y OpenDocument SAF para PDFs).
+  - `MC-015` & `MC-016` (G3): Implementado `DocumentTextExtractor` combinando Google ML Kit Text Recognition, `PdfRenderer` para PDFs escaneados y lectura de streams para PDFs con texto embebido.

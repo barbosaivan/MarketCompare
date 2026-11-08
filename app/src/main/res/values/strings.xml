@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PluralsCandidate">
     <string name="app_name">MarketCompare</string>
     
-    <!-- Navegación -->
+    <!-- Navegación y acciones comunes -->
+    <string name="action_back">Volver</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_confirm">Confirmar</string>
+    <string name="action_save">Guardar</string>
     <string name="nav_history">Historial</string>
     <string name="nav_scan">Escanear</string>
     <string name="nav_shopping_list">Lista</string>
@@ -21,18 +25,52 @@
     <string name="scan_processing">Extrayendo texto y procesando factura…</string>
     <string name="scan_permission_camera_required">Se requiere permiso de cámara para capturar facturas.</string>
     <string name="scan_permission_grant">Conceder permiso</string>
+    <string name="scan_error_image">Error al procesar la imagen seleccionada</string>
+    <string name="scan_error_pdf">Error al procesar el archivo PDF</string>
+    <string name="scan_error_camera">Error al leer el texto de la foto capturada</string>
     
     <!-- Revisión de factura -->
     <string name="review_title">Revisar Factura</string>
     <string name="review_store_label">Establecimiento</string>
+    <string name="review_default_store">Supermercado</string>
     <string name="review_date_label">Fecha de compra</string>
     <string name="review_total_label">Total a pagar</string>
+    <string name="review_total_savings_label">Ahorro en descuentos</string>
+    <string name="review_total_savings_value">-%1$s</string>
     <string name="review_items_detected">Artículos detectados (%1$d)</string>
     <string name="review_save_purchase">Confirmar y Guardar Compra</string>
     <string name="review_item_unit_price">Precio unitario</string>
     <string name="review_item_discount">Descuento</string>
+    <string name="review_item_discount_tag">Descuento: -%1$s</string>
     <string name="review_item_final">Final</string>
     <string name="review_confidence_low">Confianza baja: verificar valores</string>
+    <string name="review_edit_discount">Editar</string>
+    <string name="review_dialog_discount_title">Auditoría de Descuento</string>
+    <string name="review_dialog_discount_amount">Valor del descuento (COP)</string>
+    <string name="review_dialog_discount_type">Tipo de descuento</string>
+    <string name="review_dialog_discount_remove">Quitar descuento</string>
+    <string name="review_dialog_discount_evidence_label">Evidencia detectada en ticket:</string>
+    <string name="review_discount_evidence">Evidencia: %1$s</string>
+    
+    <!-- Tipos de Descuento (MC-028) -->
+    <string name="discount_type_none">Sin descuento</string>
+    <string name="discount_type_explicit">Descuento en factura</string>
+    <string name="discount_type_loyalty">Puntos / Fidelización</string>
+    <string name="discount_type_promotion">Promoción / 2x1</string>
+    <string name="discount_type_derived">Diferencia calculada</string>
+    <string name="discount_type_unknown">Descuento no clasificado</string>
+    
+    <!-- Autocompletado de productos y protección de variantes (MC-027) -->
+    <string name="autocomplete_search_hint">Buscar en catálogo o escribir nombre…</string>
+    <string name="autocomplete_badge_exact">Alias previo</string>
+    <string name="autocomplete_badge_catalog">Catálogo</string>
+    <string name="autocomplete_badge_suggested">Sugerido OCR</string>
+    <string name="autocomplete_badge_variant_mismatch">Presentación diferente</string>
+    <string name="autocomplete_keep_custom">Mantener como texto libre: \"%1$s\"</string>
+    <string name="autocomplete_no_results">Sin coincidencias previas</string>
+    <string name="dialog_variant_mismatch_title">Diferencia de presentación o tamaño</string>
+    <string name="dialog_variant_mismatch_message">El producto seleccionado:\n• %1$s\n\nDifiere en tamaño o empaque del detectado en el recibo:\n• %2$s\n\nLas comparativas de precios requieren presentaciones equivalentes. ¿Confirmas que deseas asociar esta variante deliberadamente?</string>
+    <string name="dialog_variant_mismatch_confirm">Asignar variante</string>
     
     <!-- Comparación de precios -->
     <string name="compare_title">Comparativa de Precios</string>
@@ -41,9 +79,29 @@
     <string name="compare_external_offline">Servicio de cotización externa no disponible</string>
     <string name="compare_disclaimer_ephemeral">Los precios externos son referencias temporales en vivo y no se almacenan en el dispositivo.</string>
     
+    <!-- Lista de compras y canasta estimada (MC-029) -->
+    <string name="shopping_list_title">Lista de Compras</string>
+    <string name="shopping_list_empty">Tu lista de compras está vacía.\nAgrega artículos arriba para estimar el presupuesto de tu canasta.</string>
+    <string name="shopping_list_add_action">Agregar a la lista</string>
+    <string name="shopping_list_item_hint">Escribe un producto o selecciona del catálogo…</string>
+    <string name="shopping_list_quantity_label">Cantidad: %1$d</string>
+    <string name="shopping_list_clear_checked">Limpiar comprados</string>
+    <string name="shopping_list_delete_item">Eliminar artículo</string>
+    
+    <!-- Estimación de Canasta -->
+    <string name="basket_summary_title">Presupuesto Estimado</string>
+    <string name="basket_coverage_label">%1$d de %2$d artículos con precio conocido</string>
+    <string name="basket_stale_warning">%1$d precio(s) desactualizado(s) (>30 días)</string>
+    <string name="basket_price_recent">Última compra: %1$s en %2$s (hace %3$d días)</string>
+    <string name="basket_price_stale">Desactualizado: %1$s en %2$s (hace %3$d días)</string>
+    <string name="basket_price_unknown">Sin precio histórico registrado</string>
+    <string name="basket_badge_stale">Desactualizado</string>
+    <string name="basket_badge_unknown">Sin registro</string>
+    <string name="basket_badge_recent">Confirmado</string>
+    <string name="basket_disclaimer">Estimación calculada exclusivamente con tus compras locales confirmadas. Los precios desactualizados (> 30 días) o desconocidos se identifican explícitamente.</string>
+
     <!-- Estados comunes -->
     <string name="state_loading">Cargando…</string>
     <string name="state_error">Ocurrió un error inesperado</string>
     <string name="state_retry">Reintentar</string>
 </resources>
-

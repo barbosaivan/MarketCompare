@@ -77,6 +77,18 @@ data class ProductQuantity(
 | alias_text: String |
 | store_id: String?  |
 +--------------------+
+
++---------------------------+
+|    shopping_list_items    |
++---------------------------+
+| id: String (UUID)         |
+| name: String              |
+| product_id: String?       |
+| quantity: Long            |
+| unit: String              |
+| is_checked: Boolean       |
+| created_at_timestamp: Long|
++---------------------------+
 ```
 
 ### Detalle de Campos y Restricciones:
@@ -94,7 +106,7 @@ data class ProductQuantity(
    - `list_price_minor`: Precio antes de descuentos.
    - `discount_minor`: Monto descontado explícito.
    - `final_price_minor`: Precio real pagado (`list_price_minor - discount_minor`).
-   - `discount_type`: Enum (`NONE`, `EXPLICIT_LINE`, `PROMOTION_2X1`, `LOYALTY_MEMBER`, `UNKNOWN`).
+   - `discount_type`: Enum (`NONE`, `EXPLICIT_LINE`, `PROMOTION_2X1`, `LOYALTY_MEMBER`, `DERIVED`, `UNKNOWN`).
    - `discount_evidence`: Texto OCR mínimo que respalda el descuento (ej: "-$ 2.000 DCTO PUNTOS").
    - `confidence_score`: Valor 0.0 a 1.0 que indica la certidumbre de la extracción automática.
 
@@ -102,9 +114,53 @@ data class ProductQuantity(
    - **Diferenciación estricta:** Dos productos con la misma marca pero diferente presentación o contenido neto son entidades distintas (ej: "Yogurt Alpina Fresa 150g Vaso" != "Yogurt Alpina Fresa 1000g Bolsa").
    - `product_aliases`: Asocia textos crudos de factura a productos confirmados por el usuario (ej: "YOG ALP FR 150G" -> ID de "Yogurt Alpina Fresa 150g").
 
+5. **`shopping_list_items` (Lista de Compras Local):**
+   - Permite al usuario planificar sus compras y estimar el presupuesto de su canasta.
+   - Vinculado opcionalmente a un producto del catálogo (`product_id`).
+   - Estado de compra `is_checked` para tachar artículos adquiridos.
+
 ---
 
-## 3. Modelo de Cotización Externa (Efímero en Memoria)
+## 3. Modelos de Dominio de Canasta y Frescura de Precios
+
+```kotlin
+enum class PriceFreshness {
+    RECENT,   // Observado en los últimos <= 30 días
+    STALE,    // Observado hace > 30 días (desactualizado)
+    UNKNOWN   // Sin compras previas registradas
+}
+
+data class HistoricalPriceObservation(
+    val unitPrice: Money,
+    val observedAtTimestamp: Long,
+    val storeName: String,
+    val freshness: PriceFreshness
+)
+
+data class ShoppingListItem(
+    val id: String,
+    val name: String,
+    val productId: String?,
+    val quantity: Long,
+    val unit: UnitType,
+    val isChecked: Boolean,
+    val estimatedPrice: HistoricalPriceObservation?,
+    val createdAtTimestamp: Long
+)
+
+data class BasketEstimate(
+    val items: List<ShoppingListItem>,
+    val totalEstimated: Money,
+    val totalItemsCount: Int,
+    val pricedItemsCount: Int,
+    val staleItemsCount: Int,
+    val unknownItemsCount: Int
+)
+```
+
+---
+
+## 4. Modelo de Cotización Externa (Efímero en Memoria)
 
 ```kotlin
 // MODELO EXCLUSIVAMENTE EN MEMORIA RAM
