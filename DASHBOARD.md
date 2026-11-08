@@ -6,7 +6,7 @@
 - Fase actual: `GATE 5 — Autocompletado y descuentos (En progreso)` (Gate 4 permanece BLOQUEADO a la espera de credenciales/documentación oficial de API externa).
 - Estado global: `IN PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de hito: `feat/MC-026-product-normalization`
+- Rama de hito: `feat/MC-027-product-autocomplete`
 - Bloqueos conocidos: API externa de precios (`MC-003` - BLOCKED por falta de proveedor documentado).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
 - Persistencia: Room local exclusiva para compras confirmadas (`MarketCompareDatabase`).
@@ -18,17 +18,17 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 38 |
-| DONE con evidencia | 24 (MC-001, MC-002, MC-004 a MC-021, MC-026, MC-035, MC-036, MC-037) |
+| DONE con evidencia | 25 (MC-001, MC-002, MC-004 a MC-021, MC-026, MC-027, MC-035, MC-036, MC-037) |
 | En revisión | 0 |
 | Bloqueadas | 1 (MC-003 - API externa sin proveedor oficial) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (19/19 tests pasados: ProductNormalizerTest, PurchaseRepositoryTest, MoneyTest, ReceiptParserTest) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (24/24 tests pasados: ProductAutocompleteEngineTest, ProductNormalizerTest, PurchaseRepositoryTest, MoneyTest, ReceiptParserTest) |
 | Hito Gate 0 (Entorno y alcance) | APROBADO (2026-11-07) |
 | Hito Gate 1 (Arquitectura y modelado) | COMPLETADO (2026-11-07) |
 | Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
 | Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
-| Hito Gate 5 (Producto y descuentos) | IN PROGRESS (MC-026 completada) |
+| Hito Gate 5 (Producto y descuentos) | IN PROGRESS (MC-026 y MC-027 completadas) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -51,9 +51,14 @@
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
-| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`) |
+| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-07 21:45:**
+  - `MC-027` (G5): Implementado motor de autocompletado con ranking ponderado (`ProductAutocompleteEngine`: alias exacto > prefijo canónico > tokens > propuesta heurística).
+  - Implementada protección contra fusión silenciosa de variantes incompatibles: la UI (`ProductAutocompleteField`) detecta discrepancias de peso o presentación y muestra un diálogo de confirmación explícito antes de vincular.
+  - Integrado el campo de autocompletado en `ReceiptReviewScreen` para vinculación directa de ítems de factura con el catálogo de productos local.
+  - Verificación: 24/24 pruebas unitarias exitosas (+5 tests en `ProductAutocompleteEngineTest`) y compilación `assembleDebug` limpia sin advertencias de deprecación.
 - **2026-11-07 18:55:**
   - `MC-026` (G5): Implementado `ProductNormalizer` para extracción inteligente de marca (marcas colombianas comunes), presentación (Bolsa, Vaso, Botella, Lata, Caja, etc.), cantidad base y unidad (`kg`, `g`, `ml`, `l`, `und`).
   - Implementada clave única `variantFingerprint` y regla estricta `areVariantsCompatible` para garantizar que presentaciones o tamaños distintos nunca se fusionen como el mismo producto.

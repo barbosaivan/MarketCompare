@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -41,17 +43,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.barbosa.marketcompare.R
 import com.barbosa.marketcompare.domain.model.Money
+import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.ReceiptDraft
 import com.barbosa.marketcompare.domain.model.ReceiptItem
 import com.barbosa.marketcompare.domain.model.ReceiptItemDraft
 import com.barbosa.marketcompare.domain.model.Store
+import com.barbosa.marketcompare.domain.normalizer.ProductNormalizer
+import com.barbosa.marketcompare.presentation.components.ProductAutocompleteField
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReceiptReviewScreen(
     draft: ReceiptDraft,
+    catalogProducts: List<Product> = emptyList(),
     onBackClick: () -> Unit,
     onConfirmSave: (Store, Receipt) -> Unit
 ) {
@@ -118,6 +124,7 @@ fun ReceiptReviewScreen(
                                 ReceiptItem(
                                     id = UUID.randomUUID().toString(),
                                     receiptId = receiptId,
+                                    productId = draftItem.linkedProductId,
                                     rawDescription = draftItem.rawDescription.trim(),
                                     quantity = draftItem.quantity,
                                     listPrice = draftItem.unitListPrice,
@@ -183,6 +190,7 @@ fun ReceiptReviewScreen(
             itemsIndexed(items, key = { _, item -> item.id }) { index, item ->
                 EditableReceiptItemCard(
                     item = item,
+                    catalogProducts = catalogProducts,
                     onItemChange = { updated ->
                         items = items.toMutableList().also { it[index] = updated }
                     }
@@ -195,6 +203,7 @@ fun ReceiptReviewScreen(
 @Composable
 fun EditableReceiptItemCard(
     item: ReceiptItemDraft,
+    catalogProducts: List<Product>,
     onItemChange: (ReceiptItemDraft) -> Unit
 ) {
     Card(
@@ -211,22 +220,54 @@ fun EditableReceiptItemCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top
         ) {
             Checkbox(
                 checked = item.isIncluded,
-                onCheckedChange = { onItemChange(item.copy(isIncluded = it)) }
+                onCheckedChange = { onItemChange(item.copy(isIncluded = it)) },
+                modifier = Modifier.padding(top = 8.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column(modifier = Modifier.weight(1f)) {
-                OutlinedTextField(
-                    value = item.rawDescription,
-                    onValueChange = { onItemChange(item.copy(rawDescription = it)) },
-                    modifier = Modifier.fillMaxWidth(),
+                // Campo con autocompletado y validación estricta de variantes
+                ProductAutocompleteField(
+                    query = item.rawDescription,
+                    onQueryChange = {
+                        onItemChange(item.copy(rawDescription = it, linkedProductId = null))
+                    },
+                    catalogProducts = catalogProducts,
+                    referenceCandidate = ProductNormalizer.normalize(item.rawDescription),
+                    onProductSelected = { selected ->
+                        onItemChange(
+                            item.copy(
+                                rawDescription = selected.canonicalName,
+                                linkedProductId = selected.id,
+                                linkedCanonicalName = selected.canonicalName
+                            )
+                        )
+                    },
                     enabled = item.isIncluded,
-                    singleLine = true,
-                    textStyle = MaterialTheme.typography.bodyMedium
+                    modifier = Modifier.fillMaxWidth()
                 )
+
+                if (item.linkedProductId != null) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = stringResource(R.string.autocomplete_badge_catalog),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
