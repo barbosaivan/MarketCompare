@@ -20,16 +20,16 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 34 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-040) |
+| DONE con evidencia | 35 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-041) |
 | En progreso | 0 |
-| Pendientes (TODO) | 23 (MC-041 a MC-058) |
+| Pendientes (TODO) | 22 (MC-042 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
 | Última suite de tests | `testDebugUnitTest` EXITOSA (**47/47 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
-| Hito Gate 7 (Diseño M3, Navegación y Backstack) | IN PROGRESS (MC-039 y MC-040 completadas) |
+| Hito Gate 7 (Diseño M3, Navegación y Backstack) | IN PROGRESS (MC-039, MC-040 y MC-041 completadas) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | PENDING |
 | Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
@@ -62,6 +62,11 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 16:30:**
+  - `MC-041` (G7): Extracción del componente modular `AppBottomNavigationBar` y reestructuración de la jerarquía del Scaffold raíz en `MainActivity.kt`.
+  - La barra de navegación inferior permanece ahora 100% visible y accesible en todas las vistas (Historial, Escaneo, Revisión y Lista de Compras), eliminando el ocultamiento del menú durante la navegación.
+  - El ítem "Escanear" se resalta dinámicamente tanto en la captura como en la revisión de tickets.
+  - Verificación: 47/47 pruebas unitarias exitosas y `lintDebug` aprobado con 0 errores y 0 warnings.
 - **2026-11-08 15:50:**
   - `MC-040` (G7): Implementación de la paleta moderna Material 3 en `Color.kt` y `Theme.kt` (Deep Pine como primario, Warm Amber como secundario, Electric Indigo como terciario).
   - Incorporados tokens de elevación tonal M3 (`surfaceContainerLowest` hasta `surfaceContainerHighest`) para tema claro y tema oscuro.
