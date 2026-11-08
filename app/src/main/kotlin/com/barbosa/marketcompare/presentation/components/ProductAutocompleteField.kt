@@ -53,10 +53,10 @@ fun ProductAutocompleteField(
     query: String,
     onQueryChange: (String) -> Unit,
     catalogProducts: List<Product>,
-    knownAliases: Map<String, Product> = emptyMap(),
-    referenceCandidate: NormalizedProductCandidate? = null,
     onProductSelected: (Product) -> Unit,
     modifier: Modifier = Modifier,
+    knownAliases: Map<String, Product> = emptyMap(),
+    referenceCandidate: NormalizedProductCandidate? = null,
     enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }

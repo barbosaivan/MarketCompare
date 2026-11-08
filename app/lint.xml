@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Ignorar recursos string preparados deliberadamente para la integración de API externa (Gate 4) -->
+    <issue id="UnusedResources">
+        <ignore path="**/values/strings.xml" />
+    </issue>
+    <!-- La carpeta mipmap-anydpi-v26 es requerida por AAPT para adaptive icons -->
+    <issue id="ObsoleteSdkInt" severity="ignore" />
+    <!-- Manejar avisos de dependencias como informativos para dependencias fijadas y verificadas -->
+    <issue id="GradleDependency" severity="informational" />
+    <issue id="NewerVersionAvailable" severity="informational" />
+    <issue id="AndroidGradlePluginVersion" severity="informational" />
+</lint>
