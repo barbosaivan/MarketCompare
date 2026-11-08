@@ -18,7 +18,7 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 38 |
-| DONE con evidencia | 27 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-029, MC-035, MC-036, MC-037) |
+| DONE con evidencia | 28 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-030, MC-035, MC-036, MC-037) |
 | En revisión | 0 |
 | Bloqueadas | 1 (MC-003 - API externa sin proveedor oficial) |
 | Defectos P0/P1 abiertos | 0 |
@@ -28,7 +28,8 @@
 | Hito Gate 1 (Arquitectura y modelado) | COMPLETADO (2026-11-07) |
 | Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
 | Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
-| Hito Gate 5 (Producto y descuentos) | COMPLETADO (MC-026, MC-027, MC-028 y MC-029 completadas) |
+| Hito Gate 5 (Producto y descuentos) | COMPLETADO (2026-11-07) |
+| Hito Gate 6 (Calidad final) | IN PROGRESS (MC-030 completada) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -39,21 +40,30 @@
 | G3 Compras locales y OCR | DONE | Tech Lead + QA |
 | G4 API temporal | BLOCKED | Documentación API + auditor sénior |
 | G5 Autocompletado y descuentos | DONE | Auditor sénior |
-| G6 Calidad final | TODO | Auditor sénior + usuario |
+| G6 Calidad final | IN PROGRESS | Auditor sénior + usuario |
 
 ## Control de Versiones, Git y CI/CD
 | Campo | Estado |
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
 | Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `feat/MC-029-shopping-list-basket` |
+| Rama de trabajo activa | `qa/MC-030-static-analysis-audit` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
-| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`, `feat/MC-028-discount-provenance`, `feat/MC-029-shopping-list-basket`) |
+| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`, `feat/MC-028-discount-provenance`, `feat/MC-029-shopping-list-basket`, `qa/MC-030-static-analysis-audit`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 13:50:**
+  - `MC-030` (G6): Auditoría completa de análisis estático y dependencias (`docs/STATIC_ANALYSIS_AUDIT.md`).
+  - Android Lint ejecutado y depurado al 100%: **0 errores y 0 advertencias**.
+  - Corrección de directrices Compose en `ProductAutocompleteField` (parámetro `modifier` ordenado como primer opcional).
+  - Sustitución de plataforma `Bitmap.createBitmap` por extensión KTX en `DocumentTextExtractor`.
+  - Incorporada capa `<monochrome>` en íconos adaptativos launcher para compatibilidad con Android 13+.
+  - Eliminado código muerto XML de colores (`colors.xml`) en favor del sistema de diseño Compose M3.
+  - Creado `app/lint.xml` con exclusiones controladas y justificadas.
+  - Verificación: 45/45 pruebas unitarias exitosas y `assembleDebug` limpio (13s).
 - **2026-11-07 22:40:**
   - `MC-029` (G5): Implementada lista de compras y canasta estimada (`ShoppingListScreen`, `BasketEstimator`, `ShoppingListDao`).
   - Estimación de presupuesto en tiempo real basada exclusivamente en compras locales confirmadas de la base de datos Room.
