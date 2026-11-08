@@ -183,5 +183,35 @@ class PurchaseRepositoryTest {
             shoppingListDao.deleteCheckedItems()
         }
     }
+
+    @Test
+    fun `removeShoppingListItem deletes item from DAO`() = runTest {
+        coEvery { shoppingListDao.deleteItemById(any()) } returns Unit
+
+        repository.removeShoppingListItem("item-456")
+
+        coVerify(exactly = 1) {
+            shoppingListDao.deleteItemById("item-456")
+        }
+    }
+
+    @Test
+    fun `getLatestPriceObservation returns mapped domain observation when record exists`() = runTest {
+        val queryResult = com.barbosa.marketcompare.data.local.dao.PriceObservationQueryResult(
+            productId = "prod-arroz",
+            rawDescription = "ARROZ FLORHUILA 1KG",
+            unitPriceMinor = 4200L,
+            purchaseTimestamp = 1718000000000L,
+            storeName = "Éxito"
+        )
+        coEvery { shoppingListDao.getLatestPriceObservation("prod-arroz", "Arroz") } returns queryResult
+
+        val obs = repository.getLatestPriceObservation("prod-arroz", "Arroz")
+
+        org.junit.Assert.assertNotNull(obs)
+        assertEquals(Money(4200L, "COP"), obs?.unitPrice)
+        assertEquals("Éxito", obs?.storeName)
+        assertEquals(1718000000000L, obs?.observedAtTimestamp)
+    }
 }
 
