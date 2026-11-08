@@ -109,11 +109,12 @@ object ReceiptParser {
                     } else {
                         lastItem.finalPrice
                     }
+                    val detectedType = DiscountClassifier.classify(line)
                     items.add(
                         lastItem.copy(
                             discount = discountAmount,
-                            discountType = DiscountType.EXPLICIT_LINE,
-                            discountEvidence = line,
+                            discountType = detectedType,
+                            discountEvidence = line.trim(),
                             finalPrice = newFinalPrice
                         )
                     )
