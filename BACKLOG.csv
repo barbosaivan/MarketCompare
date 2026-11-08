@@ -37,3 +37,23 @@ MC-035,DOCS,Establish documentation source of truth,Documentation,P0,DONE,MC-005
 MC-036,DOCS,Keep root README onboarding current,Documentation,P1,DONE,MC-010,README contains verified setup build test structure features and docs links,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
 MC-037,DOCS,Update docs in every implementation PR,All Agents,P0,DONE,MC-035,Changed behavior architecture data UI config and tests have matching docs updates,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
 MC-038,DOCS,Senior documentation consistency audit,Senior Auditor,P1,DONE,MC-032;MC-037,Docs match source code backlog tests dependencies and actual commands,docs/MC-033-finalize-documentation,217e248,PUSHED,,APPROVED
+MC-039,G7,Adopt multi-agent review pipeline and pre-commit rules,Tech Lead,P0,DONE,MC-034,Rules updated in PROJECT_RULES and AGENT_TEAM with multi-agent pipeline and pre-commit checklist,feat/MC-039-v2-roadmap-and-governance,24d2a33,PUSHED,,APPROVED
+MC-040,G7,Implement modern Material 3 color palette and tonal theme,UI Agent,P1,TODO,MC-039,Deep Pine Warm Amber and Electric Indigo palette with light/dark theme tokens,,,NOT_STARTED,,NOT_STARTED
+MC-041,G7,Implement persistent NavigationBar and root scaffold hierarchy,UI Agent,P1,TODO,MC-040,NavigationBar remains visible across sub-views without being hidden,,,NOT_STARTED,,NOT_STARTED
+MC-042,G7,Implement predictable backstack and back press navigation handler,UI Agent,P1,TODO,MC-041,Back button returns to previous screen without abruptly exiting the app,,,NOT_STARTED,,NOT_STARTED
+MC-043,G7,Extract reusable UI components and enforce method size limit,UI Agent,P1,TODO,MC-042,Classes under 300 lines and methods under 50 lines in presentation layer,,,NOT_STARTED,,NOT_STARTED
+MC-044,G8,Redesign home dashboard from expense tracker to price explorer,UI Agent,P0,TODO,MC-043,Home focuses on product price comparisons and search rather than total spend,,,NOT_STARTED,,NOT_STARTED
+MC-045,G8,Implement universal product price search and cross-store comparison,Data Agent,P0,TODO,MC-044,Instant query showing lowest price and store differences for searched items,,,NOT_STARTED,,NOT_STARTED
+MC-046,G8,Implement store directory and store-filtered product catalog,Data Agent,P1,TODO,MC-045,Users can select a supermarket or neighborhood store and browse its products,,,NOT_STARTED,,NOT_STARTED
+MC-047,G8,Implement store and price observation repository queries,Data Agent,P1,TODO,MC-046,Optimized Room DAOs and repository methods for store product listings,,,NOT_STARTED,,NOT_STARTED
+MC-048,G8,Add unit tests and audit for store explorer and price dashboard,QA Agent,P0,TODO,MC-047,Tests verify store grouping and lowest price calculations,,,NOT_STARTED,,NOT_STARTED
+MC-049,G9,Implement manual product and price entry dialog and flow,UI Agent,P1,TODO,MC-043,Allows recording shelf prices directly without requiring a receipt,,,NOT_STARTED,,NOT_STARTED
+MC-050,G9,Implement fully editable product and price observation screen,UI Agent,P1,TODO,MC-049,Allows editing store classification product name unit and price history,,,NOT_STARTED,,NOT_STARTED
+MC-051,G9,Implement standard measurement normalization engine,Data Agent,P0,TODO,MC-050,Calculates price per standard unit using exact Money arithmetic,,,NOT_STARTED,,NOT_STARTED
+MC-052,G9,Display standard unit price badges across UI cards and lists,UI Agent,P1,TODO,MC-051,Prominent badges showing normalized per kg per L or per und for fair comparison,,,NOT_STARTED,,NOT_STARTED
+MC-053,G9,Add automated tests for standard measurement price conversions,QA Agent,P0,TODO,MC-051,Unit tests cover liquid weight and count standard price normalizations,,,NOT_STARTED,,NOT_STARTED
+MC-054,G10,Extract bounding boxes and semantic categories in OCR pipeline,OCR Agent,P0,TODO,MC-043,ML Kit bounding boxes mapped to store product price quantity discount,,,NOT_STARTED,,NOT_STARTED
+MC-055,G10,Implement interactive receipt photo viewer with zoom and pan,UI Agent,P1,TODO,MC-054,High-resolution receipt image display in review screen,,,NOT_STARTED,,NOT_STARTED
+MC-056,G10,Render semantic color-coded overlay layers on receipt photo,UI Agent,P0,TODO,MC-055,Color-coded bounding boxes for store product price qty and promo,,,NOT_STARTED,,NOT_STARTED
+MC-057,G10,Implement touch selection on bounding boxes for field assignment,UI Agent,P1,TODO,MC-056,Tapping an OCR box inspects or reassigns text directly to item fields,,,NOT_STARTED,,NOT_STARTED
+MC-058,G10,Senior audit lint certification and test suite for v2.0 release,Senior Auditor,P0,TODO,MC-048;MC-053;MC-057,Full verification: 0 errors/warnings 100% tests passing PASS audit verdict,,,NOT_STARTED,,NOT_STARTED

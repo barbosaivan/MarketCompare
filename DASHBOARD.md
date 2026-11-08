@@ -1,11 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Release v1.0.0-rc1 formalmente aprobado por el usuario. Gate 6 (Calidad final, suite de pruebas automatizadas con 47/47 tests, análisis estático Android Lint con 0 errores/warnings, auditoría sénior PASS, y sincronización documental exhaustiva) completado y aprobado. Compilación limpia y empaquetado de release listo.
+> Estado actual: Inicio de Fase v2.0 (Mejoras integrales de experiencia de usuario, gobernanza multi-agente, diseño moderno M3, catálogo interactivo y visor OCR semántico). Release v1.0.0-rc1 publicado con éxito. Gate 7 (Sistema de Diseño M3, Navegación Persistente y Backstack) en progreso.
 
 ## Resumen
-- Fase actual: `RELEASED — v1.0.0-rc1` (Gate 6 COMPLETADO Y APROBADO; Gate 4 permanece BLOQUEADO a la espera de credenciales/clave API oficial de `losprecios.co`).
-- Estado global: `RELEASED`
+- Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
+- Compuerta activa: `GATE 7 — Sistema de Diseño M3, Navegación Persistente y Backstack (IN PROGRESS)`
+- Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
+- Rama de trabajo activa: `feat/MC-039-v2-roadmap-and-governance`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -17,20 +19,20 @@
 ## KPIs
 | Indicador | Valor actual |
 |---|---:|
-| Tareas totales | 38 |
+| Tareas totales | 58 |
 | DONE con evidencia | 33 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-038) |
-| En revisión / Release | 0 |
+| En progreso | 1 (MC-039 - Adopción de gobernanza multi-agente y reglas pre-commit) |
+| Pendientes (TODO) | 23 (MC-040 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**47/47 tests pasados**: MoneyTest (10), PurchaseRepositoryTest (6), ProductNormalizerTest (10), ProductAutocompleteEngineTest (7), DiscountClassifierTest (6), ReceiptParserTest (4), BasketEstimatorTest (4)) |
-| Hito Gate 0 (Entorno y alcance) | APROBADO (2026-11-07) |
-| Hito Gate 1 (Arquitectura y modelado) | COMPLETADO (2026-11-07) |
-| Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
-| Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
-| Hito Gate 5 (Producto y descuentos) | COMPLETADO (2026-11-08) |
-| Hito Gate 6 (Calidad final y release) | APROBADO (2026-11-08 bajo v1.0.0-rc1) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**47/47 tests pasados**) |
+| Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
+| Hito Gate 7 (Diseño M3, Navegación y Backstack) | IN PROGRESS |
+| Hito Gate 8 (Dashboard de Precios y Tiendas) | PENDING |
+| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING |
+| Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -42,13 +44,17 @@
 | G4 API temporal | BLOCKED | Documentación API + auditor sénior |
 | G5 Autocompletado y descuentos | DONE | Auditor sénior |
 | G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
+| G7 Sistema M3, Navegación y Backstack | IN PROGRESS | Auditor sénior + Tech Lead |
+| G8 Dashboard de Precios y Tiendas | TODO | Auditor sénior + Tech Lead |
+| G9 Ingreso Manual y Medidas Estándar | TODO | Auditor sénior + Tech Lead |
+| G10 OCR Visual y Bounding Boxes | TODO | Auditor sénior + Usuario |
 
 ## Control de Versiones, Git y CI/CD
 | Campo | Estado |
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
 | Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `docs/MC-033-finalize-documentation` |
+| Rama de trabajo activa | `feat/MC-039-v2-roadmap-and-governance` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
@@ -56,6 +62,10 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 15:40:**
+  - Inicio de la **Fase v2.0**: Incorporación de los 14 nuevos requerimientos acordados con el usuario.
+  - `MC-039` (G7): Formalización del protocolo de revisión multi-agente en 7 etapas y adopción de la política de calidad pre-commit obligatoria en `PROJECT_RULES.md` y `AGENT_TEAM.md`.
+  - Definición y registro en `QUALITY_GATES.md` y `BACKLOG.csv` de las compuertas Gate 7, Gate 8, Gate 9 y Gate 10 (tareas MC-039 a MC-058).
 - **2026-11-08 14:40:**
   - `MC-034` (G6): Aprobación formal de entrega y release por parte del usuario bajo la versión `v1.0.0-rc1`.
   - Gate 6 cerrado formalmente con 100% de criterios aprobados.
