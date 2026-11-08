@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.barbosa.marketcompare.data.local.dao.ProductDao
 import com.barbosa.marketcompare.data.local.dao.ReceiptDao
+import com.barbosa.marketcompare.data.local.dao.ShoppingListDao
 import com.barbosa.marketcompare.data.local.dao.StoreDao
 import com.barbosa.marketcompare.data.local.entity.ProductAliasEntity
 import com.barbosa.marketcompare.data.local.entity.ProductEntity
 import com.barbosa.marketcompare.data.local.entity.ReceiptEntity
 import com.barbosa.marketcompare.data.local.entity.ReceiptItemEntity
+import com.barbosa.marketcompare.data.local.entity.ShoppingListItemEntity
 import com.barbosa.marketcompare.data.local.entity.StoreEntity
 
 @Database(
@@ -19,15 +21,17 @@ import com.barbosa.marketcompare.data.local.entity.StoreEntity
         ReceiptEntity::class,
         ReceiptItemEntity::class,
         ProductEntity::class,
-        ProductAliasEntity::class
+        ProductAliasEntity::class,
+        ShoppingListItemEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class MarketCompareDatabase : RoomDatabase() {
     abstract fun storeDao(): StoreDao
     abstract fun receiptDao(): ReceiptDao
     abstract fun productDao(): ProductDao
+    abstract fun shoppingListDao(): ShoppingListDao
 
     companion object {
         @Volatile
@@ -39,7 +43,9 @@ abstract class MarketCompareDatabase : RoomDatabase() {
                     context.applicationContext,
                     MarketCompareDatabase::class.java,
                     "market_compare_db"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration(dropAllTables = true)
+                    .build()
                 INSTANCE = instance
                 instance
             }

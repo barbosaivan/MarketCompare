@@ -103,3 +103,18 @@ data class ProductAliasEntity(
     val storeId: String?
 )
 
+@Entity(
+    tableName = "shopping_list_items",
+    indices = [Index(value = ["createdAtTimestamp"])]
+)
+data class ShoppingListItemEntity(
+    @PrimaryKey val id: String,
+    val name: String,
+    val productId: String?,
+    val quantity: Long,
+    val unit: String,
+    val isChecked: Boolean,
+    val createdAtTimestamp: Long
+)
+
+
