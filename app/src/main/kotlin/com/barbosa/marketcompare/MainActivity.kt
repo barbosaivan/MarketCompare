@@ -2,6 +2,7 @@ package com.barbosa.marketcompare
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import com.barbosa.marketcompare.domain.model.BasketEstimate
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.ReceiptDraft
 import com.barbosa.marketcompare.presentation.components.AppBottomNavigationBar
+import com.barbosa.marketcompare.presentation.navigation.AppNavigator
 import com.barbosa.marketcompare.presentation.navigation.Screen
 import com.barbosa.marketcompare.presentation.screens.history.HistoryScreen
 import com.barbosa.marketcompare.presentation.screens.review.ReceiptReviewScreen
@@ -45,8 +47,15 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val scope = rememberCoroutineScope()
-                    var currentScreen by remember { mutableStateOf<String>(Screen.History.route) }
+                    val navigator = remember { AppNavigator() }
                     var activeDraft by remember { mutableStateOf<ReceiptDraft?>(null) }
+
+                    BackHandler(enabled = navigator.canGoBack) {
+                        if (navigator.currentRoute == Screen.Review.route) {
+                            activeDraft = null
+                        }
+                        navigator.popBack()
+                    }
 
                     val receipts by repository.getAllReceipts().collectAsState(initial = emptyList())
                     val products by repository.getAllProducts().collectAsState(initial = emptyList())
@@ -64,15 +73,15 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {
                             AppBottomNavigationBar(
-                                currentRoute = currentScreen,
+                                currentRoute = navigator.currentRoute,
                                 onNavigateToHistory = {
-                                    currentScreen = Screen.History.route
+                                    navigator.navigateToTab(Screen.History.route)
                                 },
                                 onNavigateToScan = {
-                                    currentScreen = Screen.Scan.route
+                                    navigator.navigateToTab(Screen.Scan.route)
                                 },
                                 onNavigateToShoppingList = {
-                                    currentScreen = Screen.ShoppingList.route
+                                    navigator.navigateToTab(Screen.ShoppingList.route)
                                 }
                             )
                         }
@@ -82,12 +91,12 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxSize()
                                 .padding(bottom = innerPadding.calculateBottomPadding())
                         ) {
-                            when (currentScreen) {
+                            when (navigator.currentRoute) {
                                 Screen.History.route -> {
                                     HistoryScreen(
                                         receipts = receipts,
                                         onScanClick = {
-                                            currentScreen = Screen.Scan.route
+                                            navigator.navigateToTab(Screen.Scan.route)
                                         },
                                         onReceiptClick = { receiptId ->
                                             // Detalle de recibo
@@ -123,11 +132,11 @@ class MainActivity : ComponentActivity() {
                                 Screen.Scan.route -> {
                                     ReceiptCaptureScreen(
                                         onBackClick = {
-                                            currentScreen = Screen.History.route
+                                            navigator.popBack()
                                         },
                                         onDraftReady = { draft ->
                                             activeDraft = draft
-                                            currentScreen = Screen.Review.route
+                                            navigator.pushScreen(Screen.Review.route)
                                         }
                                     )
                                 }
@@ -138,18 +147,19 @@ class MainActivity : ComponentActivity() {
                                             draft = draft,
                                             catalogProducts = products,
                                             onBackClick = {
-                                                currentScreen = Screen.Scan.route
+                                                activeDraft = null
+                                                navigator.popBack()
                                             },
                                             onConfirmSave = { store, receipt ->
                                                 scope.launch {
                                                     repository.saveConfirmedPurchase(store, receipt)
                                                     activeDraft = null
-                                                    currentScreen = Screen.History.route
+                                                    navigator.resetToRoot()
                                                 }
                                             }
                                         )
                                     } else {
-                                        currentScreen = Screen.History.route
+                                        navigator.popBack()
                                     }
                                 }
                             }
