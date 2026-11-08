@@ -7,17 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ReceiptLong
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,10 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import com.barbosa.marketcompare.domain.model.BasketEstimate
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.ReceiptDraft
+import com.barbosa.marketcompare.presentation.components.AppBottomNavigationBar
 import com.barbosa.marketcompare.presentation.navigation.Screen
 import com.barbosa.marketcompare.presentation.screens.history.HistoryScreen
 import com.barbosa.marketcompare.presentation.screens.review.ReceiptReviewScreen
@@ -69,47 +61,20 @@ class MainActivity : ComponentActivity() {
                         )
                     )
 
-                    val showBottomNav = currentScreen == Screen.History.route || currentScreen == Screen.ShoppingList.route
-
                     Scaffold(
                         bottomBar = {
-                            if (showBottomNav) {
-                                NavigationBar {
-                                    NavigationBarItem(
-                                        selected = currentScreen == Screen.History.route,
-                                        onClick = { currentScreen = Screen.History.route },
-                                        icon = {
-                                            Icon(
-                                                imageVector = Icons.AutoMirrored.Filled.ReceiptLong,
-                                                contentDescription = null
-                                            )
-                                        },
-                                        label = { Text(stringResource(R.string.nav_history)) }
-                                    )
-                                    NavigationBarItem(
-                                        selected = false,
-                                        onClick = { currentScreen = Screen.Scan.route },
-                                        icon = {
-                                            Icon(
-                                                imageVector = Icons.Default.Add,
-                                                contentDescription = null
-                                            )
-                                        },
-                                        label = { Text(stringResource(R.string.nav_scan)) }
-                                    )
-                                    NavigationBarItem(
-                                        selected = currentScreen == Screen.ShoppingList.route,
-                                        onClick = { currentScreen = Screen.ShoppingList.route },
-                                        icon = {
-                                            Icon(
-                                                imageVector = Icons.Default.ShoppingCart,
-                                                contentDescription = null
-                                            )
-                                        },
-                                        label = { Text(stringResource(R.string.nav_shopping_list)) }
-                                    )
+                            AppBottomNavigationBar(
+                                currentRoute = currentScreen,
+                                onNavigateToHistory = {
+                                    currentScreen = Screen.History.route
+                                },
+                                onNavigateToScan = {
+                                    currentScreen = Screen.Scan.route
+                                },
+                                onNavigateToShoppingList = {
+                                    currentScreen = Screen.ShoppingList.route
                                 }
-                            }
+                            )
                         }
                     ) { innerPadding ->
                         Box(
