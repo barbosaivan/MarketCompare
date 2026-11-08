@@ -53,6 +53,46 @@ Aprobación humana requerida antes de una implementación amplia.
 - [x] Dashboard y documentación actualizados (`DASHBOARD.md`, `README.md`, `docs/*`).
 - [x] Usuario aprueba la entrega final (MC-034): Aprobado formalmente bajo la versión v1.0.0-rc1.
 
+## Gate 7 — Sistema de Diseño M3, Navegación Persistente y Backstack (v2.0)
+- [ ] Protocolo multi-agente y checklist de calidad pre-commit formalmente adoptados.
+- [ ] Nueva paleta de colores Material 3 implementada (Deep Pine, Warm Amber, Electric Indigo) con soporte de temas claro/oscuro y tonal surfaces.
+- [ ] Barra de navegación inferior (`NavigationBar`) persistente sin ocultarse al navegar en vistas secundarias.
+- [ ] Gestión del botón atrás (`BackHandler`) predecible: retrocede ordenadamente entre pantallas sin salir de la aplicación.
+- [ ] Componentes UI reutilizables y modulares extraídos en `presentation/components/`.
+- [ ] Métodos < 50 líneas y clases < 300 líneas en todos los archivos afectados.
+- [ ] Pruebas unitarias actualizadas y `lintDebug` con 0 errores y 0 warnings.
+- [ ] Auditor sénior firma el informe de compuerta.
+
+## Gate 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (v2.0)
+- [ ] Pantalla principal reorientada a consulta y comparación de precios (eliminando el protagonismo del gasto total).
+- [ ] Buscador universal de productos con comparación multicomercio en tiempo real.
+- [ ] Directorio y explorador de establecimientos: listado de productos y precios filtrados por tienda/supermercado.
+- [ ] Métricas de mejor precio y fecha de última actualización por comercio.
+- [ ] Pruebas de dominio y repositorio para consultas agrupadas por tienda.
+- [ ] Auditor sénior firma el informe de compuerta.
+
+## Gate 9 — Ingreso Manual, Edición Total y Normalización a Medidas Estándar (v2.0)
+- [ ] Formulario intuitivo de ingreso manual de precios de góndola (sin necesidad de factura).
+- [ ] Pantalla de detalle de producto 100% editable (nombre, marca, clasificación tienda/supermercado, unidad, precio).
+- [ ] Cálculo y visualización automática del precio por medida estándar:
+  - $/Litro y $/ml para líquidos.
+  - $/Kilogramo y $/g para sólidos/peso.
+  - $/Unidad para conteos.
+- [ ] Pruebas unitarias de conversión de medidas estándar con aritmética `Money`.
+- [ ] Auditor sénior firma el informe de compuerta.
+
+## Gate 10 — Escaneo OCR Visual e Interactivo con Bounding Boxes (v2.0)
+- [ ] Visor fotográfico de ticket en alta resolución con zoom y paneo táctil en pantalla de revisión.
+- [ ] Superposición de capas de color semánticas sobre la foto (Bounding Boxes de ML Kit):
+  - 🔵 Azul: Tienda / NIT / Encabezado.
+  - 🟢 Verde: Productos reconocidos.
+  - 🟡 Dorado: Precios e importes.
+  - 🟣 Morado: Cantidades y unidades.
+  - 🔴 Rojo: Descuentos y beneficios.
+- [ ] Selección táctil sobre la foto para inspeccionar, confirmar o reasignar datos reconocidos.
+- [ ] Gestión eficiente de memoria y reciclaje de bitmaps comprobada.
+- [ ] Suite de pruebas y auditoría sénior de release v2.0.
+
 ## Clasificación de defectos
 - P0: pérdida/corrupción de datos, fuga de secretos, incumplimiento de no persistencia API.
 - P1: flujo principal bloqueado, precios incorrectos, descuentos falsos, comparación de variantes incompatibles.
