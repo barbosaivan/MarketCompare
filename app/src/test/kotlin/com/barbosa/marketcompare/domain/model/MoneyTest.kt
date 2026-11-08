@@ -44,5 +44,39 @@ class MoneyTest {
         val high = Money(5000L, "COP")
         assertTrue(low < high)
     }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `addition of different currencies throws IllegalArgumentException`() {
+        val cop = Money(10000L, "COP")
+        val usd = Money(10L, "USD")
+        val unused = cop + usd
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `subtraction of different currencies throws IllegalArgumentException`() {
+        val cop = Money(10000L, "COP")
+        val usd = Money(10L, "USD")
+        val unused = cop - usd
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `comparison of different currencies throws IllegalArgumentException`() {
+        val cop = Money(10000L, "COP")
+        val usd = Money(10L, "USD")
+        val unused = cop > usd
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `division by zero throws IllegalArgumentException`() {
+        val money = Money(10000L, "COP")
+        money.divide(0L)
+    }
+
+    @Test
+    fun `formatDisplay formats as currency with non-empty string`() {
+        val money = Money(25000L, "COP")
+        val formatted = money.formatDisplay()
+        assertTrue(formatted.contains("25.000") || formatted.contains("25,000") || formatted.contains("25000"))
+    }
 }
 
