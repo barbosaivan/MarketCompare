@@ -32,7 +32,7 @@ MC-030,G6,Run static analysis and dependency audit,QA Agent,P0,DONE,MC-010,Depre
 MC-031,G6,Run full automated test suite,QA Agent,P0,DONE,MC-019;MC-025;MC-028;MC-029,All critical tests pass or failures explicitly block release,qa/MC-031-automated-test-suite,c0b6ced,PUSHED,,APPROVED
 MC-032,G6,Senior independent code and privacy audit,Senior Auditor,P0,DONE,MC-030;MC-031,No P0/P1 defects; evidence and findings report attached,audit/MC-032-senior-code-privacy-audit,cbd6567,PUSHED,,APPROVED
 MC-033,G6,Finalize docs and dashboard,Documentation,P1,DONE,MC-032,Setup architecture known issues and test commands accurate,docs/MC-033-finalize-documentation,217e248,PUSHED,,APPROVED
-MC-034,G6,User acceptance and release approval,Tech Lead,P0,TODO,MC-033,User approves; no signing or publication without explicit authorization,,,NOT_STARTED,,NOT_STARTED
+MC-034,G6,User acceptance and release approval,Tech Lead,P0,DONE,MC-033,User approves; no signing or publication without explicit authorization,main,c4f2316,PUSHED,,APPROVED
 MC-035,DOCS,Establish documentation source of truth,Documentation,P0,DONE,MC-005,docs index and domain docs aligned with approved architecture,docs/MC-005-architecture-adr,eb71a39,PUSHED,,APPROVED
 MC-036,DOCS,Keep root README onboarding current,Documentation,P1,DONE,MC-010,README contains verified setup build test structure features and docs links,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED
 MC-037,DOCS,Update docs in every implementation PR,All Agents,P0,DONE,MC-035,Changed behavior architecture data UI config and tests have matching docs updates,feat/MC-014-receipt-pipeline,a3da025,PUSHED,,APPROVED

@@ -1,12 +1,12 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Gate 6 (Calidad final, suite de pruebas automatizadas, análisis estático Android Lint con 0 errores/warnings, auditoría sénior de arquitectura y privacidad PASS, y sincronización documental exhaustiva) completado. El proyecto se encuentra 100% verificado, documentado y listo para Aceptación de Usuario y Aprobación de Release (MC-034). 47/47 pruebas unitarias exitosas y APK de depuración generado limpiamente.
+> Estado actual: Release v1.0.0-rc1 formalmente aprobado por el usuario. Gate 6 (Calidad final, suite de pruebas automatizadas con 47/47 tests, análisis estático Android Lint con 0 errores/warnings, auditoría sénior PASS, y sincronización documental exhaustiva) completado y aprobado. Compilación limpia y empaquetado de release listo.
 
 ## Resumen
-- Fase actual: `GATE 6 — Calidad Final y Cierre (COMPLETADO)` (Gate 4 permanece BLOQUEADO a la espera de credenciales/clave API oficial de `losprecios.co`).
-- Estado global: `READY_FOR_RELEASE_ACCEPTANCE`
+- Fase actual: `RELEASED — v1.0.0-rc1` (Gate 6 COMPLETADO Y APROBADO; Gate 4 permanece BLOQUEADO a la espera de credenciales/clave API oficial de `losprecios.co`).
+- Estado global: `RELEASED`
 - Rama de integración activa: `develop`
-- Rama de hito: `docs/MC-033-finalize-documentation`
+- Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
 - Persistencia: Room local exclusiva para compras confirmadas y lista de compras (`MarketCompareDatabase`).
@@ -18,8 +18,8 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 38 |
-| DONE con evidencia | 32 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-033, MC-035 a MC-038) |
-| En revisión / Release | 1 (MC-034 - Aceptación y autorización de release por el usuario) |
+| DONE con evidencia | 33 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-038) |
+| En revisión / Release | 0 |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
@@ -30,7 +30,7 @@
 | Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
 | Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
 | Hito Gate 5 (Producto y descuentos) | COMPLETADO (2026-11-08) |
-| Hito Gate 6 (Calidad final y auditoría) | COMPLETADO (2026-11-08) |
+| Hito Gate 6 (Calidad final y release) | APROBADO (2026-11-08 bajo v1.0.0-rc1) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -41,7 +41,7 @@
 | G3 Compras locales y OCR | DONE | Tech Lead + QA |
 | G4 API temporal | BLOCKED | Documentación API + auditor sénior |
 | G5 Autocompletado y descuentos | DONE | Auditor sénior |
-| G6 Calidad final y auditoría | DONE | Auditor sénior + Tech Lead (Listo para MC-034) |
+| G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
 
 ## Control de Versiones, Git y CI/CD
 | Campo | Estado |
@@ -56,6 +56,10 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 14:40:**
+  - `MC-034` (G6): Aprobación formal de entrega y release por parte del usuario bajo la versión `v1.0.0-rc1`.
+  - Gate 6 cerrado formalmente con 100% de criterios aprobados.
+  - Fusión de versión estable a `main` y etiquetado Git con tag semántico `v1.0.0-rc1`.
 - **2026-11-08 14:30:**
   - `MC-033` & `MC-038` (G6): Cierre y sincronización documental completa de todas las especificaciones técnicas del proyecto.
   - Actualización de `docs/README.md`, `docs/DATA_MODEL.md`, `docs/PRODUCT_OVERVIEW.md`, `docs/FUNCTIONALITY.md`, `docs/ARCHITECTURE.md`, `docs/QUALITY_AND_TESTING.md`, `docs/CHANGELOG_TECHNICAL.md`, `docs/GLOSSARY.md`, `docs/INTEGRATIONS.md`, y raíz `README.md`.

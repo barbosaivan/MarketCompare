@@ -51,7 +51,7 @@ Aprobación humana requerida antes de una implementación amplia.
 - [x] Sin APIs deprecated no justificadas, código muerto, strings/colores hardcodeados ni secretos (100% verificado).
 - [x] Auditor sénior firma el informe (`docs/AUDIT_REPORT.md` con veredicto PASS).
 - [x] Dashboard y documentación actualizados (`DASHBOARD.md`, `README.md`, `docs/*`).
-- [ ] Usuario aprueba la entrega final (MC-034).
+- [x] Usuario aprueba la entrega final (MC-034): Aprobado formalmente bajo la versión v1.0.0-rc1.
 
 ## Clasificación de defectos
 - P0: pérdida/corrupción de datos, fuga de secretos, incumplimiento de no persistencia API.
