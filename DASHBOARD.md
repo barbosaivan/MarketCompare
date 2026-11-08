@@ -3,10 +3,10 @@
 > Estado actual: Gate 3 (Compras locales y Pipeline OCR) completado. El pipeline de importación multicanal (Cámara, Galería, PDF), extracción ML Kit, parseo heurístico de facturas colombianas, pantalla de revisión editable y persistencia transaccional en Room están 100% operativos. La suite de pruebas unitarias (`ReceiptParserTest`, `MoneyTest`, `PurchaseRepositoryTest`) pasa al 100% y el APK de depuración se ensambla limpiamente.
 
 ## Resumen
-- Fase actual: `GATE 3 — Compras locales y OCR (Completada)` -> Listo para `GATE 4 — API temporal` (Actualmente bloqueada por proveedor externo).
+- Fase actual: `GATE 5 — Autocompletado y descuentos (En progreso)` (Gate 4 permanece BLOQUEADO a la espera de credenciales/documentación oficial de API externa).
 - Estado global: `IN PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de hito: `feat/MC-014-receipt-pipeline`
+- Rama de hito: `feat/MC-026-product-normalization`
 - Bloqueos conocidos: API externa de precios (`MC-003` - BLOCKED por falta de proveedor documentado).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
 - Persistencia: Room local exclusiva para compras confirmadas (`MarketCompareDatabase`).
@@ -18,16 +18,17 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 38 |
-| DONE con evidencia | 23 (MC-001, MC-002, MC-004 a MC-021, MC-035, MC-036, MC-037) |
+| DONE con evidencia | 24 (MC-001, MC-002, MC-004 a MC-021, MC-026, MC-035, MC-036, MC-037) |
 | En revisión | 0 |
 | Bloqueadas | 1 (MC-003 - API externa sin proveedor oficial) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (10/10 tests pasados: ReceiptParserTest, MoneyTest, PurchaseRepositoryTest) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (19/19 tests pasados: ProductNormalizerTest, PurchaseRepositoryTest, MoneyTest, ReceiptParserTest) |
 | Hito Gate 0 (Entorno y alcance) | APROBADO (2026-11-07) |
 | Hito Gate 1 (Arquitectura y modelado) | COMPLETADO (2026-11-07) |
 | Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
 | Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
+| Hito Gate 5 (Producto y descuentos) | IN PROGRESS (MC-026 completada) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -50,9 +51,14 @@
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
-| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`) |
+| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-07 18:55:**
+  - `MC-026` (G5): Implementado `ProductNormalizer` para extracción inteligente de marca (marcas colombianas comunes), presentación (Bolsa, Vaso, Botella, Lata, Caja, etc.), cantidad base y unidad (`kg`, `g`, `ml`, `l`, `und`).
+  - Implementada clave única `variantFingerprint` y regla estricta `areVariantsCompatible` para garantizar que presentaciones o tamaños distintos nunca se fusionen como el mismo producto.
+  - Implementada búsqueda y registro de alias en `PurchaseRepositoryImpl` y `ProductDao`.
+  - Verificación: 19/19 pruebas unitarias exitosas (+7 tests en `ProductNormalizerTest` y +2 en `PurchaseRepositoryTest`) y `assembleDebug` exitoso.
 - **2026-11-07 18:25:**
   - `MC-014` (G3): Implementada selección multicanal de facturas (CameraX con archivo temporal y `FileProvider`, Photo Picker de galería y OpenDocument SAF para PDFs).
   - `MC-015` & `MC-016` (G3): Implementado `DocumentTextExtractor` combinando Google ML Kit Text Recognition, `PdfRenderer` para PDFs escaneados y lectura de streams para PDFs con texto embebido.

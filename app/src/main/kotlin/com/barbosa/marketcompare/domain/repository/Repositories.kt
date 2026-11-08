@@ -12,6 +12,10 @@ interface PurchaseRepository {
     suspend fun saveConfirmedPurchase(store: Store, receipt: Receipt)
     fun getAllProducts(): Flow<List<Product>>
     fun searchProducts(query: String): Flow<List<Product>>
+    suspend fun getProductById(productId: String): Product?
+    suspend fun resolveProductFromDescription(rawDescription: String, storeId: String? = null): com.barbosa.marketcompare.domain.model.ProductResolution
+    suspend fun registerProductWithAlias(product: Product, aliasText: String, storeId: String? = null): Product
+    suspend fun linkItemToProduct(receiptItemId: String, productId: String, aliasText: String? = null, storeId: String? = null)
 }
 
 /**

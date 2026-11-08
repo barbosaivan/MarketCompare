@@ -1,6 +1,7 @@
 package com.barbosa.marketcompare.data.repository
 
 import com.barbosa.marketcompare.data.local.MarketCompareDatabase
+import com.barbosa.marketcompare.data.local.entity.ProductAliasEntity
 import com.barbosa.marketcompare.data.local.entity.ProductEntity
 import com.barbosa.marketcompare.data.local.entity.ReceiptEntity
 import com.barbosa.marketcompare.data.local.entity.ReceiptItemEntity
@@ -9,14 +10,17 @@ import com.barbosa.marketcompare.domain.model.DiscountType
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductQuantity
+import com.barbosa.marketcompare.domain.model.ProductResolution
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.ReceiptItem
 import com.barbosa.marketcompare.domain.model.Store
 import com.barbosa.marketcompare.domain.model.UnitType
+import com.barbosa.marketcompare.domain.normalizer.ProductNormalizer
 import com.barbosa.marketcompare.domain.repository.PurchaseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import java.util.UUID
 
 class PurchaseRepositoryImpl(
     private val database: MarketCompareDatabase
@@ -139,6 +143,99 @@ class PurchaseRepositoryImpl(
                     presentation = entity.presentation
                 )
             }
+        }
+    }
+
+    override suspend fun getProductById(productId: String): Product? {
+        val entity = productDao.getProductById(productId) ?: return null
+        return Product(
+            id = entity.id,
+            canonicalName = entity.canonicalName,
+            brand = entity.brand,
+            category = entity.category,
+            baseQuantity = entity.baseQuantity,
+            unit = runCatching { UnitType.valueOf(entity.unit) }.getOrDefault(UnitType.UNIT),
+            presentation = entity.presentation
+        )
+    }
+
+    override suspend fun resolveProductFromDescription(
+        rawDescription: String,
+        storeId: String?
+    ): ProductResolution {
+        val cleanAlias = ProductNormalizer.normalizeAlias(rawDescription)
+
+        // 1. Buscar coincidencia exacta de alias en base de datos
+        val existingAlias = productDao.findByAlias(cleanAlias)
+            ?: productDao.findByAlias(rawDescription.trim().uppercase())
+
+        if (existingAlias != null) {
+            val matchedProduct = getProductById(existingAlias.productId)
+            if (matchedProduct != null) {
+                return ProductResolution.ExactAliasMatch(matchedProduct, existingAlias.aliasText)
+            }
+        }
+
+        // 2. Si no hay alias, normalizar heurísticamente con ProductNormalizer
+        val candidate = ProductNormalizer.normalize(rawDescription)
+        val candidateProduct = candidate.toProduct(UUID.randomUUID().toString())
+
+        return if (candidate.confidenceScore >= 0.85f) {
+            ProductResolution.SuggestedCandidate(candidateProduct, candidate.confidenceScore)
+        } else {
+            ProductResolution.NewProduct(candidateProduct)
+        }
+    }
+
+    override suspend fun registerProductWithAlias(
+        product: Product,
+        aliasText: String,
+        storeId: String?
+    ): Product {
+        // Persistir entidad de producto
+        productDao.insertProduct(
+            ProductEntity(
+                id = product.id,
+                canonicalName = product.canonicalName,
+                brand = product.brand,
+                category = product.category,
+                baseQuantity = product.baseQuantity,
+                unit = product.unit.name,
+                presentation = product.presentation
+            )
+        )
+
+        // Registrar alias normalizado
+        val cleanAlias = ProductNormalizer.normalizeAlias(aliasText)
+        productDao.insertAlias(
+            ProductAliasEntity(
+                id = UUID.randomUUID().toString(),
+                productId = product.id,
+                aliasText = cleanAlias,
+                storeId = storeId
+            )
+        )
+
+        return product
+    }
+
+    override suspend fun linkItemToProduct(
+        receiptItemId: String,
+        productId: String,
+        aliasText: String?,
+        storeId: String?
+    ) {
+        receiptDao.linkItemToProduct(receiptItemId, productId)
+        if (!aliasText.isNullOrBlank()) {
+            val cleanAlias = ProductNormalizer.normalizeAlias(aliasText)
+            productDao.insertAlias(
+                ProductAliasEntity(
+                    id = UUID.randomUUID().toString(),
+                    productId = productId,
+                    aliasText = cleanAlias,
+                    storeId = storeId
+                )
+            )
         }
     }
 }

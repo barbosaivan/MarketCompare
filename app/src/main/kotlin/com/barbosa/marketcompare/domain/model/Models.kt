@@ -86,3 +86,12 @@ data class ExternalPriceQuote(
     val sourceUrl: String? = null
 )
 
+/**
+ * Resultado de resolución y normalización de un producto (MC-026).
+ */
+sealed interface ProductResolution {
+    data class ExactAliasMatch(val product: Product, val matchedAlias: String) : ProductResolution
+    data class SuggestedCandidate(val candidate: Product, val confidenceScore: Float) : ProductResolution
+    data class NewProduct(val candidate: Product) : ProductResolution
+}
+

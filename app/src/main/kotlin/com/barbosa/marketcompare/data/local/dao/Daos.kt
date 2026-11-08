@@ -54,6 +54,9 @@ interface ReceiptDao {
 
     @Query("SELECT * FROM receipt_items WHERE receiptId = :receiptId")
     fun observeItemsForReceipt(receiptId: String): Flow<List<ReceiptItemEntity>>
+
+    @Query("UPDATE receipt_items SET productId = :productId WHERE id = :itemId")
+    suspend fun linkItemToProduct(itemId: String, productId: String)
 }
 
 @Dao
@@ -67,10 +70,16 @@ interface ProductDao {
     @Query("SELECT * FROM products ORDER BY canonicalName ASC")
     fun getAllProducts(): Flow<List<ProductEntity>>
 
+    @Query("SELECT * FROM products WHERE id = :productId LIMIT 1")
+    suspend fun getProductById(productId: String): ProductEntity?
+
     @Query("SELECT * FROM products WHERE canonicalName LIKE '%' || :query || '%' LIMIT 20")
     fun searchProducts(query: String): Flow<List<ProductEntity>>
 
     @Query("SELECT * FROM product_aliases WHERE aliasText = :alias LIMIT 1")
     suspend fun findByAlias(alias: String): ProductAliasEntity?
+
+    @Query("SELECT * FROM product_aliases WHERE productId = :productId")
+    suspend fun getAliasesForProduct(productId: String): List<ProductAliasEntity>
 }
 
