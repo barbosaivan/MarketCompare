@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import androidx.core.graphics.createBitmap
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -56,7 +57,7 @@ class DocumentTextExtractor(private val context: Context) {
                     val page = pdfRenderer.openPage(pageIndex)
                     val width = page.width * 2
                     val height = page.height * 2
-                    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                    val bitmap = createBitmap(width, height)
 
                     page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                     page.close()

@@ -322,6 +322,15 @@ fun EditableReceiptItemCard(
                     )
                 }
 
+                if (item.confidenceScore < 0.8f) {
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = stringResource(R.string.review_confidence_low),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+
                 if (item.discount != null && item.discount.amountMinor > 0) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(
