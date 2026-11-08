@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
                     var activeDraft by remember { mutableStateOf<ReceiptDraft?>(null) }
 
                     val receipts by repository.getAllReceipts().collectAsState(initial = emptyList())
+                    val products by repository.getAllProducts().collectAsState(initial = emptyList())
 
                     when (currentScreen) {
                         Screen.History.route -> {
@@ -71,6 +72,7 @@ class MainActivity : ComponentActivity() {
                             if (draft != null) {
                                 ReceiptReviewScreen(
                                     draft = draft,
+                                    catalogProducts = products,
                                     onBackClick = {
                                         currentScreen = Screen.Scan.route
                                     },

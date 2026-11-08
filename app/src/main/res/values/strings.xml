@@ -4,6 +4,8 @@
     
     <!-- Navegación y acciones comunes -->
     <string name="action_back">Volver</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_confirm">Confirmar</string>
     <string name="nav_history">Historial</string>
     <string name="nav_scan">Escanear</string>
     <string name="nav_shopping_list">Lista</string>
@@ -39,6 +41,18 @@
     <string name="review_item_discount_tag">Descuento: -%1$s</string>
     <string name="review_item_final">Final</string>
     <string name="review_confidence_low">Confianza baja: verificar valores</string>
+    
+    <!-- Autocompletado de productos y protección de variantes (MC-027) -->
+    <string name="autocomplete_search_hint">Buscar en catálogo o escribir nombre…</string>
+    <string name="autocomplete_badge_exact">Alias previo</string>
+    <string name="autocomplete_badge_catalog">Catálogo</string>
+    <string name="autocomplete_badge_suggested">Sugerido OCR</string>
+    <string name="autocomplete_badge_variant_mismatch">Presentación diferente</string>
+    <string name="autocomplete_keep_custom">Mantener como texto libre: \"%1$s\"</string>
+    <string name="autocomplete_no_results">Sin coincidencias previas</string>
+    <string name="dialog_variant_mismatch_title">Diferencia de presentación o tamaño</string>
+    <string name="dialog_variant_mismatch_message">El producto seleccionado:\n• %1$s\n\nDifiere en tamaño o empaque del detectado en el recibo:\n• %2$s\n\nLas comparativas de precios requieren presentaciones equivalentes. ¿Confirmas que deseas asociar esta variante deliberadamente?</string>
+    <string name="dialog_variant_mismatch_confirm">Asignar variante</string>
     
     <!-- Comparación de precios -->
     <string name="compare_title">Comparativa de Precios</string>

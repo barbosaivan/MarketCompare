@@ -23,6 +23,8 @@ data class ReceiptItemDraft(
     val discountType: DiscountType = DiscountType.NONE,
     val discountEvidence: String? = null,
     val confidenceScore: Float = 1.0f,
-    val isIncluded: Boolean = true
+    val isIncluded: Boolean = true,
+    val linkedProductId: String? = null,
+    val linkedCanonicalName: String? = null
 )
 
