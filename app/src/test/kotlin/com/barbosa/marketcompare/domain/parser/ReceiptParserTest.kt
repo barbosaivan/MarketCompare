@@ -65,9 +65,30 @@ class ReceiptParserTest {
         val discountedItem = draft.items[0]
         assertEquals("DETERGENTE EN POLVO 2KG", discountedItem.rawDescription)
         assertEquals(Money(3000L, "COP"), discountedItem.discount)
-        assertEquals(DiscountType.EXPLICIT_LINE, discountedItem.discountType)
+        assertEquals(DiscountType.LOYALTY_MEMBER, discountedItem.discountType)
         assertEquals(Money(12900L, "COP"), discountedItem.finalPrice)
         assertNotNull(discountedItem.discountEvidence)
+    }
+
+    @Test
+    fun `parse receipt with direct discount line links as explicit line discount`() {
+        val rawReceipt = """
+            ALMACENES EXITO
+            15/06/2026
+            ACEITE PREMIER 1000ML     12.500
+            DESCUENTO DIRECTO         -2.500
+            TOTAL                     10.000
+        """.trimIndent()
+
+        val draft = ReceiptParser.parse(rawReceipt)
+
+        assertEquals("Éxito", draft.detectedStoreName)
+        assertEquals(1, draft.items.size)
+        val item = draft.items[0]
+        assertEquals(Money(2500L, "COP"), item.discount)
+        assertEquals(DiscountType.EXPLICIT_LINE, item.discountType)
+        assertEquals(Money(10000L, "COP"), item.finalPrice)
+        assertEquals("DESCUENTO DIRECTO         -2.500", item.discountEvidence)
     }
 
     @Test

@@ -26,6 +26,7 @@ enum class DiscountType {
     EXPLICIT_LINE,
     PROMOTION_2X1,
     LOYALTY_MEMBER,
+    DERIVED,
     UNKNOWN
 }
 

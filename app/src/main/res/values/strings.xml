@@ -6,6 +6,7 @@
     <string name="action_back">Volver</string>
     <string name="action_cancel">Cancelar</string>
     <string name="action_confirm">Confirmar</string>
+    <string name="action_save">Guardar</string>
     <string name="nav_history">Historial</string>
     <string name="nav_scan">Escanear</string>
     <string name="nav_shopping_list">Lista</string>
@@ -34,6 +35,8 @@
     <string name="review_default_store">Supermercado</string>
     <string name="review_date_label">Fecha de compra</string>
     <string name="review_total_label">Total a pagar</string>
+    <string name="review_total_savings_label">Ahorro en descuentos</string>
+    <string name="review_total_savings_value">-%1$s</string>
     <string name="review_items_detected">Artículos detectados (%1$d)</string>
     <string name="review_save_purchase">Confirmar y Guardar Compra</string>
     <string name="review_item_unit_price">Precio unitario</string>
@@ -41,6 +44,21 @@
     <string name="review_item_discount_tag">Descuento: -%1$s</string>
     <string name="review_item_final">Final</string>
     <string name="review_confidence_low">Confianza baja: verificar valores</string>
+    <string name="review_edit_discount">Editar</string>
+    <string name="review_dialog_discount_title">Auditoría de Descuento</string>
+    <string name="review_dialog_discount_amount">Valor del descuento (COP)</string>
+    <string name="review_dialog_discount_type">Tipo de descuento</string>
+    <string name="review_dialog_discount_remove">Quitar descuento</string>
+    <string name="review_dialog_discount_evidence_label">Evidencia detectada en ticket:</string>
+    <string name="review_discount_evidence">Evidencia: %1$s</string>
+    
+    <!-- Tipos de Descuento (MC-028) -->
+    <string name="discount_type_none">Sin descuento</string>
+    <string name="discount_type_explicit">Descuento en factura</string>
+    <string name="discount_type_loyalty">Puntos / Fidelización</string>
+    <string name="discount_type_promotion">Promoción / 2x1</string>
+    <string name="discount_type_derived">Diferencia calculada</string>
+    <string name="discount_type_unknown">Descuento no clasificado</string>
     
     <!-- Autocompletado de productos y protección de variantes (MC-027) -->
     <string name="autocomplete_search_hint">Buscar en catálogo o escribir nombre…</string>
