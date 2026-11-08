@@ -4,6 +4,7 @@ import com.barbosa.marketcompare.domain.model.BasketEstimate
 import com.barbosa.marketcompare.domain.model.ExternalPriceQuote
 import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
 import com.barbosa.marketcompare.domain.model.Product
+import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.ShoppingListItem
 import com.barbosa.marketcompare.domain.model.Store
@@ -20,6 +21,10 @@ interface PurchaseRepository {
     suspend fun resolveProductFromDescription(rawDescription: String, storeId: String? = null): com.barbosa.marketcompare.domain.model.ProductResolution
     suspend fun registerProductWithAlias(product: Product, aliasText: String, storeId: String? = null): Product
     suspend fun linkItemToProduct(receiptItemId: String, productId: String, aliasText: String? = null, storeId: String? = null)
+
+    // Explorador de precios e inteligencia de góndola (MC-044)
+    fun getAllPriceObservations(): Flow<List<ProductPriceObservationItem>>
+    fun getAllStoreNames(): Flow<List<String>>
 
     // Lista de compras y canasta estimada (MC-029)
     fun getShoppingListWithEstimates(): Flow<List<ShoppingListItem>>

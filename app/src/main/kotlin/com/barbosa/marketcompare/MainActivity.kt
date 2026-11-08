@@ -24,7 +24,7 @@ import com.barbosa.marketcompare.domain.model.ReceiptDraft
 import com.barbosa.marketcompare.presentation.components.AppBottomNavigationBar
 import com.barbosa.marketcompare.presentation.navigation.AppNavigator
 import com.barbosa.marketcompare.presentation.navigation.Screen
-import com.barbosa.marketcompare.presentation.screens.history.HistoryScreen
+import com.barbosa.marketcompare.presentation.screens.history.HomePriceExplorerScreen
 import com.barbosa.marketcompare.presentation.screens.review.ReceiptReviewScreen
 import com.barbosa.marketcompare.presentation.screens.scan.ReceiptCaptureScreen
 import com.barbosa.marketcompare.presentation.screens.shopping.ShoppingListScreen
@@ -58,6 +58,8 @@ class MainActivity : ComponentActivity() {
                     }
 
                     val receipts by repository.getAllReceipts().collectAsState(initial = emptyList())
+                    val priceObservations by repository.getAllPriceObservations().collectAsState(initial = emptyList())
+                    val storeNames by repository.getAllStoreNames().collectAsState(initial = emptyList())
                     val products by repository.getAllProducts().collectAsState(initial = emptyList())
                     val basketEstimate by repository.getBasketEstimate().collectAsState(
                         initial = BasketEstimate(
@@ -93,7 +95,9 @@ class MainActivity : ComponentActivity() {
                         ) {
                             when (navigator.currentRoute) {
                                 Screen.History.route -> {
-                                    HistoryScreen(
+                                    HomePriceExplorerScreen(
+                                        priceObservations = priceObservations,
+                                        stores = storeNames,
                                         receipts = receipts,
                                         onScanClick = {
                                             navigator.navigateToTab(Screen.Scan.route)

@@ -1,13 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Inicio de Fase v2.0 (Mejoras integrales de experiencia de usuario, gobernanza multi-agente, diseño moderno M3, catálogo interactivo y visor OCR semántico). Release v1.0.0-rc1 publicado con éxito. Gate 7 (Sistema de Diseño M3, Navegación Persistente y Backstack) en progreso.
+> Estado actual: Fase v2.0 en ejecución. Gate 7 completado y aprobado. Gate 8 (Dashboard de Inteligencia de Precios y Explorador por Tienda) en progreso, completada tarea MC-044.
 
 ## Resumen
 - Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
-- Compuerta activa: `GATE 7 — Sistema de Diseño M3, Navegación Persistente y Backstack (IN PROGRESS)`
+- Compuerta activa: `GATE 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (IN PROGRESS)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `feat/MC-039-v2-roadmap-and-governance`
+- Rama de trabajo activa: `feat/MC-044-price-explorer-home`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,18 +20,17 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 37 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-043) |
+| DONE con evidencia | 38 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-044) |
 | En progreso | 0 |
-| Pendientes (TODO) | 20 (MC-044 a MC-058) |
+| Pendientes (TODO) | 19 (MC-045 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**53/53 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**55/55 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
-| Hito Gate 8 (Dashboard de Precios y Tiendas) | PENDING (Listo para iniciar con MC-044) |
-| Hito Gate 8 (Dashboard de Precios y Tiendas) | PENDING |
+| Hito Gate 8 (Dashboard de Precios y Tiendas) | IN_PROGRESS (MC-044 completado) |
 | Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
 
@@ -46,7 +45,7 @@
 | G5 Autocompletado y descuentos | DONE | Auditor sénior |
 | G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
 | G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
-| G8 Dashboard de Precios y Tiendas | TODO | Auditor sénior + Tech Lead |
+| G8 Dashboard de Precios y Tiendas | IN_PROGRESS | Auditor sénior + Tech Lead |
 | G9 Ingreso Manual y Medidas Estándar | TODO | Auditor sénior + Tech Lead |
 | G10 OCR Visual y Bounding Boxes | TODO | Auditor sénior + Usuario |
 

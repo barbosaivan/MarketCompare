@@ -7,16 +7,15 @@ import com.barbosa.marketcompare.data.local.entity.ReceiptEntity
 import com.barbosa.marketcompare.data.local.entity.ReceiptItemEntity
 import com.barbosa.marketcompare.data.local.entity.ShoppingListItemEntity
 import com.barbosa.marketcompare.data.local.entity.StoreEntity
+import com.barbosa.marketcompare.data.local.entity.toDomain
 import com.barbosa.marketcompare.domain.basket.BasketEstimator
 import com.barbosa.marketcompare.domain.model.BasketEstimate
-import com.barbosa.marketcompare.domain.model.DiscountType
 import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
-import com.barbosa.marketcompare.domain.model.ProductQuantity
+import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
 import com.barbosa.marketcompare.domain.model.ProductResolution
 import com.barbosa.marketcompare.domain.model.Receipt
-import com.barbosa.marketcompare.domain.model.ReceiptItem
 import com.barbosa.marketcompare.domain.model.ShoppingListItem
 import com.barbosa.marketcompare.domain.model.Store
 import com.barbosa.marketcompare.domain.model.UnitType
@@ -38,47 +37,45 @@ class PurchaseRepositoryImpl(
 
     override fun getAllReceipts(): Flow<List<Receipt>> {
         return receiptDao.getAllReceiptsWithStore().map { list ->
-            list.map { item ->
-                Receipt(
-                    id = item.id,
-                    storeId = item.storeId,
-                    storeName = item.storeName,
-                    purchaseTimestamp = item.purchaseTimestamp,
-                    totalAmount = Money(item.totalAmountMinor, "COP"),
-                    rawDocumentUri = item.rawDocumentUri,
-                    items = emptyList()
+            list.map { it.toDomain() }
+        }
+    }
+
+    override fun getReceiptById(receiptId: String): Flow<Receipt?> = flow {
+        emit(null)
+    }
+
+    override fun getAllPriceObservations(): Flow<List<ProductPriceObservationItem>> {
+        return receiptDao.observeAllPriceObservations().map { entities ->
+            val minPriceMap = entities.groupBy { it.rawDescription.trim().lowercase() }
+                .mapValues { (_, items) -> items.minOf { it.unitPriceMinor } }
+
+            entities.map { entity ->
+                val key = entity.rawDescription.trim().lowercase()
+                val minPrice = minPriceMap[key] ?: entity.unitPriceMinor
+                val sameProductCount = entities.count { it.rawDescription.trim().lowercase() == key }
+                val isLowest = entity.unitPriceMinor <= minPrice && sameProductCount > 1
+                val freshness = BasketEstimator.evaluateFreshness(entity.purchaseTimestamp)
+
+                ProductPriceObservationItem(
+                    id = entity.id,
+                    productId = entity.productId,
+                    productName = entity.rawDescription,
+                    storeName = entity.storeName,
+                    unitPrice = Money(entity.unitPriceMinor, "COP"),
+                    observedAtTimestamp = entity.purchaseTimestamp,
+                    isLowestPrice = isLowest,
+                    freshness = freshness
                 )
             }
         }
     }
 
-    override fun getReceiptById(receiptId: String): Flow<Receipt?> = flow {
-        val itemsEntities = receiptDao.getItemsForReceipt(receiptId)
-        val domainItems = itemsEntities.map { entity ->
-            ReceiptItem(
-                id = entity.id,
-                receiptId = entity.receiptId,
-                productId = entity.productId,
-                rawDescription = entity.rawDescription,
-                quantity = ProductQuantity(
-                    value = entity.quantityValue,
-                    unit = runCatching { UnitType.valueOf(entity.quantityUnit) }.getOrDefault(UnitType.UNIT)
-                ),
-                listPrice = entity.listPriceMinor?.let { Money(it, "COP") },
-                discount = entity.discountMinor?.let { Money(it, "COP") },
-                finalPrice = Money(entity.finalPriceMinor, "COP"),
-                discountType = runCatching { DiscountType.valueOf(entity.discountType) }.getOrDefault(DiscountType.NONE),
-                discountEvidence = entity.discountEvidence,
-                confidenceScore = entity.confidenceScore,
-                userConfirmed = entity.userConfirmed
-            )
-        }
-        // Emit base object
-        emit(null)
+    override fun getAllStoreNames(): Flow<List<String>> {
+        return storeDao.getAllStoreNames()
     }
 
     override suspend fun saveConfirmedPurchase(store: Store, receipt: Receipt) {
-        // Ejecución transaccional atómica
         storeDao.insertStore(
             StoreEntity(
                 id = store.id,
@@ -122,47 +119,18 @@ class PurchaseRepositoryImpl(
 
     override fun getAllProducts(): Flow<List<Product>> {
         return productDao.getAllProducts().map { entities ->
-            entities.map { entity ->
-                Product(
-                    id = entity.id,
-                    canonicalName = entity.canonicalName,
-                    brand = entity.brand,
-                    category = entity.category,
-                    baseQuantity = entity.baseQuantity,
-                    unit = runCatching { UnitType.valueOf(entity.unit) }.getOrDefault(UnitType.UNIT),
-                    presentation = entity.presentation
-                )
-            }
+            entities.map { it.toDomain() }
         }
     }
 
     override fun searchProducts(query: String): Flow<List<Product>> {
         return productDao.searchProducts(query).map { entities ->
-            entities.map { entity ->
-                Product(
-                    id = entity.id,
-                    canonicalName = entity.canonicalName,
-                    brand = entity.brand,
-                    category = entity.category,
-                    baseQuantity = entity.baseQuantity,
-                    unit = runCatching { UnitType.valueOf(entity.unit) }.getOrDefault(UnitType.UNIT),
-                    presentation = entity.presentation
-                )
-            }
+            entities.map { it.toDomain() }
         }
     }
 
     override suspend fun getProductById(productId: String): Product? {
-        val entity = productDao.getProductById(productId) ?: return null
-        return Product(
-            id = entity.id,
-            canonicalName = entity.canonicalName,
-            brand = entity.brand,
-            category = entity.category,
-            baseQuantity = entity.baseQuantity,
-            unit = runCatching { UnitType.valueOf(entity.unit) }.getOrDefault(UnitType.UNIT),
-            presentation = entity.presentation
-        )
+        return productDao.getProductById(productId)?.toDomain()
     }
 
     override suspend fun resolveProductFromDescription(
@@ -171,7 +139,6 @@ class PurchaseRepositoryImpl(
     ): ProductResolution {
         val cleanAlias = ProductNormalizer.normalizeAlias(rawDescription)
 
-        // 1. Buscar coincidencia exacta de alias en base de datos
         val existingAlias = productDao.findByAlias(cleanAlias)
             ?: productDao.findByAlias(rawDescription.trim().uppercase())
 
@@ -182,7 +149,6 @@ class PurchaseRepositoryImpl(
             }
         }
 
-        // 2. Si no hay alias, normalizar heurísticamente con ProductNormalizer
         val candidate = ProductNormalizer.normalize(rawDescription)
         val candidateProduct = candidate.toProduct(UUID.randomUUID().toString())
 
@@ -198,7 +164,6 @@ class PurchaseRepositoryImpl(
         aliasText: String,
         storeId: String?
     ): Product {
-        // Persistir entidad de producto
         productDao.insertProduct(
             ProductEntity(
                 id = product.id,
@@ -211,7 +176,6 @@ class PurchaseRepositoryImpl(
             )
         )
 
-        // Registrar alias normalizado
         val cleanAlias = ProductNormalizer.normalizeAlias(aliasText)
         productDao.insertAlias(
             ProductAliasEntity(
@@ -319,4 +283,3 @@ class PurchaseRepositoryImpl(
         )
     }
 }
-
