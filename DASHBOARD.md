@@ -18,7 +18,7 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 38 |
-| DONE con evidencia | 29 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-031, MC-035, MC-036, MC-037) |
+| DONE con evidencia | 30 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-032, MC-035, MC-036, MC-037) |
 | En revisión | 0 |
 | Bloqueadas | 1 (MC-003 - API externa sin proveedor oficial) |
 | Defectos P0/P1 abiertos | 0 |
@@ -29,7 +29,7 @@
 | Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
 | Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
 | Hito Gate 5 (Producto y descuentos) | COMPLETADO (2026-11-07) |
-| Hito Gate 6 (Calidad final) | IN PROGRESS (MC-030 y MC-031 completadas) |
+| Hito Gate 6 (Calidad final) | IN PROGRESS (MC-030, MC-031 y MC-032 completadas) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -47,14 +47,17 @@
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
 | Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `qa/MC-031-automated-test-suite` |
+| Rama de trabajo activa | `audit/MC-032-senior-code-privacy-audit` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
-| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`, `feat/MC-028-discount-provenance`, `feat/MC-029-shopping-list-basket`, `qa/MC-030-static-analysis-audit`, `qa/MC-031-automated-test-suite`) |
+| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`, `feat/MC-028-discount-provenance`, `feat/MC-029-shopping-list-basket`, `qa/MC-030-static-analysis-audit`, `qa/MC-031-automated-test-suite`, `audit/MC-032-senior-code-privacy-audit`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 14:10:**
+  - `MC-032` (G6): Auditoría sénior independiente de código, arquitectura y privacidad completada con veredicto **PASS** ([`docs/AUDIT_REPORT.md`](docs/AUDIT_REPORT.md)).
+  - Verificación formal: 0 defectos P0, 0 defectos P1, 0 secretos expuestos, 100% cumplimiento de ADR 0001 (privacidad y no-persistencia de cotizaciones externas) y ADR 0003 (aritmética financiera exacta sin punto flotante).
 - **2026-11-08 13:58:**
   - `MC-031` (G6): Ejecución y certificación de la suite completa de pruebas automatizadas (`docs/TEST_SUITE_REPORT.md`).
   - Cobertura expandida a 47 pruebas unitarias sin fallos ni errores (100% de éxito en ~3.8s).
