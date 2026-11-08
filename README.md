@@ -86,7 +86,7 @@ MarketCompare implementa una **Clean Architecture** pragmática dividida en 4 ca
 ```bash
 ./gradlew testDebugUnitTest
 ```
-*Ejecuta la suite completa de 45 pruebas unitarias (`BasketEstimatorTest`, `DiscountClassifierTest`, `ReceiptParserTest`, `ProductAutocompleteEngineTest`, `ProductNormalizerTest`, `PurchaseRepositoryTest`, `MoneyTest`), con reportes HTML en: `app/build/reports/tests/testDebugUnitTest/index.html`.*
+*Ejecuta la suite completa de 47 pruebas unitarias (`BasketEstimatorTest`, `DiscountClassifierTest`, `ReceiptParserTest`, `ProductAutocompleteEngineTest`, `ProductNormalizerTest`, `PurchaseRepositoryTest`, `MoneyTest`), con reportes HTML en: `app/build/reports/tests/testDebugUnitTest/index.html`.*
 
 ---
 

@@ -29,7 +29,7 @@ MC-027,G5,Implement product name autocomplete,UI Agent,P1,DONE,MC-026,Suggestion
 MC-028,G5,Implement discount provenance and review,OCR Agent,P0,DONE,MC-017;MC-021,Explicit/derived/unknown discounts distinct and evidence retained,feat/MC-028-discount-provenance,65511aa,PUSHED,,APPROVED
 MC-029,G5,Implement shopping list and estimated basket,UI Agent,P2,DONE,MC-020;MC-021;MC-027,Estimate uses local purchase data and clearly labels stale/unknown prices,feat/MC-029-shopping-list-basket,da45e55,PUSHED,,APPROVED
 MC-030,G6,Run static analysis and dependency audit,QA Agent,P0,DONE,MC-010,Deprecated APIs dead code unused dependencies and avoidable warnings reviewed,qa/MC-030-static-analysis-audit,99fa508,PUSHED,,APPROVED
-MC-031,G6,Run full automated test suite,QA Agent,P0,TODO,MC-019;MC-025;MC-028;MC-029,All critical tests pass or failures explicitly block release,,,NOT_STARTED,,NOT_STARTED
+MC-031,G6,Run full automated test suite,QA Agent,P0,DONE,MC-019;MC-025;MC-028;MC-029,All critical tests pass or failures explicitly block release,qa/MC-031-automated-test-suite,c0b6ced,PUSHED,,APPROVED
 MC-032,G6,Senior independent code and privacy audit,Senior Auditor,P0,TODO,MC-030;MC-031,No P0/P1 defects; evidence and findings report attached,,,NOT_STARTED,,NOT_STARTED
 MC-033,G6,Finalize docs and dashboard,Documentation,P1,TODO,MC-032,Setup architecture known issues and test commands accurate,,,NOT_STARTED,,NOT_STARTED
 MC-034,G6,User acceptance and release approval,Tech Lead,P0,TODO,MC-033,User approves; no signing or publication without explicit authorization,,,NOT_STARTED,,NOT_STARTED
