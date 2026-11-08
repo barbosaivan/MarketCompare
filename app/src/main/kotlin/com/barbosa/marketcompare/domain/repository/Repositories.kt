@@ -1,9 +1,13 @@
 package com.barbosa.marketcompare.domain.repository
 
+import com.barbosa.marketcompare.domain.model.BasketEstimate
 import com.barbosa.marketcompare.domain.model.ExternalPriceQuote
+import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.Receipt
+import com.barbosa.marketcompare.domain.model.ShoppingListItem
 import com.barbosa.marketcompare.domain.model.Store
+import com.barbosa.marketcompare.domain.model.UnitType
 import kotlinx.coroutines.flow.Flow
 
 interface PurchaseRepository {
@@ -16,6 +20,15 @@ interface PurchaseRepository {
     suspend fun resolveProductFromDescription(rawDescription: String, storeId: String? = null): com.barbosa.marketcompare.domain.model.ProductResolution
     suspend fun registerProductWithAlias(product: Product, aliasText: String, storeId: String? = null): Product
     suspend fun linkItemToProduct(receiptItemId: String, productId: String, aliasText: String? = null, storeId: String? = null)
+
+    // Lista de compras y canasta estimada (MC-029)
+    fun getShoppingListWithEstimates(): Flow<List<ShoppingListItem>>
+    fun getBasketEstimate(): Flow<BasketEstimate>
+    suspend fun addShoppingListItem(name: String, productId: String? = null, quantity: Long = 1L, unit: UnitType = UnitType.UNIT)
+    suspend fun toggleItemChecked(itemId: String, isChecked: Boolean)
+    suspend fun removeShoppingListItem(itemId: String)
+    suspend fun clearCheckedShoppingListItems()
+    suspend fun getLatestPriceObservation(productId: String?, productName: String): HistoricalPriceObservation?
 }
 
 /**

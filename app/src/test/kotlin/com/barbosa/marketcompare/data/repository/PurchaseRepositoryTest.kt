@@ -4,9 +4,11 @@ import com.barbosa.marketcompare.data.local.MarketCompareDatabase
 import com.barbosa.marketcompare.data.local.dao.ProductDao
 import com.barbosa.marketcompare.data.local.dao.ReceiptDao
 import com.barbosa.marketcompare.data.local.dao.ReceiptWithStoreAndItems
+import com.barbosa.marketcompare.data.local.dao.ShoppingListDao
 import com.barbosa.marketcompare.data.local.dao.StoreDao
 import com.barbosa.marketcompare.data.local.entity.ProductAliasEntity
 import com.barbosa.marketcompare.data.local.entity.ProductEntity
+import com.barbosa.marketcompare.data.local.entity.ShoppingListItemEntity
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductResolution
@@ -31,6 +33,7 @@ class PurchaseRepositoryTest {
     private val receiptDao = mockk<ReceiptDao>()
     private val storeDao = mockk<StoreDao>()
     private val productDao = mockk<ProductDao>()
+    private val shoppingListDao = mockk<ShoppingListDao>()
 
     private lateinit var repository: PurchaseRepositoryImpl
 
@@ -39,6 +42,7 @@ class PurchaseRepositoryTest {
         every { database.receiptDao() } returns receiptDao
         every { database.storeDao() } returns storeDao
         every { database.productDao() } returns productDao
+        every { database.shoppingListDao() } returns shoppingListDao
         repository = PurchaseRepositoryImpl(database)
     }
 
@@ -137,6 +141,46 @@ class PurchaseRepositoryTest {
         }
         coVerify(exactly = 1) {
             productDao.insertAlias(match { it.productId == "prod-new" && it.aliasText == "ARRZ FLORH 1KG" })
+        }
+    }
+
+    @Test
+    fun `addShoppingListItem inserts entity with clean name and positive quantity`() = runTest {
+        coEvery { shoppingListDao.insertItem(any()) } returns Unit
+
+        repository.addShoppingListItem("  Café Juan Valdez  ", "prod-cafe", 2L, UnitType.UNIT)
+
+        coVerify(exactly = 1) {
+            shoppingListDao.insertItem(
+                match {
+                    it.name == "Café Juan Valdez" &&
+                            it.productId == "prod-cafe" &&
+                            it.quantity == 2L &&
+                            !it.isChecked
+                }
+            )
+        }
+    }
+
+    @Test
+    fun `toggleItemChecked updates checked status in DAO`() = runTest {
+        coEvery { shoppingListDao.updateCheckedStatus(any(), any()) } returns Unit
+
+        repository.toggleItemChecked("item-123", true)
+
+        coVerify(exactly = 1) {
+            shoppingListDao.updateCheckedStatus("item-123", true)
+        }
+    }
+
+    @Test
+    fun `clearCheckedShoppingListItems delegates to DAO`() = runTest {
+        coEvery { shoppingListDao.deleteCheckedItems() } returns Unit
+
+        repository.clearCheckedShoppingListItems()
+
+        coVerify(exactly = 1) {
+            shoppingListDao.deleteCheckedItems()
         }
     }
 }
