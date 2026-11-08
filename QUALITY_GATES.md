@@ -37,11 +37,11 @@ Aprobación humana requerida antes de una implementación amplia.
 - [ ] Prueba de regresión demuestra que API no altera historial local.
 
 ## Gate 5 — Producto y descuentos
-- [ ] Matching distingue marca, presentación, tamaño y unidad.
-- [ ] Autocompletado con ranking y confirmación.
-- [ ] Descuentos explícitos trazables.
-- [ ] Precios normalizados por unidad.
-- [ ] Casos ambiguos requieren revisión.
+- [x] Matching distingue marca, presentación, tamaño y unidad.
+- [x] Autocompletado con ranking y confirmación.
+- [x] Descuentos explícitos trazables.
+- [x] Precios normalizados por unidad.
+- [x] Casos ambiguos requieren revisión.
 
 ## Gate 6 — Calidad final
 - [ ] `assembleDebug` exitoso.

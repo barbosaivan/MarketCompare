@@ -5,15 +5,15 @@
 [![Android Gradle Plugin](https://img.shields.io/badge/AGP-9.2.1-green.svg?logo=android)](https://developer.android.com/build)
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-2026.05.01-4285F4.svg?logo=jetpackcompose)](https://developer.android.com/jetpack/compose)
 [![Material 3](https://img.shields.io/badge/Material%20Design-3-7C4DFF.svg)](https://m3.material.io/)
-[![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Gate%203%20Passed-success.svg)](QUALITY_GATES.md)
+[![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Gate%205%20Passed-success.svg)](QUALITY_GATES.md)
 
 **MarketCompare** es una aplicación Android moderna, accesible e intuitiva orientada al consumidor inteligente. Permite registrar y auditar compras reales de supermercado a partir de facturas físicas y electrónicas (mediante cámara, galería y PDFs), manteniendo un historial de precios 100% privado y local, y facilitando la comparación de precios de referencia en tiempo real sin almacenar cotizaciones externas.
 
 ---
 
-## 🚀 Estado del Proyecto y Capacidades (Gate 3 Completado)
+## 🚀 Estado del Proyecto y Capacidades (Gate 5 Completado)
 
-El proyecto ha superado con éxito **Gate 0**, **Gate 1**, **Gate 2** y **Gate 3 (Compras locales y Pipeline OCR)**:
+El proyecto ha superado con éxito **Gate 0**, **Gate 1**, **Gate 2**, **Gate 3 (Compras locales y Pipeline OCR)** y **Gate 5 (Normalización, Descuentos y Canasta)**:
 
 1. **Importación Multicanal de Facturas:**
    - **Cámara en vivo:** Captura de fotos de tickets con CameraX y URI seguro vía `FileProvider`.
@@ -24,13 +24,20 @@ El proyecto ha superado con éxito **Gate 0**, **Gate 1**, **Gate 2** y **Gate 3
    - Motor heurístico especializado en facturas colombianas (`ReceiptParser`) con soporte para comercios como **Éxito, Carulla, D1, Ara, Jumbo, Olímpica, Metro, Makro, PriceSmart**, entre otros.
    - Extracción automática de NIT, fecha de compra, desglose de líneas de productos (cantidad, descripción, unidad de medida: kg, g, ml, l) y líneas explícitas de descuento promocional.
    - Filtrado riguroso de pie de página fiscal (IVA, ICA, CUFE, resoluciones DIAN, medios de pago y cambio).
-3. **Revisión Editable Obligatoria:**
-   - Pantalla interactiva (`ReceiptReviewScreen`) previa a la persistencia: el usuario puede editar el nombre del establecimiento, modificar descripciones, ajustar cantidades/precios o descartar artículos erróneos.
-   - **Regla de oro:** Cero guardado automático; cada compra requiere confirmación explícita del usuario.
-4. **Persistencia Local-First (Room):**
-   - Base de datos relacional local en SQLite (`MarketCompareDatabase`) para compras confirmadas.
+3. **Revisión Editable y Auditoría de Descuentos (MC-028):**
+   - Pantalla interactiva (`ReceiptReviewScreen`) previa a la persistencia con cálculo de ahorro total.
+   - Clasificación de procedencia de descuentos (`DiscountClassifier`): Fidelización/Puntos, Promociones 2x1, Descuentos directos en factura, Calculados o Desconocidos.
+   - Diálogo de auditoría interactiva (`DiscountAuditDialog`) para verificar o ajustar la evidencia OCR y corregir falsos positivos recalculando el precio exacto.
+4. **Normalización y Autocompletado de Catálogo (MC-026 & MC-027):**
+   - Extracción de marca, empaque, volumen/peso y huella digital única de variante (`variantFingerprint`).
+   - Autocompletado ponderado (`ProductAutocompleteEngine`) en campo de texto con prevención explícita ante fusiones accidentales de presentaciones diferentes.
+5. **Lista de Compras y Presupuesto de Canasta Estimada (MC-029):**
+   - Planificación de compras (`ShoppingListScreen`) con presupuesto estimado en tiempo real calculado a partir del historial local de compras.
+   - Distinción visual y analítica de frescura: precios confirmados recientes (<= 30 días con comercio y fecha), desactualizados (> 30 días) y sin precio histórico registrado.
+6. **Persistencia Local-First (Room):**
+   - Base de datos relacional local en SQLite (`MarketCompareDatabase`) para compras confirmadas y lista de compras.
    - Aritmética financiera exacta: prohibición estricta de `Double`/`Float` para importes monetarios mediante el Value Object `Money` (en unidades menores / enteros exactos).
-5. **Historial de Compras en Vivo:**
+7. **Historial de Compras en Vivo:**
    - Vista de compras anteriores (`HistoryScreen`) con fecha formateada, establecimiento, cantidad de artículos y total pagado.
 
 ---
@@ -79,7 +86,7 @@ MarketCompare implementa una **Clean Architecture** pragmática dividida en 4 ca
 ```bash
 ./gradlew testDebugUnitTest
 ```
-*Ejecuta la suite completa de 10 pruebas unitarias (`ReceiptParserTest`, `MoneyTest`, `PurchaseRepositoryTest`), con reportes HTML en: `app/build/reports/tests/testDebugUnitTest/index.html`.*
+*Ejecuta la suite completa de 45 pruebas unitarias (`BasketEstimatorTest`, `DiscountClassifierTest`, `ReceiptParserTest`, `ProductAutocompleteEngineTest`, `ProductNormalizerTest`, `PurchaseRepositoryTest`, `MoneyTest`), con reportes HTML en: `app/build/reports/tests/testDebugUnitTest/index.html`.*
 
 ---
 

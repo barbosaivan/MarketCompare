@@ -1,12 +1,12 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Gate 3 (Compras locales y Pipeline OCR) completado. El pipeline de importación multicanal (Cámara, Galería, PDF), extracción ML Kit, parseo heurístico de facturas colombianas, pantalla de revisión editable y persistencia transaccional en Room están 100% operativos. La suite de pruebas unitarias (`ReceiptParserTest`, `MoneyTest`, `PurchaseRepositoryTest`) pasa al 100% y el APK de depuración se ensambla limpiamente.
+> Estado actual: Gate 5 (Normalización, descuentos y canasta estimada) completado. Autocompletado inteligente de catálogo con protección de variantes incompatibles, clasificación de procedencia de descuentos con auditoría en recibos, y lista de compras con presupuesto estimado y detección de precios desactualizados (> 30 días) 100% implementados y verificados. 45/45 pruebas unitarias exitosas y APK de depuración generado limpiamente.
 
 ## Resumen
-- Fase actual: `GATE 5 — Autocompletado y descuentos (En progreso)` (Gate 4 permanece BLOQUEADO a la espera de credenciales/documentación oficial de API externa).
+- Fase actual: `GATE 5 — Normalización, Descuentos y Canasta (COMPLETADO)` (Gate 4 permanece BLOQUEADO a la espera de credenciales/clave API oficial de `losprecios.co`).
 - Estado global: `IN PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de hito: `feat/MC-027-product-autocomplete`
+- Rama de hito: `feat/MC-029-shopping-list-basket`
 - Bloqueos conocidos: API externa de precios (`MC-003` - BLOCKED por falta de proveedor documentado).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
 - Persistencia: Room local exclusiva para compras confirmadas (`MarketCompareDatabase`).
@@ -18,17 +18,17 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 38 |
-| DONE con evidencia | 26 (MC-001, MC-002, MC-004 a MC-021, MC-026, MC-027, MC-028, MC-035, MC-036, MC-037) |
+| DONE con evidencia | 27 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-029, MC-035, MC-036, MC-037) |
 | En revisión | 0 |
 | Bloqueadas | 1 (MC-003 - API externa sin proveedor oficial) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (29/29 tests pasados: DiscountClassifierTest, ReceiptParserTest, ProductAutocompleteEngineTest, ProductNormalizerTest, PurchaseRepositoryTest, MoneyTest) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (45/45 tests pasados: BasketEstimatorTest, DiscountClassifierTest, ReceiptParserTest, ProductAutocompleteEngineTest, ProductNormalizerTest, PurchaseRepositoryTest, MoneyTest) |
 | Hito Gate 0 (Entorno y alcance) | APROBADO (2026-11-07) |
 | Hito Gate 1 (Arquitectura y modelado) | COMPLETADO (2026-11-07) |
 | Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
 | Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
-| Hito Gate 5 (Producto y descuentos) | IN PROGRESS (MC-026, MC-027 y MC-028 completadas) |
+| Hito Gate 5 (Producto y descuentos) | COMPLETADO (MC-026, MC-027, MC-028 y MC-029 completadas) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -38,7 +38,7 @@
 | G2 Esqueleto ejecutable | DONE | Auditor sénior + usuario |
 | G3 Compras locales y OCR | DONE | Tech Lead + QA |
 | G4 API temporal | BLOCKED | Documentación API + auditor sénior |
-| G5 Autocompletado y descuentos | IN PROGRESS | Auditor sénior |
+| G5 Autocompletado y descuentos | DONE | Auditor sénior |
 | G6 Calidad final | TODO | Auditor sénior + usuario |
 
 ## Control de Versiones, Git y CI/CD
@@ -46,14 +46,21 @@
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
 | Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `feat/MC-028-discount-provenance` |
+| Rama de trabajo activa | `feat/MC-029-shopping-list-basket` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
-| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`, `feat/MC-028-discount-provenance`) |
+| Push remoto | `PUSHED` (`main`, `develop`, `feat/MC-014-receipt-pipeline`, `feat/MC-026-product-normalization`, `feat/MC-027-product-autocomplete`, `feat/MC-028-discount-provenance`, `feat/MC-029-shopping-list-basket`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-07 22:40:**
+  - `MC-029` (G5): Implementada lista de compras y canasta estimada (`ShoppingListScreen`, `BasketEstimator`, `ShoppingListDao`).
+  - Estimación de presupuesto en tiempo real basada exclusivamente en compras locales confirmadas de la base de datos Room.
+  - Distinción rigurosa de frescura de precios: confirmados recientes (<= 30 días con comercio y fecha), desactualizados (> 30 días advertidos explícitamente en UI y cálculos) y sin historial previo.
+  - Soporte para agregar artículos con autocompletado desde el catálogo, marcar como comprados/tachados, y limpiar lista.
+  - Navegación principal mediante `NavigationBar` (Historial, Escaneo, Lista de Compras).
+  - Verificación: 45/45 pruebas unitarias exitosas (+7 tests en `BasketEstimatorTest` y +3 en `PurchaseRepositoryTest`) y `assembleDebug` limpio sin deprecaciones.
 - **2026-11-07 22:15:**
   - `MC-028` (G5): Implementada clasificación de procedencia de descuentos (`DiscountClassifier`: `LOYALTY_MEMBER`, `PROMOTION_2X1`, `EXPLICIT_LINE`, `DERIVED`, `UNKNOWN`).
   - Integrada evidencia textual OCR en el modelo y UI (`discountEvidence`) con auditoría interactiva (`DiscountAuditDialog`).
