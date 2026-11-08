@@ -33,7 +33,19 @@ interface StoreDao {
 
     @Query("SELECT * FROM stores WHERE name LIKE '%' || :query || '%' LIMIT 10")
     fun searchStores(query: String): Flow<List<StoreEntity>>
+
+    @Query("SELECT DISTINCT name FROM stores ORDER BY name ASC")
+    fun getAllStoreNames(): Flow<List<String>>
 }
+
+data class PriceObservationItemEntity(
+    val id: String,
+    val productId: String?,
+    val rawDescription: String,
+    val unitPriceMinor: Long,
+    val purchaseTimestamp: Long,
+    val storeName: String
+)
 
 @Dao
 interface ReceiptDao {
@@ -50,6 +62,24 @@ interface ReceiptDao {
         ORDER BY r.purchaseTimestamp DESC
     """)
     fun getAllReceiptsWithStore(): Flow<List<ReceiptWithStoreAndItems>>
+
+    @Query("""
+        SELECT 
+            ri.id,
+            ri.productId,
+            ri.rawDescription,
+            CASE 
+                WHEN ri.quantityValue > 0 THEN ri.finalPriceMinor / ri.quantityValue 
+                ELSE ri.finalPriceMinor 
+            END as unitPriceMinor,
+            r.purchaseTimestamp,
+            s.name as storeName
+        FROM receipt_items ri
+        INNER JOIN receipts r ON ri.receiptId = r.id
+        INNER JOIN stores s ON r.storeId = s.id
+        ORDER BY r.purchaseTimestamp DESC
+    """)
+    fun observeAllPriceObservations(): Flow<List<PriceObservationItemEntity>>
 
     @Query("SELECT * FROM receipt_items WHERE receiptId = :receiptId")
     suspend fun getItemsForReceipt(receiptId: String): List<ReceiptItemEntity>

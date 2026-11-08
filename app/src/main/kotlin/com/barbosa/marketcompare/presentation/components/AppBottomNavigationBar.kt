@@ -3,6 +3,7 @@ package com.barbosa.marketcompare.presentation.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ReceiptLong
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,11 +37,11 @@ fun AppBottomNavigationBar(
             onClick = onNavigateToHistory,
             icon = {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ReceiptLong,
-                    contentDescription = stringResource(R.string.nav_history)
+                    imageVector = Icons.Default.Search,
+                    contentDescription = stringResource(R.string.nav_prices)
                 )
             },
-            label = { Text(stringResource(R.string.nav_history)) },
+            label = { Text(stringResource(R.string.nav_prices)) },
             colors = NavigationBarItemDefaults.colors(
                 indicatorColor = MaterialTheme.colorScheme.primaryContainer,
                 selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,

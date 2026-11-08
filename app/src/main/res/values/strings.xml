@@ -7,9 +7,29 @@
     <string name="action_cancel">Cancelar</string>
     <string name="action_confirm">Confirmar</string>
     <string name="action_save">Guardar</string>
+    <string name="nav_prices">Precios</string>
     <string name="nav_history">Historial</string>
     <string name="nav_scan">Escanear</string>
     <string name="nav_shopping_list">Lista</string>
+    
+    <!-- Explorador de Precios (MC-044) -->
+    <string name="home_price_explorer_title">Explorador de Precios</string>
+    <string name="home_search_hint">Buscar producto o comparar precios…</string>
+    <string name="home_search_clear">Limpiar búsqueda</string>
+    <string name="home_chip_all_stores">Todas las tiendas</string>
+    <string name="home_kpi_monitored_products">Productos</string>
+    <string name="home_kpi_stores_tracked">Tiendas</string>
+    <string name="home_kpi_best_deal">Mejor oferta</string>
+    <string name="home_kpi_best_deal_none">Sin datos</string>
+    <string name="home_empty_title">Sin registros de precios aún</string>
+    <string name="home_empty_description">Escanea tus facturas para registrar y comparar precios de productos entre tiendas.</string>
+    <string name="home_empty_search">No se encontraron productos para \"%1$s\"</string>
+    <string name="home_badge_best_price">Mejor precio</string>
+    <string name="home_receipts_collapsible_title">Facturas archivadas (%1$d)</string>
+    <string name="home_receipts_collapsible_subtitle">Toca para ver o consultar tus tickets confirmados</string>
+    <string name="home_fab_scan">Escanear Factura</string>
+    <string name="home_price_observation_date">Registrado el %1$s</string>
+    <string name="home_store_filter_label">Filtrar por comercio:</string>
     
     <!-- Historial de compras -->
     <string name="history_title">Mis Compras Confirmadas</string>
