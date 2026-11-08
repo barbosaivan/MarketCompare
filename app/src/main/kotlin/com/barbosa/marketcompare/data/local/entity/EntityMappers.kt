@@ -2,11 +2,13 @@ package com.barbosa.marketcompare.data.local.entity
 
 import com.barbosa.marketcompare.data.local.dao.ReceiptWithStoreAndItems
 import com.barbosa.marketcompare.domain.model.DiscountType
+import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductQuantity
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.ReceiptItem
+import com.barbosa.marketcompare.domain.model.ShoppingListItem
 import com.barbosa.marketcompare.domain.model.UnitType
 
 fun ProductEntity.toDomain(): Product = Product(
@@ -45,5 +47,32 @@ fun ReceiptWithStoreAndItems.toDomain(items: List<ReceiptItem> = emptyList()): R
     totalAmount = Money(totalAmountMinor, "COP"),
     rawDocumentUri = rawDocumentUri,
     items = items
+)
+
+fun ReceiptItem.toEntity(): ReceiptItemEntity = ReceiptItemEntity(
+    id = id,
+    receiptId = receiptId,
+    productId = productId,
+    rawDescription = rawDescription,
+    quantityValue = quantity.value,
+    quantityUnit = quantity.unit.name,
+    listPriceMinor = listPrice?.amountMinor,
+    discountMinor = discount?.amountMinor,
+    finalPriceMinor = finalPrice.amountMinor,
+    discountType = discountType.name,
+    discountEvidence = discountEvidence,
+    confidenceScore = confidenceScore,
+    userConfirmed = userConfirmed
+)
+
+fun ShoppingListItemEntity.toDomain(estimatedPrice: HistoricalPriceObservation? = null): ShoppingListItem = ShoppingListItem(
+    id = id,
+    name = name,
+    productId = productId,
+    quantity = quantity,
+    unit = runCatching { UnitType.valueOf(unit) }.getOrDefault(UnitType.UNIT),
+    isChecked = isChecked,
+    estimatedPrice = estimatedPrice,
+    createdAtTimestamp = createdAtTimestamp
 )
 

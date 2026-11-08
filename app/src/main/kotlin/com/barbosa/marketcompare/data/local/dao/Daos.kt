@@ -81,6 +81,25 @@ interface ReceiptDao {
     """)
     fun observeAllPriceObservations(): Flow<List<PriceObservationItemEntity>>
 
+    @Query("""
+        SELECT 
+            ri.id,
+            ri.productId,
+            ri.rawDescription,
+            CASE 
+                WHEN ri.quantityValue > 0 THEN ri.finalPriceMinor / ri.quantityValue 
+                ELSE ri.finalPriceMinor 
+            END as unitPriceMinor,
+            r.purchaseTimestamp,
+            s.name as storeName
+        FROM receipt_items ri
+        INNER JOIN receipts r ON ri.receiptId = r.id
+        INNER JOIN stores s ON r.storeId = s.id
+        WHERE ri.rawDescription LIKE '%' || :queryName || '%'
+        ORDER BY r.purchaseTimestamp DESC
+    """)
+    suspend fun getPriceObservationsForProduct(queryName: String): List<PriceObservationItemEntity>
+
     @Query("SELECT * FROM receipt_items WHERE receiptId = :receiptId")
     suspend fun getItemsForReceipt(receiptId: String): List<ReceiptItemEntity>
 

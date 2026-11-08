@@ -35,10 +35,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.barbosa.marketcompare.R
+import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.presentation.components.PriceKpiSummaryCard
 import com.barbosa.marketcompare.presentation.components.PriceSearchBar
+import com.barbosa.marketcompare.presentation.components.ProductCrossStoreComparisonSheet
 import com.barbosa.marketcompare.presentation.components.ProductPriceObservationCard
 import com.barbosa.marketcompare.presentation.components.RecentReceiptsCollapsibleSection
 import com.barbosa.marketcompare.presentation.components.StoreFilterChips
@@ -51,6 +53,10 @@ fun HomePriceExplorerScreen(
     receipts: List<Receipt>,
     onScanClick: () -> Unit,
     onReceiptClick: (String) -> Unit,
+    onProductClick: (String) -> Unit = {},
+    comparisonSummary: ProductComparisonSummary? = null,
+    onDismissComparison: () -> Unit = {},
+    onAddToList: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
@@ -144,7 +150,7 @@ fun HomePriceExplorerScreen(
                     items(filteredObservations, key = { it.id }) { item ->
                         ProductPriceObservationCard(
                             observation = item,
-                            onClick = { /* Próxima edición o detalle de producto */ }
+                            onClick = { onProductClick(item.productName) }
                         )
                     }
                 }
@@ -158,6 +164,14 @@ fun HomePriceExplorerScreen(
                     )
                 }
             }
+        }
+
+        if (comparisonSummary != null) {
+            ProductCrossStoreComparisonSheet(
+                summary = comparisonSummary,
+                onDismiss = onDismissComparison,
+                onAddToList = onAddToList
+            )
         }
     }
 }

@@ -15,3 +15,28 @@ data class ProductPriceObservationItem(
     val freshness: PriceFreshness = PriceFreshness.RECENT
 )
 
+/**
+ * Entrada comparativa de precio de un producto en un establecimiento específico (MC-045).
+ */
+data class StorePriceEntry(
+    val storeName: String,
+    val unitPrice: Money,
+    val observedAtTimestamp: Long,
+    val freshness: PriceFreshness,
+    val priceDifferenceWithLowest: Money,
+    val percentageDifferenceWithLowest: Double,
+    val isLowestPrice: Boolean
+)
+
+/**
+ * Resumen de comparación de precios multicomercio para un producto (MC-045).
+ */
+data class ProductComparisonSummary(
+    val productName: String,
+    val lowestPrice: Money,
+    val highestPrice: Money,
+    val maxSavings: Money,
+    val maxSavingsPercentage: Double,
+    val cheapestStore: String,
+    val storeEntries: List<StorePriceEntry>
+)
