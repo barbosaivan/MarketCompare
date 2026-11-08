@@ -1,13 +1,24 @@
-# Glosario
+# Glosario — MarketCompare
 
-Precio de compra: importe pagado y confirmado desde factura.
-Precio de referencia externo: cotización API temporal y no persistente.
-Observación de precio: registro derivado de una compra confirmada.
-Precio de lista: precio previo al descuento cuando aparece impreso.
-Precio final: importe efectivamente cobrado.
-Descuento explícito: identificado en documento.
-Descuento derivado: cálculo verificable con datos suficientes.
-Presentación: vaso, botella, paquete, etc.
-Contenido neto: cantidad como 1 L o 500 g.
-Cotización efímera: respuesta API solo en memoria.
-ADR: Architecture Decision Record.
+- **Precio de compra:** Importe final efectivamente pagado y confirmado por el usuario a partir de una factura de compra real.
+- **Precio de referencia externo:** Cotización temporal obtenida bajo demanda de una API externa, mantenida únicamente en memoria volátil (RAM) y nunca persistida.
+- **Observación de precio (`HistoricalPriceObservation`):** Registro histórico derivado de una compra confirmada, que asocia un producto, un precio unitario, una tienda y una marca temporal.
+- **Precio de lista:** Precio anunciado previo a descuentos cuando aparece explícitamente impreso en el recibo.
+- **Precio final:** Importe cobrado tras deducir los descuentos aplicables (`list_price - discount`).
+- **Descuento explícito (`EXPLICIT_LINE`):** Deducción monetaria impresa en una línea específica del recibo vinculada a un ítem.
+- **Descuento de fidelización (`LOYALTY_MEMBER`):** Beneficio obtenido por afiliación al programa de cliente frecuente o puntos de la tienda.
+- **Descuento por promoción (`PROMOTION_2X1`):** Ofertas por volumen comercial, combos o promociones anunciadas.
+- **Descuento derivado (`DERIVED`):** Descuento calculado mediante la diferencia verificable entre el precio de lista y el precio final cobrado.
+- **Evidencia de descuento (`discountEvidence`):** Fragmento textual mínimo extraído del OCR que respalda la existencia y tipo de la deducción.
+- **Presentación:** Tipo de empaque o formato físico del producto (ej: Vaso, Botella, Bolsa, Caja, Tetrapack, Lata, Paquete).
+- **Contenido neto:** Magnitud cuantitativa y unidad física del producto (ej: 1000g, 1L, 250ml, 6 unidades).
+- **Variante de producto:** Identidad física unívoca determinada por la tupla `(marca, nombre_base, contenido_neto, unidad, presentacion)`. Dos variantes distintas nunca deben consolidarse en el mismo producto.
+- **Huella de variante (`variantFingerprint`):** Cadena normalizada canónica utilizada para comparar y desambiguar variantes físicas de productos.
+- **Alias de producto:** Mapeo asociativo entre el texto crudo abreviado que imprime una tienda específica en su ticket (ej: "YOG ALP FR 150G") y el producto normalizado del catálogo.
+- **Frescura de precio (`PriceFreshness`):** Semáforo que clasifica la vigencia temporal de una observación histórica de precio:
+  - `RECENT`: Registrado en los últimos <= 30 días. Alta fiabilidad.
+  - `STALE`: Registrado hace más de 30 días. Sujeto a variaciones de inflación o cambios de mercado.
+  - `UNKNOWN`: Sin observaciones de compras previas en el historial local.
+- **Estimación de canasta (`BasketEstimate`):** Presupuesto total proyectado de la lista de compras local calculado sumando los precios históricos más recientes de cada artículo ponderados por su cantidad.
+- **Cotización efímera:** Instancia de respuesta remota que solo reside en la memoria de trabajo de la UI y se descarta al salir de la pantalla (ADR 0001).
+- **ADR (Architecture Decision Record):** Registro formal que documenta una decisión arquitectónica clave, su contexto, consecuencias y alternativas consideradas.

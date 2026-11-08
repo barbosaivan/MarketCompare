@@ -5,15 +5,18 @@
 [![Android Gradle Plugin](https://img.shields.io/badge/AGP-9.2.1-green.svg?logo=android)](https://developer.android.com/build)
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-2026.05.01-4285F4.svg?logo=jetpackcompose)](https://developer.android.com/jetpack/compose)
 [![Material 3](https://img.shields.io/badge/Material%20Design-3-7C4DFF.svg)](https://m3.material.io/)
-[![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Gate%205%20Passed-success.svg)](QUALITY_GATES.md)
+[![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Gate%206%20Certified-success.svg)](QUALITY_GATES.md)
+[![Android Lint](https://img.shields.io/badge/Android%20Lint-0%20errors%20%7C%200%20warnings-brightgreen.svg)](docs/STATIC_ANALYSIS_AUDIT.md)
+[![Unit Tests](https://img.shields.io/badge/Unit%20Tests-47%2F47%20Passed-success.svg)](docs/TEST_SUITE_REPORT.md)
+[![Audit](https://img.shields.io/badge/Senior%20Audit-PASS-success.svg)](docs/AUDIT_REPORT.md)
 
 **MarketCompare** es una aplicación Android moderna, accesible e intuitiva orientada al consumidor inteligente. Permite registrar y auditar compras reales de supermercado a partir de facturas físicas y electrónicas (mediante cámara, galería y PDFs), manteniendo un historial de precios 100% privado y local, y facilitando la comparación de precios de referencia en tiempo real sin almacenar cotizaciones externas.
 
 ---
 
-## 🚀 Estado del Proyecto y Capacidades (Gate 5 Completado)
+## 🚀 Estado del Proyecto y Capacidades (Gate 6 Certificado)
 
-El proyecto ha superado con éxito **Gate 0**, **Gate 1**, **Gate 2**, **Gate 3 (Compras locales y Pipeline OCR)** y **Gate 5 (Normalización, Descuentos y Canasta)**:
+El proyecto ha superado con éxito las compuertas de calidad **Gate 0**, **Gate 1**, **Gate 2**, **Gate 3**, **Gate 5** y **Gate 6 (Calidad Final y Auditoría Sénior)**:
 
 1. **Importación Multicanal de Facturas:**
    - **Cámara en vivo:** Captura de fotos de tickets con CameraX y URI seguro vía `FileProvider`.
@@ -88,6 +91,12 @@ MarketCompare implementa una **Clean Architecture** pragmática dividida en 4 ca
 ```
 *Ejecuta la suite completa de 47 pruebas unitarias (`BasketEstimatorTest`, `DiscountClassifierTest`, `ReceiptParserTest`, `ProductAutocompleteEngineTest`, `ProductNormalizerTest`, `PurchaseRepositoryTest`, `MoneyTest`), con reportes HTML en: `app/build/reports/tests/testDebugUnitTest/index.html`.*
 
+### Ejecutar Análisis Estático (Android Lint):
+```bash
+./gradlew lintDebug
+```
+*Verifica la conformidad del código contra `app/lint.xml`. Baseline actual: **0 errores, 0 warnings**.*
+
 ---
 
 ## 🌿 Flujo de Ramas y Releases (Gitflow)
@@ -103,17 +112,21 @@ MarketCompare implementa una **Clean Architecture** pragmática dividida en 4 ca
 
 ## 📚 Documentación Técnica Viva
 
-La carpeta [`docs/`](docs/) contiene las especificaciones detalladas y decisiones arquitectónicas:
+La carpeta [`docs/`](docs/) contiene las especificaciones detalladas, decisiones arquitectónicas e informes de auditoría:
 
 | Documento | Descripción |
 |---|---|
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Capas, flujo de ingesta OCR y principios de desacoplamiento. |
-| [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) | Modelo relacional Room, Value Objects y DTOs en memoria. |
-| [`docs/FUNCTIONALITY.md`](docs/FUNCTIONALITY.md) | Pipeline de procesamiento de recibos y flujos de usuario. |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Capas, flujo de ingesta OCR, canasta y principios de desacoplamiento. |
+| [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) | Modelo relacional Room, lista de compras, Value Objects y DTOs en memoria. |
+| [`docs/FUNCTIONALITY.md`](docs/FUNCTIONALITY.md) | Pipeline de procesamiento de recibos, autocompletado y flujos de usuario. |
 | [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) | Tokens Material 3, tipografía y catálogo de componentes. |
 | [`docs/PROJECT_CONFIGURATION.md`](docs/PROJECT_CONFIGURATION.md) | Toolchain verificado, SDK y versiones fijadas. |
-| [`docs/QUALITY_AND_TESTING.md`](docs/QUALITY_AND_TESTING.md) | Estrategia de pruebas unitarias, integración y fixtures sintéticas. |
+| [`docs/QUALITY_AND_TESTING.md`](docs/QUALITY_AND_TESTING.md) | Estrategia de calidad, pirámide de pruebas y criterios de compuerta. |
 | [`docs/DEVELOPMENT_GUIDE.md`](docs/DEVELOPMENT_GUIDE.md) | Guía de desarrollo, Conventional Commits y releases. |
+| [`docs/STATIC_ANALYSIS_AUDIT.md`](docs/STATIC_ANALYSIS_AUDIT.md) | Reporte formal de Android Lint (0 errores, 0 advertencias) y dependencias. |
+| [`docs/TEST_SUITE_REPORT.md`](docs/TEST_SUITE_REPORT.md) | Certificación de la suite completa de 47 pruebas unitarias (100% éxito). |
+| [`docs/AUDIT_REPORT.md`](docs/AUDIT_REPORT.md) | Informe de auditoría sénior independiente de código, arquitectura y privacidad (Veredicto PASS). |
+| [`docs/CHANGELOG_TECHNICAL.md`](docs/CHANGELOG_TECHNICAL.md) | Historial técnico de cambios por compuerta de calidad. |
 | [`docs/adr/`](docs/adr/) | Registro de Decisiones Arquitectónicas (ADRs 0001, 0002, 0003). |
 | [`DASHBOARD.md`](DASHBOARD.md) | Tablero de seguimiento de hitos y KPIs en tiempo real. |
 | [`BACKLOG.csv`](BACKLOG.csv) | Trazabilidad atómica de tareas por hito con dependencias y estados Git. |
