@@ -64,12 +64,12 @@ Aprobación humana requerida antes de una implementación amplia.
 - [x] Auditor sénior firma el informe de compuerta (PASS verificado).
 
 ## Gate 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (v2.0)
-- [ ] Pantalla principal reorientada a consulta y comparación de precios (eliminando el protagonismo del gasto total).
-- [ ] Buscador universal de productos con comparación multicomercio en tiempo real.
-- [ ] Directorio y explorador de establecimientos: listado de productos y precios filtrados por tienda/supermercado.
-- [ ] Métricas de mejor precio y fecha de última actualización por comercio.
-- [ ] Pruebas de dominio y repositorio para consultas agrupadas por tienda.
-- [ ] Auditor sénior firma el informe de compuerta.
+- [x] Pantalla principal reorientada a consulta y comparación de precios (eliminando el protagonismo del gasto total) (MC-044).
+- [x] Buscador universal de productos con comparación multicomercio en tiempo real (MC-045).
+- [x] Directorio y explorador de establecimientos: listado de productos y precios filtrados por tienda/supermercado (MC-046).
+- [x] Métricas de mejor precio y fecha de última actualización por comercio (MC-047).
+- [x] Pruebas de dominio y repositorio para consultas agrupadas por tienda (MC-048).
+- [x] Auditor sénior firma el informe de compuerta (PASS verificado en docs/AUDIT_REPORT_GATE_8.md).
 
 ## Gate 9 — Ingreso Manual, Edición Total y Normalización a Medidas Estándar (v2.0)
 - [ ] Formulario intuitivo de ingreso manual de precios de góndola (sin necesidad de factura).

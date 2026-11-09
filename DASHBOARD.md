@@ -1,13 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Fase v2.0 en ejecución. Gate 7 completado y aprobado. Gate 8 (Dashboard de Inteligencia de Precios y Explorador por Tienda) en progreso, completada tarea MC-044.
+> Estado actual: Fase v2.0 en ejecución. Gate 7 y Gate 8 completados y aprobados. Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) listo para iniciar.
 
 ## Resumen
 - Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
-- Compuerta activa: `GATE 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (IN PROGRESS)`
+- Compuerta activa: `GATE 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (DONE / APROBADO)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `feat/MC-047-price-observation-queries`
+- Rama de trabajo activa: `feat/MC-048-gate-8-audit-and-tests`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,18 +20,18 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 41 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-047) |
+| DONE con evidencia | 42 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-048) |
 | En progreso | 0 |
-| Pendientes (TODO) | 16 (MC-048 a MC-058) |
+| Pendientes (TODO) | 15 (MC-049 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**65/65 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**69/69 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
-| Hito Gate 8 (Dashboard de Precios y Tiendas) | IN_PROGRESS (MC-044, MC-045, MC-046, MC-047 completados) |
-| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING |
+| Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
+| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING (Listo para iniciar MC-049) |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
 
 ## Hitos
@@ -45,7 +45,7 @@
 | G5 Autocompletado y descuentos | DONE | Auditor sénior |
 | G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
 | G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
-| G8 Dashboard de Precios y Tiendas | IN_PROGRESS | Auditor sénior + Tech Lead |
+| G8 Dashboard de Precios y Tiendas | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G9 Ingreso Manual y Medidas Estándar | TODO | Auditor sénior + Tech Lead |
 | G10 OCR Visual y Bounding Boxes | TODO | Auditor sénior + Usuario |
 
@@ -62,6 +62,24 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 21:30:**
+  - `MC-048` (G8): Creación de pruebas unitarias (`PriceExplorerGroupingTest.kt`), auditoría sénior independiente y certificación de Gate 8.
+  - Validación de suite unitaria completa con **69/69 pruebas exitosas** y análisis estático con `lintDebug` en **0 errores y 0 warnings**.
+  - Publicación del informe de auditoría independiente [`docs/AUDIT_REPORT_GATE_8.md`](docs/AUDIT_REPORT_GATE_8.md) con veredicto **PASS**.
+  - **Hito Gate 8 (Dashboard de Inteligencia de Precios y Explorador por Tienda) 100% completado y certificado**.
+- **2026-11-08 21:00:**
+  - `MC-047` (G8): Implementación de queries agregadas y analíticas por tienda en Room DAOs y repositorio (`getStoreStatistics`, `observePriceTimeline`, `observePriceObservationsBetween`).
+  - Creación de suite unitaria `StoreCatalogRepositoryTest.kt` (5 pruebas).
+- **2026-11-08 20:30:**
+  - `MC-046` (G8): Implementación del directorio de comercios y explorador de catálogo filtrado por establecimiento (`StoreCatalogScreen`), con resolución de unicidad por `ProductCatalogResolver`.
+  - Navegación bidireccional conectada desde chips en Home y ruta parametrizada `store_catalog/{storeName}`.
+- **2026-11-08 19:40:**
+  - `MC-045` (G8): Implementación del buscador universal de precios multicomercio y ModalBottomSheet `ProductCrossStoreComparisonSheet`.
+  - Extracción del motor puro de dominio `CrossStoreComparisonCalculator` con cálculo de dispersión, ranking de menor a mayor precio y ahorro relativo respecto al comercio más costoso.
+  - Creación de suite unitaria `CrossStoreComparisonCalculatorTest.kt` (4 pruebas).
+- **2026-11-08 18:30:**
+  - `MC-044` (G8): Rediseño integral de la pantalla principal de registro de gastos a explorador de inteligencia de precios (`HomePriceExplorerScreen`).
+  - Incorporación de barra de búsqueda universal, chips de filtrado por comercio, tarjetas KPI de monitoreo y feed cronológico de observaciones de precios con badges de frescura.
 - **2026-11-08 17:15:**
   - `MC-043` (G7): Refactorización y extracción exhaustiva de componentes en la capa de presentación.
   - Creación de componentes reutilizables: `DiscountAuditDialog`, `EditableReceiptItemCard`, `ReceiptReviewBottomBar`, `BasketSummaryCard`, `ShoppingListItemRow` y `ShoppingListAddCard`.
