@@ -23,7 +23,9 @@ data class PriceObservationItemEntity(
     val rawDescription: String,
     val unitPriceMinor: Long,
     val purchaseTimestamp: Long,
-    val storeName: String
+    val storeName: String,
+    val quantityValue: Long = 1L,
+    val quantityUnit: String = "UNIT"
 )
 
 @Dao
@@ -58,7 +60,9 @@ interface ReceiptDao {
                 ELSE ri.finalPriceMinor 
             END as unitPriceMinor,
             r.purchaseTimestamp,
-            s.name as storeName
+            s.name as storeName,
+            ri.quantityValue,
+            ri.quantityUnit
         FROM receipt_items ri
         INNER JOIN receipts r ON ri.receiptId = r.id
         INNER JOIN stores s ON r.storeId = s.id
@@ -76,7 +80,9 @@ interface ReceiptDao {
                 ELSE ri.finalPriceMinor 
             END as unitPriceMinor,
             r.purchaseTimestamp,
-            s.name as storeName
+            s.name as storeName,
+            ri.quantityValue,
+            ri.quantityUnit
         FROM receipt_items ri
         INNER JOIN receipts r ON ri.receiptId = r.id
         INNER JOIN stores s ON r.storeId = s.id
@@ -95,7 +101,9 @@ interface ReceiptDao {
                 ELSE ri.finalPriceMinor 
             END as unitPriceMinor,
             r.purchaseTimestamp,
-            s.name as storeName
+            s.name as storeName,
+            ri.quantityValue,
+            ri.quantityUnit
         FROM receipt_items ri
         INNER JOIN receipts r ON ri.receiptId = r.id
         INNER JOIN stores s ON r.storeId = s.id
@@ -114,7 +122,9 @@ interface ReceiptDao {
                 ELSE ri.finalPriceMinor 
             END as unitPriceMinor,
             r.purchaseTimestamp,
-            s.name as storeName
+            s.name as storeName,
+            ri.quantityValue,
+            ri.quantityUnit
         FROM receipt_items ri
         INNER JOIN receipts r ON ri.receiptId = r.id
         INNER JOIN stores s ON r.storeId = s.id
@@ -133,7 +143,9 @@ interface ReceiptDao {
                 ELSE ri.finalPriceMinor 
             END as unitPriceMinor,
             r.purchaseTimestamp,
-            s.name as storeName
+            s.name as storeName,
+            ri.quantityValue,
+            ri.quantityUnit
         FROM receipt_items ri
         INNER JOIN receipts r ON ri.receiptId = r.id
         INNER JOIN stores s ON r.storeId = s.id

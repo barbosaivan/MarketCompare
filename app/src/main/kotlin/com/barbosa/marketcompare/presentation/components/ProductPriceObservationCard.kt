@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.barbosa.marketcompare.R
 import com.barbosa.marketcompare.domain.model.PriceFreshness
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
+import com.barbosa.marketcompare.domain.normalizer.StandardPriceMeasurement
 import com.barbosa.marketcompare.presentation.theme.semanticColors
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -56,7 +57,8 @@ fun ProductPriceObservationCard(
             Spacer(modifier = Modifier.height(8.dp))
             ObservationBadges(
                 isLowestPrice = observation.isLowestPrice,
-                freshness = observation.freshness
+                freshness = observation.freshness,
+                standardMeasurement = observation.standardMeasurement
             )
         }
     }
@@ -124,6 +126,7 @@ private fun ObservationCardFooter(
 private fun ObservationBadges(
     isLowestPrice: Boolean,
     freshness: PriceFreshness,
+    standardMeasurement: StandardPriceMeasurement?,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -131,6 +134,9 @@ private fun ObservationBadges(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        standardMeasurement?.let {
+            StandardPriceBadge(measurement = it)
+        }
         if (isLowestPrice) {
             BadgeChip(
                 text = stringResource(R.string.home_badge_best_price),

@@ -4,11 +4,16 @@ import com.barbosa.marketcompare.domain.basket.BasketEstimator
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.StorePriceEntry
+import com.barbosa.marketcompare.domain.model.UnitType
+import com.barbosa.marketcompare.domain.normalizer.ProductNormalizer
+import com.barbosa.marketcompare.domain.normalizer.StandardMeasurementNormalizer
 
 data class PriceComparisonRecord(
     val storeName: String,
     val unitPriceMinor: Long,
-    val timestamp: Long
+    val timestamp: Long,
+    val quantityValue: Long = 1L,
+    val quantityUnit: String = "UNIT"
 )
 
 object CrossStoreComparisonCalculator {
@@ -43,6 +48,9 @@ object CrossStoreComparisonCalculator {
                 ((item.unitPriceMinor - lowest.unitPriceMinor).toDouble() / item.unitPriceMinor.toDouble()) * 100.0
             } else 0.0
 
+            val unitType = runCatching { UnitType.valueOf(item.quantityUnit) }.getOrDefault(UnitType.UNIT)
+            val measurement = resolveMeasurement(trimmed, item.unitPriceMinor, item.quantityValue, unitType)
+
             StorePriceEntry(
                 storeName = item.storeName,
                 unitPrice = Money(item.unitPriceMinor, "COP"),
@@ -50,7 +58,8 @@ object CrossStoreComparisonCalculator {
                 freshness = BasketEstimator.evaluateFreshness(item.timestamp),
                 priceDifferenceWithLowest = Money(diffMinor, "COP"),
                 percentageDifferenceWithLowest = diffPercentage,
-                isLowestPrice = item.unitPriceMinor == lowest.unitPriceMinor
+                isLowestPrice = item.unitPriceMinor == lowest.unitPriceMinor,
+                standardMeasurement = measurement
             )
         }
 
@@ -64,5 +73,32 @@ object CrossStoreComparisonCalculator {
             storeEntries = entries
         )
     }
-}
 
+    private fun resolveMeasurement(
+        productName: String,
+        priceMinor: Long,
+        qtyValue: Long,
+        unitType: UnitType
+    ) = if (unitType != UnitType.UNIT) {
+        StandardMeasurementNormalizer.normalize(
+            price = Money(priceMinor, "COP"),
+            rawQuantityValue = qtyValue,
+            unit = unitType
+        )
+    } else {
+        val candidate = ProductNormalizer.normalize(productName)
+        if (candidate.unit != UnitType.UNIT) {
+            StandardMeasurementNormalizer.normalize(
+                price = Money(priceMinor, "COP"),
+                rawQuantityValue = candidate.baseQuantity,
+                unit = candidate.unit
+            )
+        } else {
+            StandardMeasurementNormalizer.normalize(
+                price = Money(priceMinor, "COP"),
+                rawQuantityValue = qtyValue,
+                unit = UnitType.UNIT
+            )
+        }
+    }
+}

@@ -4,7 +4,9 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.barbosa.marketcompare.R
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
 import com.barbosa.marketcompare.domain.model.UnitType
+import com.barbosa.marketcompare.presentation.components.StandardPriceBadge
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -105,6 +108,10 @@ fun ProductObservationItemRow(
                     fontWeight = FontWeight.ExtraBold,
                     color = if (observation.isLowestPrice) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                 )
+                observation.standardMeasurement?.let {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    StandardPriceBadge(measurement = it, showSecondary = true)
+                }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 IconButton(onClick = onEdit) {

@@ -108,7 +108,9 @@ class PurchaseRepositoryImpl(
             PriceComparisonRecord(
                 storeName = it.storeName,
                 unitPriceMinor = it.unitPriceMinor,
-                timestamp = it.purchaseTimestamp
+                timestamp = it.purchaseTimestamp,
+                quantityValue = it.quantityValue,
+                quantityUnit = it.quantityUnit
             )
         }
         return CrossStoreComparisonCalculator.calculate(trimmed, records)

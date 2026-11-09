@@ -13,6 +13,8 @@ import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.ReceiptItem
 import com.barbosa.marketcompare.domain.model.ShoppingListItem
 import com.barbosa.marketcompare.domain.model.UnitType
+import com.barbosa.marketcompare.domain.normalizer.ProductNormalizer
+import com.barbosa.marketcompare.domain.normalizer.StandardMeasurementNormalizer
 
 fun ProductEntity.toDomain(): Product = Product(
     id = id,
@@ -79,14 +81,41 @@ fun ShoppingListItemEntity.toDomain(estimatedPrice: HistoricalPriceObservation? 
     createdAtTimestamp = createdAtTimestamp
 )
 
-fun PriceObservationItemEntity.toDomain(isLowestPrice: Boolean = false): ProductPriceObservationItem = ProductPriceObservationItem(
-    id = id,
-    productId = productId,
-    productName = rawDescription,
-    storeName = storeName,
-    unitPrice = Money(unitPriceMinor, "COP"),
-    observedAtTimestamp = purchaseTimestamp,
-    isLowestPrice = isLowestPrice,
-    freshness = BasketEstimator.evaluateFreshness(purchaseTimestamp)
-)
+fun PriceObservationItemEntity.toDomain(isLowestPrice: Boolean = false): ProductPriceObservationItem {
+    val unitType = runCatching { UnitType.valueOf(quantityUnit) }.getOrDefault(UnitType.UNIT)
+    val measurement = if (unitType != UnitType.UNIT) {
+        StandardMeasurementNormalizer.normalize(
+            price = Money(unitPriceMinor, "COP"),
+            rawQuantityValue = quantityValue,
+            unit = unitType
+        )
+    } else {
+        val candidate = ProductNormalizer.normalize(rawDescription)
+        if (candidate.unit != UnitType.UNIT) {
+            StandardMeasurementNormalizer.normalize(
+                price = Money(unitPriceMinor, "COP"),
+                rawQuantityValue = candidate.baseQuantity,
+                unit = candidate.unit
+            )
+        } else {
+            StandardMeasurementNormalizer.normalize(
+                price = Money(unitPriceMinor, "COP"),
+                rawQuantityValue = quantityValue,
+                unit = UnitType.UNIT
+            )
+        }
+    }
+
+    return ProductPriceObservationItem(
+        id = id,
+        productId = productId,
+        productName = rawDescription,
+        storeName = storeName,
+        unitPrice = Money(unitPriceMinor, "COP"),
+        observedAtTimestamp = purchaseTimestamp,
+        isLowestPrice = isLowestPrice,
+        freshness = BasketEstimator.evaluateFreshness(purchaseTimestamp),
+        standardMeasurement = measurement
+    )
+}
 

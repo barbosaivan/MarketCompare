@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.barbosa.marketcompare.R
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
+import com.barbosa.marketcompare.presentation.components.StandardPriceBadge
 import com.barbosa.marketcompare.presentation.theme.semanticColors
 
 @Composable
@@ -58,16 +59,20 @@ fun ProductDetailOverviewCard(
                         )
                     }
                 }
-                comparison?.let {
+                comparison?.let { comp ->
                     Column(horizontalAlignment = Alignment.End) {
                         Text(
-                            text = it.lowestPrice.formatDisplay(),
+                            text = comp.lowestPrice.formatDisplay(),
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.primary
                         )
+                        comp.storeEntries.firstOrNull { it.isLowestPrice }?.standardMeasurement?.let {
+                            Spacer(modifier = Modifier.height(2.dp))
+                            StandardPriceBadge(measurement = it)
+                        }
                         Text(
-                            text = stringResource(R.string.compare_sheet_stores_count, it.storeEntries.size),
+                            text = stringResource(R.string.compare_sheet_stores_count, comp.storeEntries.size),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                         )
