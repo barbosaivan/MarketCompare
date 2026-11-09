@@ -7,7 +7,7 @@
 - Compuerta activa: `GATE 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (IN PROGRESS)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `feat/MC-046-store-directory-catalog`
+- Rama de trabajo activa: `feat/MC-047-price-observation-queries`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,17 +20,17 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 40 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-046) |
+| DONE con evidencia | 41 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-047) |
 | En progreso | 0 |
-| Pendientes (TODO) | 17 (MC-047 a MC-058) |
+| Pendientes (TODO) | 16 (MC-048 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**62/62 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**65/65 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
-| Hito Gate 8 (Dashboard de Precios y Tiendas) | IN_PROGRESS (MC-044, MC-045, MC-046 completados) |
+| Hito Gate 8 (Dashboard de Precios y Tiendas) | IN_PROGRESS (MC-044, MC-045, MC-046, MC-047 completados) |
 | Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
 

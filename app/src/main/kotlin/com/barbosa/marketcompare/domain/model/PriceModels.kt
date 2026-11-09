@@ -51,3 +51,15 @@ data class StoreSummary(
     val productCount: Int,
     val lastObservationTimestamp: Long
 )
+
+/**
+ * Estadísticas consolidadas de precios de un comercio (MC-047).
+ */
+data class StorePriceStatistics(
+    val storeName: String,
+    val distinctProductsCount: Int,
+    val totalObservationsCount: Int,
+    val lowestPriceRecorded: Money?,
+    val highestPriceRecorded: Money?,
+    val lastObservedTimestamp: Long
+)
