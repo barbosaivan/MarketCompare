@@ -163,6 +163,29 @@
     <string name="home_fab_manual_entry">Registrar Precio</string>
     <string name="store_catalog_add_price_button">+ Registrar precio aquí</string>
 
+    <!-- Detalle de Producto y Edición Total (MC-050) -->
+    <string name="product_detail_title">Detalle de Producto</string>
+    <string name="product_detail_edit_action">Editar</string>
+    <string name="product_detail_save_action">Guardar Cambios</string>
+    <string name="product_detail_cancel_action">Cancelar</string>
+    <string name="product_detail_name_label">Nombre del Producto *</string>
+    <string name="product_detail_brand_label">Marca (opcional)</string>
+    <string name="product_detail_category_label">Clasificación / Categoría</string>
+    <string name="product_detail_base_quantity_label">Cantidad base</string>
+    <string name="product_detail_unit_label">Unidad de medida</string>
+    <string name="product_detail_presentation_label">Presentación o empaque</string>
+    <string name="product_detail_observations_title">Historial de Precios por Tienda</string>
+    <string name="product_detail_add_observation">+ Agregar Precio</string>
+    <string name="product_detail_edit_observation">Editar Precio</string>
+    <string name="product_detail_delete_observation">Eliminar</string>
+    <string name="product_detail_delete_observation_confirm">¿Deseas eliminar este registro de precio?</string>
+    <string name="product_detail_store_label">Comercio / Tienda *</string>
+    <string name="product_detail_price_label">Precio (COP) *</string>
+    <string name="product_detail_empty_observations">No hay registros de precio para este producto.</string>
+    <string name="product_detail_save_success">Producto actualizado exitosamente.</string>
+    <string name="product_detail_observation_deleted">Observación eliminada.</string>
+    <string name="product_detail_not_found">Producto no encontrado.</string>
+
     <!-- Estados comunes -->
     <string name="state_loading">Cargando…</string>
     <string name="state_error">Ocurrió un error inesperado</string>

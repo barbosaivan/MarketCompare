@@ -59,6 +59,7 @@ fun StoreCatalogScreen(
     comparisonSummary: ProductComparisonSummary? = null,
     onDismissComparison: () -> Unit = {},
     onAddToList: (String) -> Unit = {},
+    onEditProductClick: (String) -> Unit = {},
     onSaveManualPrice: (
         storeName: String,
         productName: String,
@@ -172,7 +173,8 @@ fun StoreCatalogScreen(
             ProductCrossStoreComparisonSheet(
                 summary = comparisonSummary,
                 onDismiss = onDismissComparison,
-                onAddToList = onAddToList
+                onAddToList = onAddToList,
+                onEditProductClick = onEditProductClick
             )
         }
 

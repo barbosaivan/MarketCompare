@@ -36,6 +36,9 @@ interface ShoppingListDao {
     @Query("DELETE FROM shopping_list_items WHERE isChecked = 1")
     suspend fun deleteCheckedItems()
 
+    @Query("UPDATE shopping_list_items SET name = :newName WHERE productId = :productId OR LOWER(TRIM(name)) = LOWER(TRIM(:oldName))")
+    suspend fun updateItemNames(productId: String?, oldName: String, newName: String)
+
     @Query("""
         SELECT 
             ri.productId,

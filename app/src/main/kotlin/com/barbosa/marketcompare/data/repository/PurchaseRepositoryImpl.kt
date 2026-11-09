@@ -1,10 +1,7 @@
 package com.barbosa.marketcompare.data.repository
 
 import com.barbosa.marketcompare.data.local.MarketCompareDatabase
-import com.barbosa.marketcompare.data.local.entity.ProductAliasEntity
-import com.barbosa.marketcompare.data.local.entity.ProductEntity
 import com.barbosa.marketcompare.data.local.entity.ReceiptEntity
-import com.barbosa.marketcompare.data.local.entity.ReceiptItemEntity
 import com.barbosa.marketcompare.data.local.entity.ShoppingListItemEntity
 import com.barbosa.marketcompare.data.local.entity.StoreEntity
 import com.barbosa.marketcompare.data.local.entity.toDomain
@@ -18,6 +15,7 @@ import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
+import com.barbosa.marketcompare.domain.model.ProductDetailData
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
 import com.barbosa.marketcompare.domain.model.ProductQuantity
 import com.barbosa.marketcompare.domain.model.ProductResolution
@@ -27,7 +25,6 @@ import com.barbosa.marketcompare.domain.model.Store
 import com.barbosa.marketcompare.domain.model.StorePriceStatistics
 import com.barbosa.marketcompare.domain.model.StoreSummary
 import com.barbosa.marketcompare.domain.model.UnitType
-import com.barbosa.marketcompare.domain.normalizer.ProductNormalizer
 import com.barbosa.marketcompare.domain.repository.PurchaseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -44,16 +41,12 @@ class PurchaseRepositoryImpl(
     private val shoppingListDao = database.shoppingListDao()
     private val catalogResolver = ProductCatalogResolver(productDao, receiptDao)
     private val manualPriceRecorder = ManualPriceRecorder(storeDao, productDao, receiptDao, catalogResolver)
+    private val productDetailEditor = ProductDetailEditor(productDao, receiptDao, storeDao, shoppingListDao)
 
-    override fun getAllReceipts(): Flow<List<Receipt>> {
-        return receiptDao.getAllReceiptsWithStore().map { list ->
-            list.map { it.toDomain() }
-        }
-    }
+    override fun getAllReceipts(): Flow<List<Receipt>> =
+        receiptDao.getAllReceiptsWithStore().map { list -> list.map { it.toDomain() } }
 
-    override fun getReceiptById(receiptId: String): Flow<Receipt?> = flow {
-        emit(null)
-    }
+    override fun getReceiptById(receiptId: String): Flow<Receipt?> = flow { emit(null) }
 
     override fun getAllPriceObservations(): Flow<List<ProductPriceObservationItem>> {
         return receiptDao.observeAllPriceObservations().map { entities ->
@@ -70,9 +63,7 @@ class PurchaseRepositoryImpl(
         }
     }
 
-    override fun getAllStoreNames(): Flow<List<String>> {
-        return storeDao.getAllStoreNames()
-    }
+    override fun getAllStoreNames(): Flow<List<String>> = storeDao.getAllStoreNames()
 
     override fun getStoreSummaries(): Flow<List<StoreSummary>> {
         return storeDao.observeStoreSummaries().map { list ->
@@ -88,26 +79,14 @@ class PurchaseRepositoryImpl(
         }
     }
 
-    override fun getProductsForStore(storeName: String): Flow<List<ProductPriceObservationItem>> {
-        return receiptDao.observeProductsForStore(storeName).map { entities ->
-            entities.map { it.toDomain() }
-        }
-    }
+    override fun getProductsForStore(storeName: String): Flow<List<ProductPriceObservationItem>> =
+        receiptDao.observeProductsForStore(storeName).map { entities -> entities.map { it.toDomain() } }
 
-    override fun getPriceTimeline(productName: String): Flow<List<ProductPriceObservationItem>> {
-        return receiptDao.observePriceTimeline(productName.trim()).map { entities ->
-            entities.map { it.toDomain() }
-        }
-    }
+    override fun getPriceTimeline(productName: String): Flow<List<ProductPriceObservationItem>> =
+        receiptDao.observePriceTimeline(productName.trim()).map { entities -> entities.map { it.toDomain() } }
 
-    override fun getPriceObservationsBetween(
-        startTimestamp: Long,
-        endTimestamp: Long
-    ): Flow<List<ProductPriceObservationItem>> {
-        return receiptDao.observePriceObservationsBetween(startTimestamp, endTimestamp).map { entities ->
-            entities.map { it.toDomain() }
-        }
-    }
+    override fun getPriceObservationsBetween(startTimestamp: Long, endTimestamp: Long): Flow<List<ProductPriceObservationItem>> =
+        receiptDao.observePriceObservationsBetween(startTimestamp, endTimestamp).map { entities -> entities.map { it.toDomain() } }
 
     override suspend fun getStoreStatistics(storeName: String): StorePriceStatistics? {
         val result = storeDao.getStoreStatistics(storeName.trim()) ?: return null
@@ -124,7 +103,6 @@ class PurchaseRepositoryImpl(
     override suspend fun getCrossStoreComparison(productName: String): ProductComparisonSummary? {
         val trimmed = productName.trim()
         if (trimmed.isEmpty()) return null
-
         val observations = receiptDao.getPriceObservationsForProduct(trimmed)
         val records = observations.map {
             PriceComparisonRecord(
@@ -137,15 +115,7 @@ class PurchaseRepositoryImpl(
     }
 
     override suspend fun saveConfirmedPurchase(store: Store, receipt: Receipt) {
-        storeDao.insertStore(
-            StoreEntity(
-                id = store.id,
-                name = store.name,
-                address = store.address,
-                detectedTaxId = store.detectedTaxId
-            )
-        )
-
+        storeDao.insertStore(StoreEntity(store.id, store.name, store.address, store.detectedTaxId))
         receiptDao.insertReceipt(
             ReceiptEntity(
                 id = receipt.id,
@@ -155,11 +125,8 @@ class PurchaseRepositoryImpl(
                 rawDocumentUri = receipt.rawDocumentUri
             )
         )
-
         val itemEntities = receipt.items.map { it.toEntity() }
-        if (itemEntities.isNotEmpty()) {
-            receiptDao.insertItems(itemEntities)
-        }
+        if (itemEntities.isNotEmpty()) receiptDao.insertItems(itemEntities)
     }
 
     override suspend fun recordManualPriceObservation(
@@ -184,21 +151,30 @@ class PurchaseRepositoryImpl(
         )
     }
 
-    override fun getAllProducts(): Flow<List<Product>> {
-        return productDao.getAllProducts().map { entities ->
-            entities.map { it.toDomain() }
-        }
-    }
+    override suspend fun getProductDetailData(productIdOrName: String): ProductDetailData? =
+        productDetailEditor.getProductDetailData(productIdOrName) { getCrossStoreComparison(it) }
 
-    override fun searchProducts(query: String): Flow<List<Product>> {
-        return productDao.searchProducts(query).map { entities ->
-            entities.map { it.toDomain() }
-        }
-    }
+    override suspend fun updateProduct(product: Product, previousName: String?) =
+        productDetailEditor.updateProduct(product, previousName)
 
-    override suspend fun getProductById(productId: String): Product? {
-        return productDao.getProductById(productId)?.toDomain()
-    }
+    override suspend fun updateObservation(
+        observationId: String,
+        newPrice: Money,
+        newQuantity: ProductQuantity,
+        newStoreName: String?
+    ) = productDetailEditor.updateObservation(observationId, newPrice, newQuantity, newStoreName)
+
+    override suspend fun deleteObservation(observationId: String) =
+        productDetailEditor.deleteObservation(observationId)
+
+    override fun getAllProducts(): Flow<List<Product>> =
+        productDao.getAllProducts().map { entities -> entities.map { it.toDomain() } }
+
+    override fun searchProducts(query: String): Flow<List<Product>> =
+        productDao.searchProducts(query).map { entities -> entities.map { it.toDomain() } }
+
+    override suspend fun getProductById(productId: String): Product? =
+        productDao.getProductById(productId)?.toDomain()
 
     override suspend fun resolveProductFromDescription(
         rawDescription: String,
@@ -234,11 +210,8 @@ class PurchaseRepositoryImpl(
         }
     }
 
-    override fun getBasketEstimate(): Flow<BasketEstimate> {
-        return getShoppingListWithEstimates().map { items ->
-            BasketEstimator.estimateBasket(items)
-        }
-    }
+    override fun getBasketEstimate(): Flow<BasketEstimate> =
+        getShoppingListWithEstimates().map { items -> BasketEstimator.estimateBasket(items) }
 
     override suspend fun addShoppingListItem(
         name: String,
@@ -258,17 +231,14 @@ class PurchaseRepositoryImpl(
         shoppingListDao.insertItem(entity)
     }
 
-    override suspend fun toggleItemChecked(itemId: String, isChecked: Boolean) {
+    override suspend fun toggleItemChecked(itemId: String, isChecked: Boolean) =
         shoppingListDao.updateCheckedStatus(itemId, isChecked)
-    }
 
-    override suspend fun removeShoppingListItem(itemId: String) {
+    override suspend fun removeShoppingListItem(itemId: String) =
         shoppingListDao.deleteItemById(itemId)
-    }
 
-    override suspend fun clearCheckedShoppingListItems() {
+    override suspend fun clearCheckedShoppingListItems() =
         shoppingListDao.deleteCheckedItems()
-    }
 
     override suspend fun getLatestPriceObservation(
         productId: String?,

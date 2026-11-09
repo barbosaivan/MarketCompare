@@ -22,6 +22,15 @@ interface ProductDao {
     @Query("SELECT * FROM products WHERE id = :productId LIMIT 1")
     suspend fun getProductById(productId: String): ProductEntity?
 
+    @Query("SELECT * FROM products WHERE LOWER(TRIM(canonicalName)) = LOWER(TRIM(:name)) LIMIT 1")
+    suspend fun getProductByName(name: String): ProductEntity?
+
+    @androidx.room.Update
+    suspend fun updateProduct(product: ProductEntity)
+
+    @Query("DELETE FROM products WHERE id = :productId")
+    suspend fun deleteProduct(productId: String)
+
     @Query("SELECT * FROM products WHERE canonicalName LIKE '%' || :query || '%' LIMIT 20")
     fun searchProducts(query: String): Flow<List<ProductEntity>>
 
