@@ -1,13 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Fase v2.0 en ejecución. Gate 7 y Gate 8 completados y aprobados. Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) en progreso, completadas tareas MC-049 y MC-050.
+> Estado actual: Fase v2.0 en ejecución. Gate 7 y Gate 8 completados y aprobados. Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) en progreso, completadas tareas MC-049, MC-050 y MC-051.
 
 ## Resumen
 - Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
 - Compuerta activa: `GATE 9 — Ingreso Manual, Edición Total y Normalización a Medidas Estándar (IN PROGRESS)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `feat/MC-050-editable-product-detail`
+- Rama de trabajo activa: `feat/MC-051-standard-measurement-normalizer`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,18 +20,18 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 44 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-050) |
+| DONE con evidencia | 45 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-051) |
 | En progreso | 0 |
-| Pendientes (TODO) | 13 (MC-051 a MC-058) |
+| Pendientes (TODO) | 12 (MC-052 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**77/77 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**86/86 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
-| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | IN_PROGRESS (MC-049 y MC-050 completadas) |
+| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | IN_PROGRESS (MC-049, MC-050 & MC-051 completadas) |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
 
 ## Hitos
@@ -46,7 +46,7 @@
 | G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
 | G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G8 Dashboard de Precios y Tiendas | DONE | Auditor sénior + Tech Lead (2026-11-08) |
-| G9 Ingreso Manual y Medidas Estándar | IN_PROGRESS | Auditor sénior + Tech Lead (MC-049 & MC-050 listos) |
+| G9 Ingreso Manual y Medidas Estándar | IN_PROGRESS | Auditor sénior + Tech Lead (MC-049, MC-050 & MC-051 listos) |
 | G10 OCR Visual y Bounding Boxes | TODO | Auditor sénior + Usuario |
 
 ## Control de Versiones, Git y CI/CD
@@ -62,6 +62,12 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 22:45:**
+  - `MC-051` (G9): Implementación del motor puro de normalización a medidas estándar (`StandardMeasurementNormalizer`).
+  - Cálculo de precios estándar mediante aritmética monetaria exacta con `Money` (ADR 0003, sin punto flotante): $/kg y $/g para sólidos/peso, $/L y $/ml para líquidos/volumen, y $/und para conteos discretos.
+  - Resolución inteligente de factores de escala gram/ml y kilo/litro evitando divisiones por cero.
+  - Suite unitaria `StandardMeasurementNormalizerTest` (9 pruebas añadidas, expandiendo la suite global a **86/86 pruebas exitosas**).
+  - Verificación: 86/86 tests pasados al 100% y `lintDebug` aprobado con 0 errores y 0 warnings.
 - **2026-11-08 22:35:**
   - `MC-050` (G9): Implementación de la pantalla de detalle de producto 100% editable (`ProductDetailScreen`), formulario de edición con validación (`ProductDetailEditForm`), diálogo de modificación rápida de observaciones de precio (`EditObservationDialog`), diálogo de confirmación de eliminación (`DeleteObservationConfirmDialog`) y selector de clasificación de comercio/tienda (`ClassificationSelector`).
   - Extracción de componentes auxiliares y descomposión de `ProductCrossStoreComparisonSheet` (de 301 a 192 líneas con `StoreComparisonItem.kt`).
