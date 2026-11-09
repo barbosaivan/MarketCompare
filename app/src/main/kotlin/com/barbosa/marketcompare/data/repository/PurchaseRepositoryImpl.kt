@@ -22,6 +22,7 @@ import com.barbosa.marketcompare.domain.model.ProductResolution
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.ShoppingListItem
 import com.barbosa.marketcompare.domain.model.Store
+import com.barbosa.marketcompare.domain.model.StorePriceStatistics
 import com.barbosa.marketcompare.domain.model.StoreSummary
 import com.barbosa.marketcompare.domain.model.UnitType
 import com.barbosa.marketcompare.domain.normalizer.ProductNormalizer
@@ -61,18 +62,7 @@ class PurchaseRepositoryImpl(
                 val minPrice = minPriceMap[key] ?: entity.unitPriceMinor
                 val sameProductCount = entities.count { it.rawDescription.trim().lowercase() == key }
                 val isLowest = entity.unitPriceMinor <= minPrice && sameProductCount > 1
-                val freshness = BasketEstimator.evaluateFreshness(entity.purchaseTimestamp)
-
-                ProductPriceObservationItem(
-                    id = entity.id,
-                    productId = entity.productId,
-                    productName = entity.rawDescription,
-                    storeName = entity.storeName,
-                    unitPrice = Money(entity.unitPriceMinor, "COP"),
-                    observedAtTimestamp = entity.purchaseTimestamp,
-                    isLowestPrice = isLowest,
-                    freshness = freshness
-                )
+                entity.toDomain(isLowestPrice = isLowest)
             }
         }
     }
@@ -97,19 +87,35 @@ class PurchaseRepositoryImpl(
 
     override fun getProductsForStore(storeName: String): Flow<List<ProductPriceObservationItem>> {
         return receiptDao.observeProductsForStore(storeName).map { entities ->
-            entities.map { entity ->
-                ProductPriceObservationItem(
-                    id = entity.id,
-                    productId = entity.productId,
-                    productName = entity.rawDescription,
-                    storeName = entity.storeName,
-                    unitPrice = Money(entity.unitPriceMinor, "COP"),
-                    observedAtTimestamp = entity.purchaseTimestamp,
-                    isLowestPrice = false,
-                    freshness = BasketEstimator.evaluateFreshness(entity.purchaseTimestamp)
-                )
-            }
+            entities.map { it.toDomain() }
         }
+    }
+
+    override fun getPriceTimeline(productName: String): Flow<List<ProductPriceObservationItem>> {
+        return receiptDao.observePriceTimeline(productName.trim()).map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
+    override fun getPriceObservationsBetween(
+        startTimestamp: Long,
+        endTimestamp: Long
+    ): Flow<List<ProductPriceObservationItem>> {
+        return receiptDao.observePriceObservationsBetween(startTimestamp, endTimestamp).map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun getStoreStatistics(storeName: String): StorePriceStatistics? {
+        val result = storeDao.getStoreStatistics(storeName.trim()) ?: return null
+        return StorePriceStatistics(
+            storeName = result.storeName,
+            distinctProductsCount = result.distinctProductsCount,
+            totalObservationsCount = result.totalObservationsCount,
+            lowestPriceRecorded = result.lowestPriceMinor?.let { Money(it, "COP") },
+            highestPriceRecorded = result.highestPriceMinor?.let { Money(it, "COP") },
+            lastObservedTimestamp = result.lastObservedTimestamp ?: 0L
+        )
     }
 
     override suspend fun getCrossStoreComparison(productName: String): ProductComparisonSummary? {

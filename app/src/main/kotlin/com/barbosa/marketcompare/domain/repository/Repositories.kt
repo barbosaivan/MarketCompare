@@ -7,6 +7,7 @@ import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
 import com.barbosa.marketcompare.domain.model.Receipt
+import com.barbosa.marketcompare.domain.model.StorePriceStatistics
 import com.barbosa.marketcompare.domain.model.StoreSummary
 import com.barbosa.marketcompare.domain.model.ShoppingListItem
 import com.barbosa.marketcompare.domain.model.Store
@@ -24,11 +25,14 @@ interface PurchaseRepository {
     suspend fun registerProductWithAlias(product: Product, aliasText: String, storeId: String? = null): Product
     suspend fun linkItemToProduct(receiptItemId: String, productId: String, aliasText: String? = null, storeId: String? = null)
 
-    // Explorador de precios e inteligencia de góndola (MC-044, MC-045, MC-046)
+    // Explorador de precios e inteligencia de góndola (MC-044, MC-045, MC-046, MC-047)
     fun getAllPriceObservations(): Flow<List<ProductPriceObservationItem>>
     fun getAllStoreNames(): Flow<List<String>>
     fun getStoreSummaries(): Flow<List<StoreSummary>>
     fun getProductsForStore(storeName: String): Flow<List<ProductPriceObservationItem>>
+    fun getPriceTimeline(productName: String): Flow<List<ProductPriceObservationItem>>
+    fun getPriceObservationsBetween(startTimestamp: Long, endTimestamp: Long): Flow<List<ProductPriceObservationItem>>
+    suspend fun getStoreStatistics(storeName: String): StorePriceStatistics?
     suspend fun getCrossStoreComparison(productName: String): ProductComparisonSummary?
 
     // Lista de compras y canasta estimada (MC-029)

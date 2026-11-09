@@ -59,7 +59,33 @@ interface StoreDao {
         ORDER BY s.name ASC
     """)
     fun observeStoreSummaries(): Flow<List<StoreSummaryQueryResult>>
+
+    @Query("""
+        SELECT 
+            s.name AS storeName,
+            COUNT(DISTINCT ri.rawDescription) AS distinctProductsCount,
+            COUNT(ri.id) AS totalObservationsCount,
+            MIN(CASE WHEN ri.quantityValue > 0 THEN ri.finalPriceMinor / ri.quantityValue ELSE ri.finalPriceMinor END) AS lowestPriceMinor,
+            MAX(CASE WHEN ri.quantityValue > 0 THEN ri.finalPriceMinor / ri.quantityValue ELSE ri.finalPriceMinor END) AS highestPriceMinor,
+            MAX(r.purchaseTimestamp) AS lastObservedTimestamp
+        FROM stores s
+        LEFT JOIN receipts r ON r.storeId = s.id
+        LEFT JOIN receipt_items ri ON ri.receiptId = r.id
+        WHERE s.name = :storeName
+        GROUP BY s.name
+        LIMIT 1
+    """)
+    suspend fun getStoreStatistics(storeName: String): StoreStatsQueryResult?
 }
+
+data class StoreStatsQueryResult(
+    val storeName: String,
+    val distinctProductsCount: Int,
+    val totalObservationsCount: Int,
+    val lowestPriceMinor: Long?,
+    val highestPriceMinor: Long?,
+    val lastObservedTimestamp: Long?
+)
 
 data class PriceObservationItemEntity(
     val id: String,
@@ -141,6 +167,44 @@ interface ReceiptDao {
         ORDER BY r.purchaseTimestamp DESC
     """)
     fun observeProductsForStore(storeName: String): Flow<List<PriceObservationItemEntity>>
+
+    @Query("""
+        SELECT 
+            ri.id,
+            ri.productId,
+            ri.rawDescription,
+            CASE 
+                WHEN ri.quantityValue > 0 THEN ri.finalPriceMinor / ri.quantityValue 
+                ELSE ri.finalPriceMinor 
+            END as unitPriceMinor,
+            r.purchaseTimestamp,
+            s.name as storeName
+        FROM receipt_items ri
+        INNER JOIN receipts r ON ri.receiptId = r.id
+        INNER JOIN stores s ON r.storeId = s.id
+        WHERE ri.rawDescription LIKE '%' || :productName || '%'
+        ORDER BY r.purchaseTimestamp ASC
+    """)
+    fun observePriceTimeline(productName: String): Flow<List<PriceObservationItemEntity>>
+
+    @Query("""
+        SELECT 
+            ri.id,
+            ri.productId,
+            ri.rawDescription,
+            CASE 
+                WHEN ri.quantityValue > 0 THEN ri.finalPriceMinor / ri.quantityValue 
+                ELSE ri.finalPriceMinor 
+            END as unitPriceMinor,
+            r.purchaseTimestamp,
+            s.name as storeName
+        FROM receipt_items ri
+        INNER JOIN receipts r ON ri.receiptId = r.id
+        INNER JOIN stores s ON r.storeId = s.id
+        WHERE r.purchaseTimestamp BETWEEN :startTimestamp AND :endTimestamp
+        ORDER BY r.purchaseTimestamp DESC
+    """)
+    fun observePriceObservationsBetween(startTimestamp: Long, endTimestamp: Long): Flow<List<PriceObservationItemEntity>>
 
     @Query("SELECT * FROM receipt_items WHERE receiptId = :receiptId")
     suspend fun getItemsForReceipt(receiptId: String): List<ReceiptItemEntity>
