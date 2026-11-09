@@ -22,6 +22,7 @@ import com.barbosa.marketcompare.domain.model.ProductResolution
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.ShoppingListItem
 import com.barbosa.marketcompare.domain.model.Store
+import com.barbosa.marketcompare.domain.model.StoreSummary
 import com.barbosa.marketcompare.domain.model.UnitType
 import com.barbosa.marketcompare.domain.normalizer.ProductNormalizer
 import com.barbosa.marketcompare.domain.repository.PurchaseRepository
@@ -38,6 +39,7 @@ class PurchaseRepositoryImpl(
     private val storeDao = database.storeDao()
     private val productDao = database.productDao()
     private val shoppingListDao = database.shoppingListDao()
+    private val catalogResolver = ProductCatalogResolver(productDao, receiptDao)
 
     override fun getAllReceipts(): Flow<List<Receipt>> {
         return receiptDao.getAllReceiptsWithStore().map { list ->
@@ -77,6 +79,37 @@ class PurchaseRepositoryImpl(
 
     override fun getAllStoreNames(): Flow<List<String>> {
         return storeDao.getAllStoreNames()
+    }
+
+    override fun getStoreSummaries(): Flow<List<StoreSummary>> {
+        return storeDao.observeStoreSummaries().map { list ->
+            list.map { item ->
+                StoreSummary(
+                    storeId = item.storeId,
+                    storeName = item.storeName,
+                    address = item.address,
+                    productCount = item.productCount,
+                    lastObservationTimestamp = item.lastObservationTimestamp ?: 0L
+                )
+            }
+        }
+    }
+
+    override fun getProductsForStore(storeName: String): Flow<List<ProductPriceObservationItem>> {
+        return receiptDao.observeProductsForStore(storeName).map { entities ->
+            entities.map { entity ->
+                ProductPriceObservationItem(
+                    id = entity.id,
+                    productId = entity.productId,
+                    productName = entity.rawDescription,
+                    storeName = entity.storeName,
+                    unitPrice = Money(entity.unitPriceMinor, "COP"),
+                    observedAtTimestamp = entity.purchaseTimestamp,
+                    isLowestPrice = false,
+                    freshness = BasketEstimator.evaluateFreshness(entity.purchaseTimestamp)
+                )
+            }
+        }
     }
 
     override suspend fun getCrossStoreComparison(productName: String): ProductComparisonSummary? {
@@ -139,78 +172,20 @@ class PurchaseRepositoryImpl(
     override suspend fun resolveProductFromDescription(
         rawDescription: String,
         storeId: String?
-    ): ProductResolution {
-        val cleanAlias = ProductNormalizer.normalizeAlias(rawDescription)
-
-        val existingAlias = productDao.findByAlias(cleanAlias)
-            ?: productDao.findByAlias(rawDescription.trim().uppercase())
-
-        if (existingAlias != null) {
-            val matchedProduct = getProductById(existingAlias.productId)
-            if (matchedProduct != null) {
-                return ProductResolution.ExactAliasMatch(matchedProduct, existingAlias.aliasText)
-            }
-        }
-
-        val candidate = ProductNormalizer.normalize(rawDescription)
-        val candidateProduct = candidate.toProduct(UUID.randomUUID().toString())
-
-        return if (candidate.confidenceScore >= 0.85f) {
-            ProductResolution.SuggestedCandidate(candidateProduct, candidate.confidenceScore)
-        } else {
-            ProductResolution.NewProduct(candidateProduct)
-        }
-    }
+    ): ProductResolution = catalogResolver.resolveProductFromDescription(rawDescription, storeId)
 
     override suspend fun registerProductWithAlias(
         product: Product,
         aliasText: String,
         storeId: String?
-    ): Product {
-        productDao.insertProduct(
-            ProductEntity(
-                id = product.id,
-                canonicalName = product.canonicalName,
-                brand = product.brand,
-                category = product.category,
-                baseQuantity = product.baseQuantity,
-                unit = product.unit.name,
-                presentation = product.presentation
-            )
-        )
-
-        val cleanAlias = ProductNormalizer.normalizeAlias(aliasText)
-        productDao.insertAlias(
-            ProductAliasEntity(
-                id = UUID.randomUUID().toString(),
-                productId = product.id,
-                aliasText = cleanAlias,
-                storeId = storeId
-            )
-        )
-
-        return product
-    }
+    ): Product = catalogResolver.registerProductWithAlias(product, aliasText, storeId)
 
     override suspend fun linkItemToProduct(
         receiptItemId: String,
         productId: String,
         aliasText: String?,
         storeId: String?
-    ) {
-        receiptDao.linkItemToProduct(receiptItemId, productId)
-        if (!aliasText.isNullOrBlank()) {
-            val cleanAlias = ProductNormalizer.normalizeAlias(aliasText)
-            productDao.insertAlias(
-                ProductAliasEntity(
-                    id = UUID.randomUUID().toString(),
-                    productId = productId,
-                    aliasText = cleanAlias,
-                    storeId = storeId
-                )
-            )
-        }
-    }
+    ) = catalogResolver.linkItemToProduct(receiptItemId, productId, aliasText, storeId)
 
     override fun getShoppingListWithEstimates(): Flow<List<ShoppingListItem>> {
         return shoppingListDao.getAllShoppingListItems().map { entities ->

@@ -30,6 +30,16 @@
     <string name="home_fab_scan">Escanear Factura</string>
     <string name="home_price_observation_date">Registrado el %1$s</string>
     <string name="home_store_filter_label">Filtrar por comercio:</string>
+    <string name="home_view_store_catalog">Ver catálogo de tienda</string>
+    
+    <!-- Catálogo de Tienda (MC-046) -->
+    <string name="store_catalog_title">Catálogo de Tienda</string>
+    <string name="store_catalog_search_hint">Buscar productos en %1$s…</string>
+    <string name="store_catalog_products_count">%1$d productos disponibles</string>
+    <string name="store_catalog_empty">No hay productos registrados aún para este comercio.</string>
+    <string name="store_catalog_empty_search">No se encontraron productos para \"%1$s\" en este comercio.</string>
+    <string name="store_card_last_visit">Último registro: %1$s</string>
+    <string name="store_card_address">Dirección: %1$s</string>
     
     <!-- Historial de compras -->
     <string name="history_title">Mis Compras Confirmadas</string>

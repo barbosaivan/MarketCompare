@@ -40,3 +40,14 @@ data class ProductComparisonSummary(
     val cheapestStore: String,
     val storeEntries: List<StorePriceEntry>
 )
+
+/**
+ * Resumen de un establecimiento en el directorio de tiendas (MC-046).
+ */
+data class StoreSummary(
+    val storeId: String?,
+    val storeName: String,
+    val address: String?,
+    val productCount: Int,
+    val lastObservationTimestamp: Long
+)
