@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -81,6 +83,10 @@ fun StoreComparisonRow(
                     fontWeight = FontWeight.Bold,
                     color = if (entry.isLowestPrice) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                 )
+                entry.standardMeasurement?.let {
+                    Spacer(modifier = Modifier.height(2.dp))
+                    StandardPriceBadge(measurement = it)
+                }
                 if (!entry.isLowestPrice && entry.priceDifferenceWithLowest.amountMinor > 0) {
                     Text(
                         text = stringResource(

@@ -1,13 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Fase v2.0 en ejecución. Gate 7 y Gate 8 completados y aprobados. Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) en progreso, completadas tareas MC-049, MC-050 y MC-051.
+> Estado actual: Fase v2.0 en ejecución. Gate 7 y Gate 8 completados y aprobados. Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) en progreso, completadas tareas MC-049, MC-050, MC-051 y MC-052.
 
 ## Resumen
 - Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
 - Compuerta activa: `GATE 9 — Ingreso Manual, Edición Total y Normalización a Medidas Estándar (IN PROGRESS)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `feat/MC-051-standard-measurement-normalizer`
+- Rama de trabajo activa: `feat/MC-052-standard-unit-price-badges`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,9 +20,9 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 45 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-051) |
+| DONE con evidencia | 46 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-052) |
 | En progreso | 0 |
-| Pendientes (TODO) | 12 (MC-052 a MC-058) |
+| Pendientes (TODO) | 11 (MC-053 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
@@ -31,7 +31,7 @@
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
-| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | IN_PROGRESS (MC-049, MC-050 & MC-051 completadas) |
+| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | IN_PROGRESS (MC-049, MC-050, MC-051 & MC-052 completadas) |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
 
 ## Hitos
@@ -62,6 +62,10 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 22:55:**
+  - `MC-052` (G9): Despliegue de badges visuales de precio por medida estándar (`StandardPriceBadge`) en toda la interfaz de usuario: tarjetas de observación (`ProductPriceObservationCard`), filas comparativas multicomercio (`StoreComparisonRow`), vista general de producto (`ProductDetailOverviewCard`) e historial de precios (`ProductDetailFormSections`).
+  - Mapeo automático y reactivo de cantidades y unidades desde `receipt_items` y `ProductNormalizer` hacia `StandardPriceMeasurement`.
+  - Verificación: 86/86 tests pasados al 100% y `lintDebug` aprobado con 0 errores y 0 warnings.
 - **2026-11-08 22:45:**
   - `MC-051` (G9): Implementación del motor puro de normalización a medidas estándar (`StandardMeasurementNormalizer`).
   - Cálculo de precios estándar mediante aritmética monetaria exacta con `Money` (ADR 0003, sin punto flotante): $/kg y $/g para sólidos/peso, $/L y $/ml para líquidos/volumen, y $/und para conteos discretos.

@@ -1,5 +1,7 @@
 package com.barbosa.marketcompare.domain.model
 
+import com.barbosa.marketcompare.domain.normalizer.StandardPriceMeasurement
+
 /**
  * Representa una observación de precio de un producto en un comercio específico (MC-044).
  * Utilizado por el explorador de precios y el catálogo multicomercio.
@@ -12,7 +14,8 @@ data class ProductPriceObservationItem(
     val unitPrice: Money,
     val observedAtTimestamp: Long,
     val isLowestPrice: Boolean = false,
-    val freshness: PriceFreshness = PriceFreshness.RECENT
+    val freshness: PriceFreshness = PriceFreshness.RECENT,
+    val standardMeasurement: StandardPriceMeasurement? = null
 )
 
 /**
@@ -25,7 +28,8 @@ data class StorePriceEntry(
     val freshness: PriceFreshness,
     val priceDifferenceWithLowest: Money,
     val percentageDifferenceWithLowest: Double,
-    val isLowestPrice: Boolean
+    val isLowestPrice: Boolean,
+    val standardMeasurement: StandardPriceMeasurement? = null
 )
 
 /**
