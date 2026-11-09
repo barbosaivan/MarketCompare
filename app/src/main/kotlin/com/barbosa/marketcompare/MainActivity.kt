@@ -130,6 +130,20 @@ class MainActivity : ComponentActivity() {
                                         },
                                         onNavigateToStoreCatalog = { storeName ->
                                             navigator.pushScreen(Screen.StoreCatalog.createRoute(storeName))
+                                        },
+                                        onSaveManualPrice = { store, prod, price, qty, brand, pres, disc, discType ->
+                                            scope.launch {
+                                                repository.recordManualPriceObservation(
+                                                    storeName = store,
+                                                    productName = prod,
+                                                    price = price,
+                                                    quantity = qty,
+                                                    brand = brand,
+                                                    presentation = pres,
+                                                    discount = disc,
+                                                    discountType = discType
+                                                )
+                                            }
                                         }
                                     )
                                 }
@@ -151,6 +165,20 @@ class MainActivity : ComponentActivity() {
                                             scope.launch {
                                                 repository.addShoppingListItem(name = productName)
                                                 activeComparison = null
+                                            }
+                                        },
+                                        onSaveManualPrice = { store, prod, price, qty, brand, pres, disc, discType ->
+                                            scope.launch {
+                                                repository.recordManualPriceObservation(
+                                                    storeName = store,
+                                                    productName = prod,
+                                                    price = price,
+                                                    quantity = qty,
+                                                    brand = brand,
+                                                    presentation = pres,
+                                                    discount = disc,
+                                                    discountType = discType
+                                                )
                                             }
                                         }
                                     )

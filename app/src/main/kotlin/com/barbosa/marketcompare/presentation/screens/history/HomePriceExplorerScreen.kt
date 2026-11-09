@@ -1,25 +1,23 @@
 package com.barbosa.marketcompare.presentation.screens.history
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,17 +33,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.barbosa.marketcompare.R
+import com.barbosa.marketcompare.domain.model.DiscountType
+import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
+import com.barbosa.marketcompare.domain.model.ProductQuantity
 import com.barbosa.marketcompare.domain.model.Receipt
+import com.barbosa.marketcompare.presentation.components.ManualPriceEntrySheet
+import com.barbosa.marketcompare.presentation.components.PriceExplorerEmptyView
 import com.barbosa.marketcompare.presentation.components.PriceKpiSummaryCard
 import com.barbosa.marketcompare.presentation.components.PriceSearchBar
 import com.barbosa.marketcompare.presentation.components.ProductCrossStoreComparisonSheet
 import com.barbosa.marketcompare.presentation.components.ProductPriceObservationCard
 import com.barbosa.marketcompare.presentation.components.RecentReceiptsCollapsibleSection
+import com.barbosa.marketcompare.presentation.components.SearchEmptyView
+import com.barbosa.marketcompare.presentation.components.StoreCatalogBanner
 import com.barbosa.marketcompare.presentation.components.StoreFilterChips
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,11 +65,22 @@ fun HomePriceExplorerScreen(
     onDismissComparison: () -> Unit = {},
     onAddToList: (String) -> Unit = {},
     onNavigateToStoreCatalog: (String) -> Unit = {},
+    onSaveManualPrice: (
+        storeName: String,
+        productName: String,
+        price: Money,
+        quantity: ProductQuantity,
+        brand: String?,
+        presentation: String?,
+        discount: Money?,
+        discountType: DiscountType
+    ) -> Unit = { _, _, _, _, _, _, _, _ -> },
     modifier: Modifier = Modifier
 ) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var selectedStore by rememberSaveable { mutableStateOf<String?>(null) }
     var isReceiptsExpanded by rememberSaveable { mutableStateOf(false) }
+    var showManualEntrySheet by rememberSaveable { mutableStateOf(false) }
 
     val filteredObservations = remember(priceObservations, searchQuery, selectedStore) {
         priceObservations.filter { item ->
@@ -95,6 +110,15 @@ fun HomePriceExplorerScreen(
                         fontWeight = FontWeight.Bold
                     )
                 },
+                actions = {
+                    IconButton(onClick = { showManualEntrySheet = true }) {
+                        Icon(
+                            imageVector = Icons.Default.EditNote,
+                            contentDescription = stringResource(R.string.home_fab_manual_entry),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.onSurface
@@ -102,15 +126,37 @@ fun HomePriceExplorerScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onScanClick,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.home_fab_scan)
+                ExtendedFloatingActionButton(
+                    onClick = { showManualEntrySheet = true },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = null
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = stringResource(R.string.home_fab_manual_entry),
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    },
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
+                FloatingActionButton(
+                    onClick = onScanClick,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.CameraAlt,
+                        contentDescription = stringResource(R.string.home_fab_scan)
+                    )
+                }
             }
         }
     ) { innerPadding ->
@@ -186,98 +232,16 @@ fun HomePriceExplorerScreen(
                 onAddToList = onAddToList
             )
         }
-    }
-}
 
-@Composable
-private fun PriceExplorerEmptyView(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null,
-                modifier = Modifier.height(72.dp),
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(R.string.home_empty_title),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.home_empty_description),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
+        if (showManualEntrySheet) {
+            ManualPriceEntrySheet(
+                knownStores = stores,
+                onDismiss = { showManualEntrySheet = false },
+                onSavePrice = { store, prod, price, qty, brand, pres, disc, discType ->
+                    showManualEntrySheet = false
+                    onSaveManualPrice(store, prod, price, qty, brand, pres, disc, discType)
+                }
             )
         }
     }
 }
-
-@Composable
-private fun SearchEmptyView(
-    query: String,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(R.string.home_empty_search, query),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-private fun StoreCatalogBanner(
-    storeName: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.home_view_store_catalog),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-            Text(
-                text = "→",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-        }
-    }
-}
-

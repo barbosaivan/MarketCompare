@@ -13,7 +13,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,8 +39,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.barbosa.marketcompare.R
+import com.barbosa.marketcompare.domain.model.DiscountType
+import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
+import com.barbosa.marketcompare.domain.model.ProductQuantity
+import com.barbosa.marketcompare.presentation.components.ManualPriceEntrySheet
 import com.barbosa.marketcompare.presentation.components.PriceSearchBar
 import com.barbosa.marketcompare.presentation.components.ProductCrossStoreComparisonSheet
 import com.barbosa.marketcompare.presentation.components.ProductPriceObservationCard
@@ -53,9 +59,20 @@ fun StoreCatalogScreen(
     comparisonSummary: ProductComparisonSummary? = null,
     onDismissComparison: () -> Unit = {},
     onAddToList: (String) -> Unit = {},
+    onSaveManualPrice: (
+        storeName: String,
+        productName: String,
+        price: Money,
+        quantity: ProductQuantity,
+        brand: String?,
+        presentation: String?,
+        discount: Money?,
+        discountType: DiscountType
+    ) -> Unit = { _, _, _, _, _, _, _, _ -> },
     modifier: Modifier = Modifier
 ) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
+    var showManualEntrySheet by rememberSaveable { mutableStateOf(false) }
 
     val filteredProducts = remember(products, searchQuery) {
         if (searchQuery.isBlank()) {
@@ -87,6 +104,25 @@ fun StoreCatalogScreen(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
+            )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { showManualEntrySheet = true },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = null
+                    )
+                },
+                text = {
+                    Text(
+                        text = stringResource(R.string.store_catalog_add_price_button),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                },
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) { innerPadding ->
@@ -137,6 +173,17 @@ fun StoreCatalogScreen(
                 summary = comparisonSummary,
                 onDismiss = onDismissComparison,
                 onAddToList = onAddToList
+            )
+        }
+
+        if (showManualEntrySheet) {
+            ManualPriceEntrySheet(
+                initialStoreName = storeName,
+                onDismiss = { showManualEntrySheet = false },
+                onSavePrice = { store, prod, price, qty, brand, pres, disc, discType ->
+                    showManualEntrySheet = false
+                    onSaveManualPrice(store, prod, price, qty, brand, pres, disc, discType)
+                }
             )
         }
     }
