@@ -151,3 +151,4 @@ interface ReceiptDao {
     @Query("UPDATE receipt_items SET productId = :productId WHERE id = :itemId")
     suspend fun linkItemToProduct(itemId: String, productId: String)
 }
+

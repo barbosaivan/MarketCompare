@@ -31,3 +31,4 @@ interface ProductDao {
     @Query("SELECT * FROM product_aliases WHERE productId = :productId")
     suspend fun getAliasesForProduct(productId: String): List<ProductAliasEntity>
 }
+

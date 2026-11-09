@@ -242,3 +242,4 @@ fun ManualEntryActions(
         }
     }
 }
+

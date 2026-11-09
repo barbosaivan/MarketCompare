@@ -73,3 +73,4 @@ interface StoreDao {
     """)
     suspend fun getStoreStatistics(storeName: String): StoreStatsQueryResult?
 }
+
