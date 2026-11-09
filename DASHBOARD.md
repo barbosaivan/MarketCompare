@@ -1,13 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Fase v2.0 en ejecución. Gate 7 y Gate 8 completados y aprobados. Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) listo para iniciar.
+> Estado actual: Fase v2.0 en ejecución. Gate 7 y Gate 8 completados y aprobados. Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) en progreso, completada tarea MC-049.
 
 ## Resumen
 - Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
-- Compuerta activa: `GATE 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (DONE / APROBADO)`
+- Compuerta activa: `GATE 9 — Ingreso Manual, Edición Total y Normalización a Medidas Estándar (IN PROGRESS)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `feat/MC-048-gate-8-audit-and-tests`
+- Rama de trabajo activa: `feat/MC-049-manual-price-entry`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,18 +20,18 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 42 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-048) |
+| DONE con evidencia | 43 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-049) |
 | En progreso | 0 |
-| Pendientes (TODO) | 15 (MC-049 a MC-058) |
+| Pendientes (TODO) | 14 (MC-050 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**69/69 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**73/73 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
-| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | PENDING (Listo para iniciar MC-049) |
+| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | IN_PROGRESS (MC-049 completada) |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
 
 ## Hitos
@@ -46,7 +46,7 @@
 | G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
 | G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G8 Dashboard de Precios y Tiendas | DONE | Auditor sénior + Tech Lead (2026-11-08) |
-| G9 Ingreso Manual y Medidas Estándar | TODO | Auditor sénior + Tech Lead |
+| G9 Ingreso Manual y Medidas Estándar | IN_PROGRESS | Auditor sénior + Tech Lead |
 | G10 OCR Visual y Bounding Boxes | TODO | Auditor sénior + Usuario |
 
 ## Control de Versiones, Git y CI/CD
@@ -62,6 +62,13 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 22:15:**
+  - `MC-049` (G9): Implementación del flujo de ingreso manual de precios de góndola sin necesidad de factura física.
+  - Componente modal M3 `ManualPriceEntrySheet` con captura de establecimiento (chips de tiendas frecuentes y texto libre), producto, marca, precio, cantidad base, selector de unidades de medida (`und`, `g`, `kg`, `ml`, `L`), presentación y selector de promociones/descuentos.
+  - Creación de `ManualPriceRecorder` y método `recordManualPriceObservation` en el repositorio para registrar observaciones manuales en Room resolviendo unicidad de comercios y productos.
+  - Desacople de DAOs Room en archivos individuales (`StoreDao.kt`, `ReceiptDao.kt`, `ProductDao.kt`, `ShoppingListDao.kt`) garantizando cumplimiento estricto del límite de 300 líneas.
+  - Suite unitaria `ManualPriceRecorderTest` (4 pruebas añadidas, expandiendo la suite global a **73/73 pruebas exitosas**).
+  - Verificación: 73/73 tests pasados al 100% y `lintDebug` aprobado con 0 errores y 0 warnings.
 - **2026-11-08 21:50:**
   - `CI/CD Fix`: Corrección integral del pipeline de GitHub Actions (`android-ci.yml` y `release.yml`).
   - Causa raíz identificada: `org.gradle.java.home` con ruta de Windows (`C:\Program Files\Android\Android Studio2\jbr`) en `gradle.properties` provocaba `IllegalArgumentException` inmediata en runners Linux (Ubuntu).

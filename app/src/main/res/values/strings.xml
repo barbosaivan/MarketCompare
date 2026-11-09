@@ -140,6 +140,29 @@
     <string name="basket_badge_recent">Confirmado</string>
     <string name="basket_disclaimer">Estimación calculada exclusivamente con tus compras locales confirmadas. Los precios desactualizados (> 30 días) o desconocidos se identifican explícitamente.</string>
 
+    <!-- Ingreso manual de precios de góndola (MC-049) -->
+    <string name="manual_entry_title">Registrar Precio de Góndola</string>
+    <string name="manual_entry_subtitle">Registra precios observados directamente en la tienda sin necesidad de factura física.</string>
+    <string name="manual_entry_store_label">Establecimiento o Comercio *</string>
+    <string name="manual_entry_store_hint">Ej. Éxito, D1, Ara, Carulla…</string>
+    <string name="manual_entry_product_label">Nombre del Producto *</string>
+    <string name="manual_entry_product_hint">Ej. Leche entera 1.1L, Arroz Diana 1kg…</string>
+    <string name="manual_entry_brand_label">Marca (opcional)</string>
+    <string name="manual_entry_brand_hint">Ej. Alquería, Colanta, Alpina…</string>
+    <string name="manual_entry_price_label">Precio Observado en Góndola (COP) *</string>
+    <string name="manual_entry_price_hint">Ej. 4500</string>
+    <string name="manual_entry_quantity_label">Cantidad base</string>
+    <string name="manual_entry_unit_label">Unidad de medida</string>
+    <string name="manual_entry_presentation_label">Presentación o empaque (opcional)</string>
+    <string name="manual_entry_presentation_hint">Ej. Bolsa, Botella, Caja, Paquete</string>
+    <string name="manual_entry_discount_switch">¿Es precio con descuento o promoción?</string>
+    <string name="manual_entry_discount_type_label">Tipo de oferta o descuento</string>
+    <string name="manual_entry_regular_price_label">Precio regular sin oferta (COP, opcional)</string>
+    <string name="manual_entry_save_action">Guardar Precio</string>
+    <string name="manual_entry_success_message">Precio de góndola registrado exitosamente.</string>
+    <string name="home_fab_manual_entry">Registrar Precio</string>
+    <string name="store_catalog_add_price_button">+ Registrar precio aquí</string>
+
     <!-- Estados comunes -->
     <string name="state_loading">Cargando…</string>
     <string name="state_error">Ocurrió un error inesperado</string>

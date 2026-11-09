@@ -13,11 +13,13 @@ import com.barbosa.marketcompare.domain.basket.BasketEstimator
 import com.barbosa.marketcompare.domain.comparison.CrossStoreComparisonCalculator
 import com.barbosa.marketcompare.domain.comparison.PriceComparisonRecord
 import com.barbosa.marketcompare.domain.model.BasketEstimate
+import com.barbosa.marketcompare.domain.model.DiscountType
 import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
+import com.barbosa.marketcompare.domain.model.ProductQuantity
 import com.barbosa.marketcompare.domain.model.ProductResolution
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.ShoppingListItem
@@ -41,6 +43,7 @@ class PurchaseRepositoryImpl(
     private val productDao = database.productDao()
     private val shoppingListDao = database.shoppingListDao()
     private val catalogResolver = ProductCatalogResolver(productDao, receiptDao)
+    private val manualPriceRecorder = ManualPriceRecorder(storeDao, productDao, receiptDao, catalogResolver)
 
     override fun getAllReceipts(): Flow<List<Receipt>> {
         return receiptDao.getAllReceiptsWithStore().map { list ->
@@ -157,6 +160,28 @@ class PurchaseRepositoryImpl(
         if (itemEntities.isNotEmpty()) {
             receiptDao.insertItems(itemEntities)
         }
+    }
+
+    override suspend fun recordManualPriceObservation(
+        storeName: String,
+        productName: String,
+        price: Money,
+        quantity: ProductQuantity,
+        brand: String?,
+        presentation: String?,
+        discount: Money?,
+        discountType: DiscountType
+    ) {
+        manualPriceRecorder.record(
+            storeName = storeName,
+            productName = productName,
+            price = price,
+            quantity = quantity,
+            brand = brand,
+            presentation = presentation,
+            discount = discount,
+            discountType = discountType
+        )
     }
 
     override fun getAllProducts(): Flow<List<Product>> {

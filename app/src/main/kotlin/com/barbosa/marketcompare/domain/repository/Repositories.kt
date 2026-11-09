@@ -1,11 +1,14 @@
 package com.barbosa.marketcompare.domain.repository
 
 import com.barbosa.marketcompare.domain.model.BasketEstimate
+import com.barbosa.marketcompare.domain.model.DiscountType
 import com.barbosa.marketcompare.domain.model.ExternalPriceQuote
 import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
+import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
+import com.barbosa.marketcompare.domain.model.ProductQuantity
 import com.barbosa.marketcompare.domain.model.Receipt
 import com.barbosa.marketcompare.domain.model.StorePriceStatistics
 import com.barbosa.marketcompare.domain.model.StoreSummary
@@ -34,6 +37,18 @@ interface PurchaseRepository {
     fun getPriceObservationsBetween(startTimestamp: Long, endTimestamp: Long): Flow<List<ProductPriceObservationItem>>
     suspend fun getStoreStatistics(storeName: String): StorePriceStatistics?
     suspend fun getCrossStoreComparison(productName: String): ProductComparisonSummary?
+
+    // Ingreso manual de precios de góndola (MC-049)
+    suspend fun recordManualPriceObservation(
+        storeName: String,
+        productName: String,
+        price: Money,
+        quantity: ProductQuantity = ProductQuantity(1L, UnitType.UNIT),
+        brand: String? = null,
+        presentation: String? = null,
+        discount: Money? = null,
+        discountType: DiscountType = DiscountType.NONE
+    )
 
     // Lista de compras y canasta estimada (MC-029)
     fun getShoppingListWithEstimates(): Flow<List<ShoppingListItem>>
