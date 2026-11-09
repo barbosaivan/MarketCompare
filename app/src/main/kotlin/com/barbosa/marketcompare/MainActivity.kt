@@ -24,6 +24,7 @@ import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.ReceiptDraft
 import com.barbosa.marketcompare.presentation.components.AppBottomNavigationBar
 import com.barbosa.marketcompare.presentation.navigation.AppNavigator
+import com.barbosa.marketcompare.presentation.navigation.ProductDetailRoute
 import com.barbosa.marketcompare.presentation.navigation.Screen
 import com.barbosa.marketcompare.presentation.screens.history.HomePriceExplorerScreen
 import com.barbosa.marketcompare.presentation.screens.review.ReceiptReviewScreen
@@ -128,6 +129,10 @@ class MainActivity : ComponentActivity() {
                                                 activeComparison = null
                                             }
                                         },
+                                        onEditProductClick = { productName ->
+                                            activeComparison = null
+                                            navigator.pushScreen(Screen.ProductDetail.createRoute(productName))
+                                        },
                                         onNavigateToStoreCatalog = { storeName ->
                                             navigator.pushScreen(Screen.StoreCatalog.createRoute(storeName))
                                         },
@@ -167,6 +172,10 @@ class MainActivity : ComponentActivity() {
                                                 activeComparison = null
                                             }
                                         },
+                                        onEditProductClick = { productName ->
+                                            activeComparison = null
+                                            navigator.pushScreen(Screen.ProductDetail.createRoute(productName))
+                                        },
                                         onSaveManualPrice = { store, prod, price, qty, brand, pres, disc, discType ->
                                             scope.launch {
                                                 repository.recordManualPriceObservation(
@@ -181,6 +190,14 @@ class MainActivity : ComponentActivity() {
                                                 )
                                             }
                                         }
+                                    )
+                                }
+                                route.startsWith("product_detail/") -> {
+                                    val productIdOrName = route.removePrefix("product_detail/")
+                                    ProductDetailRoute(
+                                        productIdOrName = productIdOrName,
+                                        repository = repository,
+                                        onBackClick = { navigator.popBack() }
                                     )
                                 }
                                 route == Screen.ShoppingList.route -> {

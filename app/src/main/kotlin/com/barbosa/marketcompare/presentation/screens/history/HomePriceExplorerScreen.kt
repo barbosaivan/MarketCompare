@@ -64,6 +64,7 @@ fun HomePriceExplorerScreen(
     comparisonSummary: ProductComparisonSummary? = null,
     onDismissComparison: () -> Unit = {},
     onAddToList: (String) -> Unit = {},
+    onEditProductClick: (String) -> Unit = {},
     onNavigateToStoreCatalog: (String) -> Unit = {},
     onSaveManualPrice: (
         storeName: String,
@@ -229,7 +230,8 @@ fun HomePriceExplorerScreen(
             ProductCrossStoreComparisonSheet(
                 summary = comparisonSummary,
                 onDismiss = onDismissComparison,
-                onAddToList = onAddToList
+                onAddToList = onAddToList,
+                onEditProductClick = onEditProductClick
             )
         }
 

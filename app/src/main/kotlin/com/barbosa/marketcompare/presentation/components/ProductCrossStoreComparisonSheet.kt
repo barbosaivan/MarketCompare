@@ -1,8 +1,6 @@
 package com.barbosa.marketcompare.presentation.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,10 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -24,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -36,9 +35,6 @@ import com.barbosa.marketcompare.R
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
 import com.barbosa.marketcompare.domain.model.StorePriceEntry
 import com.barbosa.marketcompare.presentation.theme.semanticColors
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,6 +42,7 @@ fun ProductCrossStoreComparisonSheet(
     summary: ProductComparisonSummary,
     onDismiss: () -> Unit,
     onAddToList: (String) -> Unit,
+    onEditProductClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -70,19 +67,51 @@ fun ProductCrossStoreComparisonSheet(
             )
             ComparisonHeroCard(summary = summary)
             ComparisonBreakdownList(entries = summary.storeEntries)
-            Button(
-                onClick = { onAddToList(summary.productName) },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = stringResource(R.string.compare_sheet_add_to_list))
-            }
+            ComparisonActionButtons(
+                productName = summary.productName,
+                onAddToList = onAddToList,
+                onEditProductClick = onEditProductClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun ComparisonActionButtons(
+    productName: String,
+    onAddToList: (String) -> Unit,
+    onEditProductClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        OutlinedButton(
+            onClick = { onEditProductClick(productName) },
+            modifier = Modifier.weight(1f),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Text(text = stringResource(R.string.product_detail_edit_action))
+        }
+        Button(
+            onClick = { onAddToList(productName) },
+            modifier = Modifier.weight(1f),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ShoppingCart,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Text(text = stringResource(R.string.compare_sheet_add_to_list))
         }
     }
 }
@@ -196,106 +225,3 @@ private fun ComparisonBreakdownList(
         }
     }
 }
-
-@Composable
-private fun StoreComparisonRow(
-    rank: Int,
-    entry: StorePriceEntry,
-    modifier: Modifier = Modifier
-) {
-    val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es-CO"))
-    val formattedDate = dateFormatter.format(Date(entry.observedAtTimestamp))
-
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (entry.isLowestPrice) {
-                MaterialTheme.colorScheme.surfaceContainerHigh
-            } else {
-                MaterialTheme.colorScheme.surfaceContainer
-            }
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.weight(1f)
-            ) {
-                RankBadge(rank = rank, isLowest = entry.isLowestPrice)
-                Column {
-                    Text(
-                        text = entry.storeName,
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = stringResource(R.string.home_price_observation_date, formattedDate),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-            Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    text = entry.unitPrice.formatDisplay(),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = if (entry.isLowestPrice) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                )
-                if (!entry.isLowestPrice && entry.priceDifferenceWithLowest.amountMinor > 0) {
-                    Text(
-                        text = stringResource(
-                            R.string.compare_sheet_price_delta,
-                            entry.priceDifferenceWithLowest.formatDisplay(),
-                            entry.percentageDifferenceWithLowest
-                        ),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.semanticColors.freshnessStale
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun RankBadge(
-    rank: Int,
-    isLowest: Boolean,
-    modifier: Modifier = Modifier
-) {
-    val containerColor = if (isLowest) {
-        MaterialTheme.semanticColors.freshnessRecent
-    } else {
-        MaterialTheme.colorScheme.surfaceVariant
-    }
-    val contentColor = if (isLowest) {
-        MaterialTheme.colorScheme.onPrimary
-    } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
-    }
-
-    Box(
-        modifier = modifier
-            .size(26.dp)
-            .background(containerColor, CircleShape),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = rank.toString(),
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = contentColor
-        )
-    }
-}
-

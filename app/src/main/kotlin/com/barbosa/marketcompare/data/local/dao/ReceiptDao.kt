@@ -150,5 +150,20 @@ interface ReceiptDao {
 
     @Query("UPDATE receipt_items SET productId = :productId WHERE id = :itemId")
     suspend fun linkItemToProduct(itemId: String, productId: String)
+
+    @Query("SELECT * FROM receipt_items WHERE id = :itemId LIMIT 1")
+    suspend fun getReceiptItemById(itemId: String): ReceiptItemEntity?
+
+    @Query("UPDATE receipt_items SET rawDescription = :newDescription WHERE productId = :productId OR LOWER(TRIM(rawDescription)) = LOWER(TRIM(:oldDescription))")
+    suspend fun updateItemDescriptions(productId: String?, oldDescription: String, newDescription: String)
+
+    @Query("UPDATE receipt_items SET finalPriceMinor = :finalPriceMinor, listPriceMinor = :listPriceMinor, quantityValue = :quantityValue, quantityUnit = :quantityUnit WHERE id = :itemId")
+    suspend fun updateReceiptItemPrice(itemId: String, finalPriceMinor: Long, listPriceMinor: Long?, quantityValue: Long, quantityUnit: String)
+
+    @Query("DELETE FROM receipt_items WHERE id = :itemId")
+    suspend fun deleteReceiptItem(itemId: String)
+
+    @Query("UPDATE receipts SET storeId = :storeId WHERE id = :receiptId")
+    suspend fun updateReceiptStore(receiptId: String, storeId: String)
 }
 

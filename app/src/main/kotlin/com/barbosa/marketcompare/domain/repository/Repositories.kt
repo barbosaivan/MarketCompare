@@ -7,6 +7,7 @@ import com.barbosa.marketcompare.domain.model.HistoricalPriceObservation
 import com.barbosa.marketcompare.domain.model.Money
 import com.barbosa.marketcompare.domain.model.Product
 import com.barbosa.marketcompare.domain.model.ProductComparisonSummary
+import com.barbosa.marketcompare.domain.model.ProductDetailData
 import com.barbosa.marketcompare.domain.model.ProductPriceObservationItem
 import com.barbosa.marketcompare.domain.model.ProductQuantity
 import com.barbosa.marketcompare.domain.model.Receipt
@@ -49,6 +50,12 @@ interface PurchaseRepository {
         discount: Money? = null,
         discountType: DiscountType = DiscountType.NONE
     )
+
+    // Detalle y edición completa de producto y observaciones (MC-050)
+    suspend fun getProductDetailData(productIdOrName: String): ProductDetailData?
+    suspend fun updateProduct(product: Product, previousName: String? = null)
+    suspend fun updateObservation(observationId: String, newPrice: Money, newQuantity: ProductQuantity, newStoreName: String? = null)
+    suspend fun deleteObservation(observationId: String)
 
     // Lista de compras y canasta estimada (MC-029)
     fun getShoppingListWithEstimates(): Flow<List<ShoppingListItem>>
