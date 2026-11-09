@@ -57,11 +57,21 @@
 | Rama de trabajo activa | `feat/MC-039-v2-roadmap-and-governance` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
-| Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
+| Integración Continua (CI) | GitHub Actions EXITOSO (Run 42552956093 - 100% verde en `develop`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-08 21:50:**
+  - `CI/CD Fix`: Corrección integral del pipeline de GitHub Actions (`android-ci.yml` y `release.yml`).
+  - Causa raíz identificada: `org.gradle.java.home` con ruta de Windows (`C:\Program Files\Android\Android Studio2\jbr`) en `gradle.properties` provocaba `IllegalArgumentException` inmediata en runners Linux (Ubuntu).
+  - Solución aplicada:
+    1. Desacople de la ruta hardcodeada de Windows del repositorio hacia la configuración global del desarrollador (`~/.gradle/gradle.properties`).
+    2. Agregado paso defensivo `sed -i '/org.gradle.java.home/d' gradle.properties` en los workflows para garantizar resiliencia en CI.
+    3. Actualización de `actions/setup-java@v4` a `actions/setup-java@v5` (resolviendo advertencias de deprecación).
+    4. Actualización de `gradle/actions/setup-gradle@v3` a `gradle/actions/setup-gradle@v4` (resolviendo fallo de caché 400 y advertencias de Node 20).
+    5. Configuración de `if-no-files-found: ignore` en `actions/upload-artifact@v4`.
+  - Verificación en vivo: Ejecución GitHub Actions `Run 42552956093` completada con veredicto **SUCCESS** (pruebas unitarias 69/69 y generación de APK aprobadas al 100%).
 - **2026-11-08 21:30:**
   - `MC-048` (G8): Creación de pruebas unitarias (`PriceExplorerGroupingTest.kt`), auditoría sénior independiente y certificación de Gate 8.
   - Validación de suite unitaria completa con **69/69 pruebas exitosas** y análisis estático con `lintDebug` en **0 errores y 0 warnings**.
