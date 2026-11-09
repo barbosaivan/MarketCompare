@@ -23,6 +23,14 @@ data class ReceiptWithStoreAndItems(
     val rawDocumentUri: String?
 )
 
+data class StoreSummaryQueryResult(
+    val storeId: String,
+    val storeName: String,
+    val address: String?,
+    val productCount: Int,
+    val lastObservationTimestamp: Long?
+)
+
 @Dao
 interface StoreDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -36,6 +44,21 @@ interface StoreDao {
 
     @Query("SELECT DISTINCT name FROM stores ORDER BY name ASC")
     fun getAllStoreNames(): Flow<List<String>>
+
+    @Query("""
+        SELECT 
+            s.id AS storeId,
+            s.name AS storeName,
+            s.address AS address,
+            COUNT(DISTINCT ri.rawDescription) AS productCount,
+            MAX(r.purchaseTimestamp) AS lastObservationTimestamp
+        FROM stores s
+        LEFT JOIN receipts r ON r.storeId = s.id
+        LEFT JOIN receipt_items ri ON ri.receiptId = r.id
+        GROUP BY s.id, s.name, s.address
+        ORDER BY s.name ASC
+    """)
+    fun observeStoreSummaries(): Flow<List<StoreSummaryQueryResult>>
 }
 
 data class PriceObservationItemEntity(
@@ -99,6 +122,25 @@ interface ReceiptDao {
         ORDER BY r.purchaseTimestamp DESC
     """)
     suspend fun getPriceObservationsForProduct(queryName: String): List<PriceObservationItemEntity>
+
+    @Query("""
+        SELECT 
+            ri.id,
+            ri.productId,
+            ri.rawDescription,
+            CASE 
+                WHEN ri.quantityValue > 0 THEN ri.finalPriceMinor / ri.quantityValue 
+                ELSE ri.finalPriceMinor 
+            END as unitPriceMinor,
+            r.purchaseTimestamp,
+            s.name as storeName
+        FROM receipt_items ri
+        INNER JOIN receipts r ON ri.receiptId = r.id
+        INNER JOIN stores s ON r.storeId = s.id
+        WHERE s.name = :storeName
+        ORDER BY r.purchaseTimestamp DESC
+    """)
+    fun observeProductsForStore(storeName: String): Flow<List<PriceObservationItemEntity>>
 
     @Query("SELECT * FROM receipt_items WHERE receiptId = :receiptId")
     suspend fun getItemsForReceipt(receiptId: String): List<ReceiptItemEntity>

@@ -29,6 +29,7 @@ import com.barbosa.marketcompare.presentation.screens.history.HomePriceExplorerS
 import com.barbosa.marketcompare.presentation.screens.review.ReceiptReviewScreen
 import com.barbosa.marketcompare.presentation.screens.scan.ReceiptCaptureScreen
 import com.barbosa.marketcompare.presentation.screens.shopping.ShoppingListScreen
+import com.barbosa.marketcompare.presentation.screens.store.StoreCatalogScreen
 import com.barbosa.marketcompare.presentation.theme.MarketCompareTheme
 import kotlinx.coroutines.launch
 
@@ -99,8 +100,9 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxSize()
                                 .padding(bottom = innerPadding.calculateBottomPadding())
                         ) {
-                            when (navigator.currentRoute) {
-                                Screen.History.route -> {
+                            val route = navigator.currentRoute
+                            when {
+                                route == Screen.History.route -> {
                                     HomePriceExplorerScreen(
                                         priceObservations = priceObservations,
                                         stores = storeNames,
@@ -125,10 +127,35 @@ class MainActivity : ComponentActivity() {
                                                 repository.addShoppingListItem(name = productName)
                                                 activeComparison = null
                                             }
+                                        },
+                                        onNavigateToStoreCatalog = { storeName ->
+                                            navigator.pushScreen(Screen.StoreCatalog.createRoute(storeName))
                                         }
                                     )
                                 }
-                                Screen.ShoppingList.route -> {
+                                route.startsWith("store_catalog/") -> {
+                                    val storeName = route.removePrefix("store_catalog/")
+                                    val storeProducts by repository.getProductsForStore(storeName).collectAsState(initial = emptyList())
+                                    StoreCatalogScreen(
+                                        storeName = storeName,
+                                        products = storeProducts,
+                                        onBackClick = { navigator.popBack() },
+                                        onProductClick = { productName ->
+                                            scope.launch {
+                                                activeComparison = repository.getCrossStoreComparison(productName)
+                                            }
+                                        },
+                                        comparisonSummary = activeComparison,
+                                        onDismissComparison = { activeComparison = null },
+                                        onAddToList = { productName ->
+                                            scope.launch {
+                                                repository.addShoppingListItem(name = productName)
+                                                activeComparison = null
+                                            }
+                                        }
+                                    )
+                                }
+                                route == Screen.ShoppingList.route -> {
                                     ShoppingListScreen(
                                         basketEstimate = basketEstimate,
                                         catalogProducts = products,
@@ -154,7 +181,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                     )
                                 }
-                                Screen.Scan.route -> {
+                                route == Screen.Scan.route -> {
                                     ReceiptCaptureScreen(
                                         onBackClick = {
                                             navigator.popBack()
@@ -165,7 +192,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                     )
                                 }
-                                Screen.Review.route -> {
+                                route == Screen.Review.route -> {
                                     val draft = activeDraft
                                     if (draft != null) {
                                         ReceiptReviewScreen(
