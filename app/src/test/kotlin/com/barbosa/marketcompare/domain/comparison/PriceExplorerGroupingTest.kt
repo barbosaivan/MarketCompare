@@ -129,3 +129,4 @@ class PriceExplorerGroupingTest {
         assertEquals(Money(1500L, "COP"), bestDeal)
     }
 }
+

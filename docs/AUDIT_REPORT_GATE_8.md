@@ -91,3 +91,4 @@ Resultado: 0 errors, 0 warnings.
 Bajo el procedimiento de compuerta de release ([`.agent/skills/marketcompare-release-gate/SKILL.md`](../.agent/skills/marketcompare-release-gate/SKILL.md)), el auditor confirma que **Gate 8 cumple íntegramente con todos sus criterios de aceptación técnicos y de producto**.
 
 **Estado de la Compuerta:** **`READY FOR HUMAN APPROVAL`**
+
