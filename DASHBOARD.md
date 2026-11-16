@@ -1,13 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Fase v2.0 en ejecución. Gate 7 y Gate 8 completados y aprobados. Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) en progreso, completadas tareas MC-049, MC-050, MC-051 y MC-052.
+> Estado actual: Fase v2.0 en ejecución. Gate 7, Gate 8 y Gate 9 completados y aprobados. Gate 10 (OCR Visual con Bounding Boxes) listo para comenzar.
 
 ## Resumen
 - Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
-- Compuerta activa: `GATE 9 — Ingreso Manual, Edición Total y Normalización a Medidas Estándar (IN PROGRESS)`
+- Compuerta activa: `GATE 10 — OCR Visual con Bounding Boxes y Capas Semánticas (PENDING)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `feat/MC-052-standard-unit-price-badges`
+- Rama de trabajo activa: `feat/MC-053-gate-9-tests-and-audit`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,18 +20,18 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 46 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-052) |
+| DONE con evidencia | 47 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-053) |
 | En progreso | 0 |
-| Pendientes (TODO) | 11 (MC-053 a MC-058) |
+| Pendientes (TODO) | 10 (MC-054 a MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**86/86 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**91/91 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
-| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | IN_PROGRESS (MC-049, MC-050, MC-051 & MC-052 completadas) |
+| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | DONE / APROBADO (2026-11-16) |
 | Hito Gate 10 (OCR Visual con Bounding Boxes) | PENDING |
 
 ## Hitos
@@ -46,7 +46,7 @@
 | G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
 | G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G8 Dashboard de Precios y Tiendas | DONE | Auditor sénior + Tech Lead (2026-11-08) |
-| G9 Ingreso Manual y Medidas Estándar | IN_PROGRESS | Auditor sénior + Tech Lead (MC-049, MC-050 & MC-051 listos) |
+| G9 Ingreso Manual y Medidas Estándar | DONE | Auditor sénior + Tech Lead (2026-11-16) |
 | G10 OCR Visual y Bounding Boxes | TODO | Auditor sénior + Usuario |
 
 ## Control de Versiones, Git y CI/CD
@@ -54,7 +54,7 @@
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
 | Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `feat/MC-039-v2-roadmap-and-governance` |
+| Rama de trabajo activa | `feat/MC-053-gate-9-tests-and-audit` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions EXITOSO (Run 42552956093 - 100% verde en `develop`) |
@@ -62,6 +62,12 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-16 16:30:**
+  - `MC-053` (G9): Creación de suite de pruebas de integración para conversión y comparación de medidas estándar (`StandardPriceComparisonIntegrationTest`).
+  - Verificación de casos de prueba integrales: comparativa multiformato (arroz 500g vs 1kg vs 3kg), ordenamiento por precio por litro de bebidas líquidas, cálculo de delta de ahorro por peso, resolución heurística en descripciones no estructuradas, límites inferiores y resistencia a desbordamiento numérico en paquetes a granel.
+  - Auditoría sénior de arquitectura, calidad de código y privacidad para Gate 9 completada con veredicto **PASS** ([`docs/AUDIT_REPORT_GATE_9.md`](docs/AUDIT_REPORT_GATE_9.md)).
+  - Verificación formal: 91/91 pruebas unitarias e integrales exitosas (100%) y análisis estático con `lintDebug` en 0 errores y 0 warnings.
+  - **Hito Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) 100% completado y certificado**.
 - **2026-11-08 22:55:**
   - `MC-052` (G9): Despliegue de badges visuales de precio por medida estándar (`StandardPriceBadge`) en toda la interfaz de usuario: tarjetas de observación (`ProductPriceObservationCard`), filas comparativas multicomercio (`StoreComparisonRow`), vista general de producto (`ProductDetailOverviewCard`) e historial de precios (`ProductDetailFormSections`).
   - Mapeo automático y reactivo de cantidades y unidades desde `receipt_items` y `ProductNormalizer` hacia `StandardPriceMeasurement`.

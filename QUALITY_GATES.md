@@ -72,14 +72,14 @@ Aprobación humana requerida antes de una implementación amplia.
 - [x] Auditor sénior firma el informe de compuerta (PASS verificado en docs/AUDIT_REPORT_GATE_8.md).
 
 ## Gate 9 — Ingreso Manual, Edición Total y Normalización a Medidas Estándar (v2.0)
-- [ ] Formulario intuitivo de ingreso manual de precios de góndola (sin necesidad de factura).
-- [ ] Pantalla de detalle de producto 100% editable (nombre, marca, clasificación tienda/supermercado, unidad, precio).
-- [ ] Cálculo y visualización automática del precio por medida estándar:
+- [x] Formulario intuitivo de ingreso manual de precios de góndola (sin necesidad de factura) (MC-049).
+- [x] Pantalla de detalle de producto 100% editable (nombre, marca, clasificación tienda/supermercado, unidad, precio) (MC-050).
+- [x] Cálculo y visualización automática del precio por medida estándar (MC-051, MC-052):
   - $/Litro y $/ml para líquidos.
   - $/Kilogramo y $/g para sólidos/peso.
   - $/Unidad para conteos.
-- [ ] Pruebas unitarias de conversión de medidas estándar con aritmética `Money`.
-- [ ] Auditor sénior firma el informe de compuerta.
+- [x] Pruebas unitarias de conversión de medidas estándar con aritmética `Money` (MC-051, MC-053).
+- [x] Auditor sénior firma el informe de compuerta (PASS verificado en docs/AUDIT_REPORT_GATE_9.md).
 
 ## Gate 10 — Escaneo OCR Visual e Interactivo con Bounding Boxes (v2.0)
 - [ ] Visor fotográfico de ticket en alta resolución con zoom y paneo táctil en pantalla de revisión.
