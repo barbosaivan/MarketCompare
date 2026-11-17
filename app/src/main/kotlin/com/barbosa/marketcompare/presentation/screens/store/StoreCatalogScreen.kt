@@ -56,6 +56,7 @@ fun StoreCatalogScreen(
     products: List<ProductPriceObservationItem>,
     onBackClick: () -> Unit,
     onProductClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
     comparisonSummary: ProductComparisonSummary? = null,
     onDismissComparison: () -> Unit = {},
     onAddToList: (String) -> Unit = {},
@@ -69,8 +70,7 @@ fun StoreCatalogScreen(
         presentation: String?,
         discount: Money?,
         discountType: DiscountType
-    ) -> Unit = { _, _, _, _, _, _, _, _ -> },
-    modifier: Modifier = Modifier
+    ) -> Unit = { _, _, _, _, _, _, _, _ -> }
 ) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var showManualEntrySheet by rememberSaveable { mutableStateOf(false) }

@@ -60,6 +60,7 @@ fun HomePriceExplorerScreen(
     receipts: List<Receipt>,
     onScanClick: () -> Unit,
     onReceiptClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
     onProductClick: (String) -> Unit = {},
     comparisonSummary: ProductComparisonSummary? = null,
     onDismissComparison: () -> Unit = {},
@@ -75,8 +76,7 @@ fun HomePriceExplorerScreen(
         presentation: String?,
         discount: Money?,
         discountType: DiscountType
-    ) -> Unit = { _, _, _, _, _, _, _, _ -> },
-    modifier: Modifier = Modifier
+    ) -> Unit = { _, _, _, _, _, _, _, _ -> }
 ) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var selectedStore by rememberSaveable { mutableStateOf<String?>(null) }

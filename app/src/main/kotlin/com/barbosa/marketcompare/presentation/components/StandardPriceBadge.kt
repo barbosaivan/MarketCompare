@@ -23,8 +23,8 @@ import com.barbosa.marketcompare.domain.normalizer.StandardPriceMeasurement
 @Composable
 fun StandardPriceBadge(
     measurement: StandardPriceMeasurement,
-    showSecondary: Boolean = false,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showSecondary: Boolean = false
 ) {
     val displayText = if (showSecondary && measurement.secondaryPrice != null) {
         "${measurement.formatPrimary()} (${measurement.formatSecondary()})"

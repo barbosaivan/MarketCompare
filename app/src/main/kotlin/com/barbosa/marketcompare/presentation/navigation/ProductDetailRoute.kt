@@ -18,8 +18,8 @@ fun ProductDetailRoute(
     productIdOrName: String,
     repository: PurchaseRepository,
     onBackClick: () -> Unit,
-    onAddObservation: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAddObservation: (String) -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     var detailData by remember(productIdOrName) { mutableStateOf<ProductDetailData?>(null) }
