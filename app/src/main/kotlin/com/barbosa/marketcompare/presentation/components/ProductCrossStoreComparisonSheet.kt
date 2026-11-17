@@ -42,8 +42,8 @@ fun ProductCrossStoreComparisonSheet(
     summary: ProductComparisonSummary,
     onDismiss: () -> Unit,
     onAddToList: (String) -> Unit,
-    onEditProductClick: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onEditProductClick: (String) -> Unit = {}
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 

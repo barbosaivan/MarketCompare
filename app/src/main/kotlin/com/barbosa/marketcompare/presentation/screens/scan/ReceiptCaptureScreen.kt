@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.barbosa.marketcompare.R
 import com.barbosa.marketcompare.domain.model.ReceiptDraft
+import com.barbosa.marketcompare.domain.parser.OcrSemanticClassifier
 import com.barbosa.marketcompare.domain.parser.ReceiptParser
 import com.barbosa.marketcompare.platform.ocr.DocumentTextExtractor
 import kotlinx.coroutines.launch
@@ -70,42 +71,33 @@ fun ReceiptCaptureScreen(
     var isProcessing by remember { mutableStateOf(false) }
     var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
 
+    fun processUri(uri: Uri, errorMsg: String) {
+        isProcessing = true
+        scope.launch {
+            val result = textExtractor.extractOcrFromUri(uri)
+            isProcessing = false
+            result.onSuccess { payload ->
+                val initialDraft = ReceiptParser.parse(payload.fullText, uri.toString())
+                val enrichedDraft = OcrSemanticClassifier.enrichDraft(initialDraft, payload)
+                onDraftReady(enrichedDraft)
+            }.onFailure {
+                snackbarHostState.showSnackbar(errorMsg)
+            }
+        }
+    }
+
     // Launcher para galería (Photo Picker)
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
-        if (uri != null) {
-            isProcessing = true
-            scope.launch {
-                val result = textExtractor.extractTextFromUri(uri)
-                isProcessing = false
-                result.onSuccess { rawText ->
-                    val draft = ReceiptParser.parse(rawText, uri.toString())
-                    onDraftReady(draft)
-                }.onFailure {
-                    snackbarHostState.showSnackbar(errorImageMsg)
-                }
-            }
-        }
+        uri?.let { processUri(it, errorImageMsg) }
     }
 
     // Launcher para documentos PDF
     val pdfLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri: Uri? ->
-        if (uri != null) {
-            isProcessing = true
-            scope.launch {
-                val result = textExtractor.extractTextFromUri(uri)
-                isProcessing = false
-                result.onSuccess { rawText ->
-                    val draft = ReceiptParser.parse(rawText, uri.toString())
-                    onDraftReady(draft)
-                }.onFailure {
-                    snackbarHostState.showSnackbar(errorPdfMsg)
-                }
-            }
-        }
+        uri?.let { processUri(it, errorPdfMsg) }
     }
 
     // Launcher para captura con cámara
@@ -114,17 +106,7 @@ fun ReceiptCaptureScreen(
     ) { success: Boolean ->
         val uri = tempCameraUri
         if (success && uri != null) {
-            isProcessing = true
-            scope.launch {
-                val result = textExtractor.extractTextFromUri(uri)
-                isProcessing = false
-                result.onSuccess { rawText ->
-                    val draft = ReceiptParser.parse(rawText, uri.toString())
-                    onDraftReady(draft)
-                }.onFailure {
-                    snackbarHostState.showSnackbar(errorCameraMsg)
-                }
-            }
+            processUri(uri, errorCameraMsg)
         }
     }
 
