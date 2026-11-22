@@ -53,8 +53,8 @@
 | Campo | Estado |
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
-| Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `feat/MC-056-semantic-overlay-layers` |
+| Rama de base de desarrollo | `develop` (integración activa y destino de PRs) |
+| Rama de trabajo activa | `develop` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions EXITOSO (Run 42552956093 - 100% verde en `develop`) |
