@@ -2,9 +2,7 @@ package com.barbosa.marketcompare.presentation.screens.history
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,7 +41,6 @@ import com.barbosa.marketcompare.presentation.components.PriceExplorerEmptyView
 import com.barbosa.marketcompare.presentation.components.PriceSearchBar
 import com.barbosa.marketcompare.presentation.components.ProductCrossStoreComparisonSheet
 import com.barbosa.marketcompare.presentation.components.ProductPriceObservationCard
-import com.barbosa.marketcompare.presentation.components.RecentReceiptsCollapsibleSection
 import com.barbosa.marketcompare.presentation.components.SearchEmptyView
 import com.barbosa.marketcompare.presentation.components.StoreCatalogBanner
 import com.barbosa.marketcompare.presentation.components.StoreFilterChips
@@ -53,9 +50,9 @@ import com.barbosa.marketcompare.presentation.components.StoreFilterChips
 fun HomePriceExplorerScreen(
     priceObservations: List<ProductPriceObservationItem>,
     stores: List<String>,
-    receipts: List<Receipt>,
-    onScanClick: () -> Unit,
-    onReceiptClick: (String) -> Unit,
+    receipts: List<Receipt> = emptyList(),
+    onScanClick: () -> Unit = {},
+    onReceiptClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     onProductClick: (String) -> Unit = {},
     comparisonSummary: ProductComparisonSummary? = null,
@@ -78,21 +75,39 @@ fun HomePriceExplorerScreen(
 ) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var selectedStore by rememberSaveable { mutableStateOf<String?>(null) }
-    var isReceiptsExpanded by rememberSaveable { mutableStateOf(false) }
     var showManualEntrySheet by rememberSaveable { mutableStateOf(false) }
     var observationToDelete by remember { mutableStateOf<ProductPriceObservationItem?>(null) }
     var storeToDelete by remember { mutableStateOf<String?>(null) }
 
+    val allStores = remember(stores, priceObservations) {
+        val fromObs = priceObservations.map { it.storeName }
+        (stores + fromObs).filter { it.isNotBlank() }.distinct().sorted()
+    }
+
     val filteredObservations = remember(priceObservations, searchQuery, selectedStore) {
-        priceObservations.filter { item ->
-            val matchesStore = selectedStore == null || item.storeName.equals(selectedStore, ignoreCase = true)
-            val matchesQuery = searchQuery.isBlank() || item.productName.contains(searchQuery.trim(), ignoreCase = true)
-            matchesStore && matchesQuery
+        if (selectedStore == null) {
+            emptyList()
+        } else {
+            priceObservations.filter { item ->
+                item.storeName.equals(selectedStore, ignoreCase = true) &&
+                    (searchQuery.isBlank() || item.productName.contains(searchQuery.trim(), ignoreCase = true))
+            }
         }
     }
 
-    val groupedByStore = remember(filteredObservations) {
-        filteredObservations.groupBy { it.storeName }
+    val matchingStores = remember(allStores, priceObservations, searchQuery) {
+        if (searchQuery.isBlank()) {
+            allStores
+        } else {
+            val query = searchQuery.trim()
+            val storesWithMatchingProducts = priceObservations
+                .filter { it.productName.contains(query, ignoreCase = true) }
+                .map { it.storeName }
+                .toSet()
+            allStores.filter { store ->
+                store.contains(query, ignoreCase = true) || store in storesWithMatchingProducts
+            }
+        }
     }
 
     Scaffold(
@@ -124,7 +139,7 @@ fun HomePriceExplorerScreen(
             }
         }
     ) { innerPadding ->
-        if (priceObservations.isEmpty() && receipts.isEmpty()) {
+        if (priceObservations.isEmpty() && receipts.isEmpty() && stores.isEmpty()) {
             PriceExplorerEmptyView(modifier = Modifier.padding(innerPadding))
         } else {
             LazyColumn(
@@ -141,10 +156,10 @@ fun HomePriceExplorerScreen(
                     )
                 }
 
-                if (stores.isNotEmpty()) {
+                if (allStores.isNotEmpty()) {
                     item {
                         StoreFilterChips(
-                            stores = stores,
+                            stores = allStores,
                             selectedStore = selectedStore,
                             onStoreSelected = { selectedStore = it },
                             onStoreLongClick = { storeToDelete = it }
@@ -152,11 +167,7 @@ fun HomePriceExplorerScreen(
                     }
                 }
 
-                if (filteredObservations.isEmpty()) {
-                    item {
-                        SearchEmptyView(query = searchQuery)
-                    }
-                } else if (selectedStore != null) {
+                if (selectedStore != null) {
                     val currentStore = selectedStore!!
                     item(key = "banner_$currentStore") {
                         StoreCatalogBanner(
@@ -164,24 +175,12 @@ fun HomePriceExplorerScreen(
                             onClick = { onNavigateToStoreCatalog(currentStore) }
                         )
                     }
-                    items(filteredObservations, key = { it.id }) { item ->
-                        ProductPriceObservationCard(
-                            observation = item,
-                            onClick = { onProductClick(item.productName) },
-                            onLongClick = { observationToDelete = item }
-                        )
-                    }
-                } else {
-                    groupedByStore.forEach { (storeName, obsList) ->
-                        item(key = "store_header_$storeName") {
-                            HomeStoreSectionHeader(
-                                storeName = storeName,
-                                productCount = obsList.size,
-                                onClick = { onNavigateToStoreCatalog(storeName) },
-                                onLongClick = { storeToDelete = storeName }
-                            )
+                    if (filteredObservations.isEmpty()) {
+                        item {
+                            SearchEmptyView(query = searchQuery)
                         }
-                        items(obsList, key = { it.id }) { item ->
+                    } else {
+                        items(filteredObservations, key = { it.id }) { item ->
                             ProductPriceObservationCard(
                                 observation = item,
                                 onClick = { onProductClick(item.productName) },
@@ -189,16 +188,24 @@ fun HomePriceExplorerScreen(
                             )
                         }
                     }
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    RecentReceiptsCollapsibleSection(
-                        receipts = receipts,
-                        isExpanded = isReceiptsExpanded,
-                        onToggleExpanded = { isReceiptsExpanded = !isReceiptsExpanded },
-                        onReceiptClick = onReceiptClick
-                    )
+                } else {
+                    if (matchingStores.isEmpty()) {
+                        item {
+                            SearchEmptyView(query = searchQuery)
+                        }
+                    } else {
+                        items(matchingStores, key = { it }) { storeName ->
+                            val productCount = priceObservations.count {
+                                it.storeName.equals(storeName, ignoreCase = true)
+                            }
+                            HomeStoreSectionHeader(
+                                storeName = storeName,
+                                productCount = productCount,
+                                onClick = { selectedStore = storeName },
+                                onLongClick = { storeToDelete = storeName }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -214,7 +221,7 @@ fun HomePriceExplorerScreen(
 
         if (showManualEntrySheet) {
             ManualPriceEntrySheet(
-                knownStores = stores,
+                knownStores = allStores,
                 onDismiss = { showManualEntrySheet = false },
                 onSavePrice = { store, prod, price, qty, brand, pres, disc, discType ->
                     showManualEntrySheet = false
