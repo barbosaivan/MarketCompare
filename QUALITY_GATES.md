@@ -82,16 +82,16 @@ Aprobación humana requerida antes de una implementación amplia.
 - [x] Auditor sénior firma el informe de compuerta (PASS verificado en docs/AUDIT_REPORT_GATE_9.md).
 
 ## Gate 10 — Escaneo OCR Visual e Interactivo con Bounding Boxes (v2.0)
-- [ ] Visor fotográfico de ticket en alta resolución con zoom y paneo táctil en pantalla de revisión.
-- [ ] Superposición de capas de color semánticas sobre la foto (Bounding Boxes de ML Kit):
+- [x] Visor fotográfico de ticket en alta resolución con zoom y paneo táctil en pantalla de revisión (MC-055).
+- [x] Superposición de capas de color semánticas sobre la foto (Bounding Boxes de ML Kit):
   - 🔵 Azul: Tienda / NIT / Encabezado.
   - 🟢 Verde: Productos reconocidos.
   - 🟡 Dorado: Precios e importes.
   - 🟣 Morado: Cantidades y unidades.
   - 🔴 Rojo: Descuentos y beneficios.
-- [ ] Selección táctil sobre la foto para inspeccionar, confirmar o reasignar datos reconocidos.
-- [ ] Gestión eficiente de memoria y reciclaje de bitmaps comprobada.
-- [ ] Suite de pruebas y auditoría sénior de release v2.0.
+- [x] Selección táctil sobre la foto para inspeccionar, confirmar o reasignar datos reconocidos (MC-057).
+- [x] Gestión eficiente de memoria y reciclaje de bitmaps comprobada (MC-054, MC-055).
+- [x] Suite de pruebas y auditoría sénior de release v2.0 (MC-058, PASS en docs/AUDIT_REPORT_GATE_10_AND_V2_RELEASE.md).
 
 ## Clasificación de defectos
 - P0: pérdida/corrupción de datos, fuga de secretos, incumplimiento de no persistencia API.
