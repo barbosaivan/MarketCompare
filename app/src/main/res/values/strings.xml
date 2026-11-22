@@ -190,4 +190,18 @@
     <string name="state_loading">Cargando…</string>
     <string name="state_error">Ocurrió un error inesperado</string>
     <string name="state_retry">Reintentar</string>
+
+    <!-- Visor de Foto de Factura e Interacción OCR (Gate 10 / MC-055) -->
+    <string name="review_action_view_photo">Ver foto del ticket</string>
+    <string name="review_photo_viewer_title">Foto Original del Ticket</string>
+    <string name="review_photo_zoom_in">Acercar</string>
+    <string name="review_photo_zoom_out">Alejar</string>
+    <string name="review_photo_zoom_reset">Restablecer</string>
+    <string name="review_photo_zoom_percent">%1$d%%</string>
+    <string name="review_photo_loading">Cargando fotografía del ticket…</string>
+    <string name="review_photo_error">No se pudo cargar la imagen original del ticket</string>
+    <string name="review_photo_toggle_overlay">Capa OCR</string>
+    <string name="review_photo_banner_title">Foto original disponible</string>
+    <string name="review_photo_banner_hint">Compara visualmente los valores reconocidos con el ticket original.</string>
+    <string name="review_photo_banner_action">Inspeccionar Foto</string>
 </resources>

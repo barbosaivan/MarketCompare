@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,6 +35,8 @@ import com.barbosa.marketcompare.domain.model.ReceiptDraft
 import com.barbosa.marketcompare.domain.model.ReceiptItem
 import com.barbosa.marketcompare.domain.model.Store
 import com.barbosa.marketcompare.presentation.components.EditableReceiptItemCard
+import com.barbosa.marketcompare.presentation.components.ReceiptPhotoBannerCard
+import com.barbosa.marketcompare.presentation.components.ReceiptPhotoViewerDialog
 import com.barbosa.marketcompare.presentation.components.ReceiptReviewBottomBar
 import java.util.UUID
 
@@ -48,6 +51,7 @@ fun ReceiptReviewScreen(
     val defaultStore = stringResource(R.string.review_default_store)
     var storeName by remember { mutableStateOf(draft.detectedStoreName ?: defaultStore) }
     var items by remember { mutableStateOf(draft.items) }
+    var showPhotoViewer by remember { mutableStateOf(false) }
 
     val includedItems = items.filter { it.isIncluded }
     val computedTotal = Money(includedItems.sumOf { it.finalPrice.amountMinor }, "COP")
@@ -63,6 +67,16 @@ fun ReceiptReviewScreen(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.action_back)
                         )
+                    }
+                },
+                actions = {
+                    if (!draft.rawDocumentUri.isNullOrBlank()) {
+                        IconButton(onClick = { showPhotoViewer = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Image,
+                                contentDescription = stringResource(R.string.review_action_view_photo)
+                            )
+                        }
                     }
                 }
             )
@@ -121,6 +135,14 @@ fun ReceiptReviewScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!draft.rawDocumentUri.isNullOrBlank()) {
+                item {
+                    ReceiptPhotoBannerCard(
+                        onInspectClick = { showPhotoViewer = true }
+                    )
+                }
+            }
+
             item {
                 OutlinedTextField(
                     value = storeName,
@@ -149,5 +171,12 @@ fun ReceiptReviewScreen(
                 )
             }
         }
+    }
+
+    if (showPhotoViewer && !draft.rawDocumentUri.isNullOrBlank()) {
+        ReceiptPhotoViewerDialog(
+            imageUri = draft.rawDocumentUri,
+            onDismiss = { showPhotoViewer = false }
+        )
     }
 }
