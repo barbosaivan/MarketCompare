@@ -19,8 +19,8 @@
 ## KPIs
 | Indicador | Valor actual |
 |---|---:|
-| Tareas totales | 59 |
-| DONE con evidencia | 53 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-059) |
+| Tareas totales | 60 |
+| DONE con evidencia | 54 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-060) |
 | En progreso | 0 |
 | Pendientes (TODO) | 3 (MC-024, MC-025 dependientes de API externa) |
 | Bloqueadas | 3 (MC-003, MC-022, MC-023 - API externa a la espera de credenciales oficiales) |
