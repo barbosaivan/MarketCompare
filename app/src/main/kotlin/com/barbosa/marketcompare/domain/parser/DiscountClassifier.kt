@@ -19,6 +19,7 @@ object DiscountClassifier {
 
             upper.contains("2X1") || upper.contains("3X2") || upper.contains("2DO") ||
                     upper.contains("SEGUNDA UNIDAD") || upper.contains("PROMO") ||
+                    upper.contains("PAGUE") || upper.contains("LLEVE") ||
                     upper.contains("%") -> DiscountType.PROMOTION_2X1
 
             upper.contains("DCTO") || upper.contains("DESCUENTO") ||

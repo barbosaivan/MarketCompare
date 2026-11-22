@@ -18,6 +18,8 @@ object ReceiptParser {
         "CARULLA" to "Carulla",
         "OLIMPICA" to "Olímpica",
         "TIENDAS D1" to "D1",
+        "D 1 S A S" to "D1",
+        "D 1" to "D1",
         "D1" to "D1",
         "KOBA COLOMBIA" to "D1",
         "TIENDAS ARA" to "Ara",
@@ -49,10 +51,11 @@ object ReceiptParser {
     )
 
     private val DISCOUNT_KEYWORDS = listOf(
-        "DCTO", "DESCUENTO", "AHORRO", "PROMO", "REBAJA"
+        "DCTO", "DESCUENTO", "AHORRO", "PROMO", "REBAJA", "PAGUE", "LLEVE", "OFERTA"
     )
 
     private val DATE_PATTERNS = listOf(
+        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.forLanguageTag("es-CO")),
         SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es-CO")),
         SimpleDateFormat("dd-MM-yyyy", Locale.forLanguageTag("es-CO")),
         SimpleDateFormat("yyyy/MM/dd", Locale.forLanguageTag("es-CO")),
@@ -60,8 +63,8 @@ object ReceiptParser {
         SimpleDateFormat("dd/MM/yy", Locale.forLanguageTag("es-CO"))
     )
 
-    // Regex para detectar precios colombianos al final de línea
-    private val PRICE_REGEX = Pattern.compile("""(?:\s|^)(?:[-–]\s*)?(?:\$\s*)?(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?|\d{3,7})\s*$""")
+    // Regex para detectar precios colombianos con sufijo tributario opcional
+    private val PRICE_REGEX = ColombianReceiptMatcher.PRICE_WITH_TAX_REGEX
     private val NIT_REGEX = Pattern.compile("""(?:NIT|N\.I\.T\.)\s*[:.]?\s*(\d{3}[\d.-]+)""", Pattern.CASE_INSENSITIVE)
     private val DATE_REGEX = Pattern.compile("""\b(\d{1,4}[/-]\d{1,2}[/-]\d{2,4})\b""")
     private val DATE_ONLY_REGEX = Regex("""^(\d{1,4}[/-]\d{1,2}[/-]\d{2,4})(\s+\d{1,2}:\d{2}(:\d{2})?)?$""")
@@ -197,6 +200,11 @@ object ReceiptParser {
         val trimmed = line.trim()
         if (trimmed.length < 4) return null
 
+        // Intento 1: Formatos estructurados con código de barras y códigos tributarios (D1 / Ara)
+        val posItem = ColombianReceiptMatcher.matchPosItem(trimmed)
+        if (posItem != null) return posItem
+
+        // Intento 2: Formato estándar descripción + precio al final
         val priceMatcher = PRICE_REGEX.matcher(trimmed)
         if (!priceMatcher.find()) return null
 
@@ -264,10 +272,7 @@ object ReceiptParser {
     }
 
     private fun parseCleanPrice(raw: String): Money? {
-        val cleaned = raw.replace("$", "").replace(" ", "").trim()
-        val digitsOnly = cleaned.replace(".", "").replace(",", "")
-        val longVal = digitsOnly.toLongOrNull() ?: return null
-        return Money(longVal, "COP")
+        return ColombianReceiptMatcher.parseCleanPrice(raw)
     }
 
     private fun isPotentialItem(line: String): Boolean {
