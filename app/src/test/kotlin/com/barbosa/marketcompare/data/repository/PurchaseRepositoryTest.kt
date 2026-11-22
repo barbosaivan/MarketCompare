@@ -1,6 +1,7 @@
 package com.barbosa.marketcompare.data.repository
 
 import com.barbosa.marketcompare.data.local.MarketCompareDatabase
+import com.barbosa.marketcompare.data.local.dao.PriceObservationItemEntity
 import com.barbosa.marketcompare.data.local.dao.ProductDao
 import com.barbosa.marketcompare.data.local.dao.ReceiptDao
 import com.barbosa.marketcompare.data.local.dao.ReceiptWithStoreAndItems
@@ -212,6 +213,83 @@ class PurchaseRepositoryTest {
         assertEquals(Money(4200L, "COP"), obs?.unitPrice)
         assertEquals("Éxito", obs?.storeName)
         assertEquals(1718000000000L, obs?.observedAtTimestamp)
+    }
+
+    @Test
+    fun `getAllPriceObservations computes lowest price correctly for competing stores`() = runTest {
+        val now = System.currentTimeMillis()
+        val observations = listOf(
+            PriceObservationItemEntity(
+                id = "item-1",
+                productId = "prod-1",
+                rawDescription = "Leche Entera 1L",
+                unitPriceMinor = 4500L,
+                purchaseTimestamp = now,
+                storeName = "Éxito"
+            ),
+            PriceObservationItemEntity(
+                id = "item-2",
+                productId = "prod-1",
+                rawDescription = "Leche Entera 1L",
+                unitPriceMinor = 3800L,
+                purchaseTimestamp = now,
+                storeName = "D1"
+            )
+        )
+        every { receiptDao.observeAllPriceObservations() } returns flowOf(observations)
+
+        val result = repository.getAllPriceObservations().first()
+
+        assertEquals(2, result.size)
+        val exitoItem = result.first { it.storeName == "Éxito" }
+        val d1Item = result.first { it.storeName == "D1" }
+
+        org.junit.Assert.assertFalse(exitoItem.isLowestPrice)
+        assertTrue(d1Item.isLowestPrice)
+        assertEquals(Money(3800L, "COP"), d1Item.unitPrice)
+    }
+
+    @Test
+    fun `getAllStoreNames delegates to storeDao`() = runTest {
+        val stores = listOf("Ara", "D1", "Éxito", "Jumbo")
+        every { storeDao.getAllStoreNames() } returns flowOf(stores)
+
+        val result = repository.getAllStoreNames().first()
+
+        assertEquals(4, result.size)
+        assertEquals("Ara", result[0])
+        assertEquals("Jumbo", result[3])
+    }
+
+    @Test
+    fun `getCrossStoreComparison fetches observations and calculates cross-store savings`() = runTest {
+        val now = System.currentTimeMillis()
+        val observations = listOf(
+            PriceObservationItemEntity(
+                id = "obs-1",
+                productId = "prod-1",
+                rawDescription = "Huevos AA x30",
+                unitPriceMinor = 18000L,
+                purchaseTimestamp = now,
+                storeName = "Éxito"
+            ),
+            PriceObservationItemEntity(
+                id = "obs-2",
+                productId = "prod-1",
+                rawDescription = "Huevos AA x30",
+                unitPriceMinor = 15500L,
+                purchaseTimestamp = now,
+                storeName = "D1"
+            )
+        )
+        coEvery { receiptDao.getPriceObservationsForProduct("Huevos AA x30") } returns observations
+
+        val summary = repository.getCrossStoreComparison("Huevos AA x30")
+
+        org.junit.Assert.assertNotNull(summary)
+        assertEquals("D1", summary?.cheapestStore)
+        assertEquals(Money(15500L, "COP"), summary?.lowestPrice)
+        assertEquals(Money(2500L, "COP"), summary?.maxSavings)
     }
 }
 

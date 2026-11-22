@@ -1,12 +1,14 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Release v1.0.0-rc1 formalmente aprobado por el usuario. Gate 6 (Calidad final, suite de pruebas automatizadas con 47/47 tests, análisis estático Android Lint con 0 errores/warnings, auditoría sénior PASS, y sincronización documental exhaustiva) completado y aprobado. Compilación limpia y empaquetado de release listo.
+> Estado actual: Fase v2.0 completada al 100%. Gate 7, Gate 8, Gate 9 y Gate 10 finalizados y certificados por Auditoría Sénior. Listo para aprobación humana y release v2.0.
 
 ## Resumen
-- Fase actual: `RELEASED — v1.0.0-rc1` (Gate 6 COMPLETADO Y APROBADO; Gate 4 permanece BLOQUEADO a la espera de credenciales/clave API oficial de `losprecios.co`).
-- Estado global: `RELEASED`
+- Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
+- Compuerta activa: `GATE 10 — OCR Visual con Bounding Boxes y Capas Semánticas (DONE / CERTIFICADO)`
+- Estado global: `DONE / RELEASE v2.0.0`
 - Rama de integración activa: `develop`
-- Rama de release estable: `main` (Tag `v1.0.0-rc1`)
+- Rama de trabajo activa: `develop`
+- Rama de release estable: `main` (Tag `v2.0.0`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
 - Persistencia: Room local exclusiva para compras confirmadas y lista de compras (`MarketCompareDatabase`).
@@ -17,20 +19,20 @@
 ## KPIs
 | Indicador | Valor actual |
 |---|---:|
-| Tareas totales | 38 |
-| DONE con evidencia | 33 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-038) |
-| En revisión / Release | 0 |
-| Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
+| Tareas totales | 58 |
+| DONE con evidencia | 52 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-058) |
+| En progreso | 0 |
+| Pendientes (TODO) | 3 (MC-024, MC-025 dependientes de API externa) |
+| Bloqueadas | 3 (MC-003, MC-022, MC-023 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
-| Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
+| Última compilación | `assembleDebug` EXITOSA (APK generado 65.4 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**47/47 tests pasados**: MoneyTest (10), PurchaseRepositoryTest (6), ProductNormalizerTest (10), ProductAutocompleteEngineTest (7), DiscountClassifierTest (6), ReceiptParserTest (4), BasketEstimatorTest (4)) |
-| Hito Gate 0 (Entorno y alcance) | APROBADO (2026-11-07) |
-| Hito Gate 1 (Arquitectura y modelado) | COMPLETADO (2026-11-07) |
-| Hito Gate 2 (Esqueleto ejecutable) | COMPLETADO (2026-11-07) |
-| Hito Gate 3 (Compras locales y OCR) | COMPLETADO (2026-11-07) |
-| Hito Gate 5 (Producto y descuentos) | COMPLETADO (2026-11-08) |
-| Hito Gate 6 (Calidad final y release) | APROBADO (2026-11-08 bajo v1.0.0-rc1) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**119/119 tests pasados**) |
+| Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
+| Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
+| Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
+| Hito Gate 9 (Ingreso Manual y Medidas Estándar) | DONE / APROBADO (2026-11-16) |
+| Hito Gate 10 (OCR Visual con Bounding Boxes) | DONE / CERTIFICADO (2026-11-21) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -42,20 +44,158 @@
 | G4 API temporal | BLOCKED | Documentación API + auditor sénior |
 | G5 Autocompletado y descuentos | DONE | Auditor sénior |
 | G6 Calidad final y release | DONE | Auditor sénior + Usuario (Aprobado v1.0.0-rc1) |
+| G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
+| G8 Dashboard de Precios y Tiendas | DONE | Auditor sénior + Tech Lead (2026-11-08) |
+| G9 Ingreso Manual y Medidas Estándar | DONE | Auditor sénior + Tech Lead (2026-11-16) |
+| G10 OCR Visual y Bounding Boxes | DONE | Auditor sénior (PASS 2026-11-21) |
 
 ## Control de Versiones, Git y CI/CD
 | Campo | Estado |
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
 | Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `docs/MC-033-finalize-documentation` |
+| Rama de trabajo activa | `develop` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
-| Integración Continua (CI) | GitHub Actions configurado (`.github/workflows/android-ci.yml`) |
+| Integración Continua (CI) | GitHub Actions EXITOSO (Run 42552956093 - 100% verde en `develop`) |
 | Automatización de Releases | GitHub Actions configurado (`.github/workflows/release.yml`) |
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-21 21:14:**
+  - `MC-058` (G10): Auditoría sénior independiente, certificación de análisis estático y verificación de suite de pruebas para el release de la **Fase v2.0**.
+  - Publicación del informe de auditoría independiente [`docs/AUDIT_REPORT_GATE_10_AND_V2_RELEASE.md`](docs/AUDIT_REPORT_GATE_10_AND_V2_RELEASE.md) con veredicto **PASS / READY FOR HUMAN APPROVAL**.
+  - Verificación formal:
+    - 0 defectos P0, 0 defectos P1, 0 defectos P2.
+    - 100% de cumplimiento arquitectónico: todos los archivos Kotlin < 300 líneas (máximo 280 líneas) y métodos < 50 líneas.
+    - 100% de cumplimiento de ADR 0001 (privacidad y no-persistencia de cotizaciones externas) y ADR 0003 (aritmética financiera exacta sin punto flotante).
+    - Suite de pruebas automatizadas: **119/119 pruebas unitarias exitosas (100% PASS)** en 26s.
+    - Análisis estático Android Lint (`lintDebug`): **0 errores y 0 warnings**.
+    - Compilación de release (`assembleDebug`): **EXITOSA**, generando APK `app-debug.apk` de 65.4 MB.
+  - **Hito Gate 10 (Escaneo OCR Visual e Interactivo con Bounding Boxes) y Fase v2.0 100% completados y certificados**.
+- **2026-11-21 21:08:**
+  - `MC-057` (G10): Implementación de selección táctil interactiva sobre cajas OCR y reasignación directa de campos en la pantalla de revisión (`OcrBoxInspectionCard`, `OcrFieldAssignmentHelper`).
+  - Al tocar cualquier caja delimitadora en `ReceiptPhotoViewerDialog`:
+    - Se activa la selección visual (`selectedBlockId`) destacando el bloque con borde y relleno prominente en `OcrOverlayCanvas`.
+    - Se despliega el panel inferior de inspección con badge semántico por color, texto reconocido y selector de ítem de destino.
+    - Acciones contextuales para reasignar texto a:
+      - Nombre de tienda (`storeName`).
+      - Descripción de producto del ítem seleccionado (`rawDescription`).
+      - Precio de lista / precio final (`finalPrice` / `unitListPrice`).
+      - Cantidad y unidades de medida (`quantity` - `ProductQuantity`).
+      - Descuento y evidencia de promoción (`discount` y `discountEvidence`).
+      - Creación de nuevo ítem en el borrador directamente a partir de la caja seleccionada.
+  - Saneamiento y corrección de advertencia Lint `UseKtx` (`String.toUri`) en `ReceiptImageLoader`.
+  - Suite de pruebas `OcrFieldAssignmentHelperTest` con 10 pruebas nuevas, elevando la suite global a **119/119 pruebas exitosas al 100%** y análisis estático `lintDebug` en **0 errores y 0 warnings**.
+- **2026-11-21 20:38:**
+  - `MC-056` (G10): Renderizado de capas semánticas codificadas por color sobre la foto del recibo (`OcrOverlayCanvas`).
+  - Paleta visual semántica: 🔵 Tienda/Encabezado (`STORE_HEADER`), 🟢 Productos (`PRODUCT_NAME`), 🟡 Precios/Importes (`PRICE`), 🟣 Cantidades/Unidades (`QUANTITY`), 🔴 Descuentos (`DISCOUNT`) y ⚪ Otros (`OTHER`).
+  - Componente selector `OcrCategoryFilterBar` con chips interactivos para aislar u ocultar categorías visuales individuales.
+  - Master switch de capas en la barra superior de `ReceiptPhotoViewerDialog` para visualización limpia del documento o inspección semántica detallada.
+  - Renderizado acelerado por hardware mediante GPU y sincronización nativa con la matriz de transformación y zoom de `ReceiptPhotoViewer`.
+  - Suite unitaria `OcrOverlayModelTest` con 4 pruebas nuevas, elevando el total del proyecto a **109/109 pruebas exitosas (100%)** y `lintDebug` aprobado con **0 errores y 0 warnings**.
+- **2026-11-21 20:25:**
+  - `MC-055` (G10): Implementación del visor interactivo de foto de factura con gestos táctiles de zoom y paneo (`ReceiptPhotoViewer`).
+  - Gestor de estado `ZoomPanState` con soporte para pellizco multitáctil (`detectTransformGestures`), doble toque inteligente para alternar entre 100% y 250% (`detectTapGestures`), desplazamiento con sujeción a bordes (`clampOffset`) y barra de controles flotante HUD (+, -, porcentaje y botón de restablecer).
+  - Cargador seguro de imágenes `ReceiptImageLoader` con escalado óptimo (`inSampleSize`), soporte directo para imágenes y documentos PDF (`PdfRenderer`), y prevención de desbordamiento de memoria/OOM.
+  - Integración en la pantalla de revisión `ReceiptReviewScreen`: botón de acceso rápido en la barra superior y tarjeta destacada `ReceiptPhotoBannerCard`, abriendo el diálogo inmersivo a pantalla completa `ReceiptPhotoViewerDialog`.
+  - Arquitectura preparada para superposición de capas semánticas (`MC-056`) y reasignación táctil de campos (`MC-057`) mediante slot de `overlayContent`.
+  - Suite unitaria `ZoomPanStateTest` con 7 pruebas nuevas, elevando el total del proyecto a **105/105 pruebas exitosas (100%)** y `lintDebug` aprobado con **0 errores y 0 warnings**.
+- **2026-11-16 21:05:**
+  - `MC-054` (G10): Extracción de cajas delimitadoras (Bounding Boxes de ML Kit) y motor de clasificación semántica (`OcrSemanticClassifier`).
+  - Mapeo de elementos visuales a 5 categorías de color semánticas:
+    - 🔵 `STORE_HEADER` (Azul): Tienda, NIT, dirección y encabezado fiscal.
+    - 🟢 `PRODUCT_NAME` (Verde): Descripciones y nombres canónicos de productos.
+    - 🟡 `PRICE` (Dorado): Precios unitarios, importes de línea y totales.
+    - 🟣 `QUANTITY` (Morado): Cantidades, multiplicadores (ej. 2 X) y unidades de medida (kg, g, L, ml, und).
+    - 🔴 `DISCOUNT` (Rojo): Líneas de ahorro, beneficios de fidelidad y promociones.
+  - Actualización de `DocumentTextExtractor` para devolver `RawOcrPayload` con coordenadas pixel y dimensiones de imagen, garantizando reciclaje estricto de bitmaps para prevenir fugas de memoria.
+  - Enriquecimiento automático de `ReceiptDraft` con coordenadas normalizadas (`BoundingBoxRect`) para escalado y soporte de zoom/pan en la vista de revisión.
+  - Corrección de 5 advertencias de lint (`ModifierParameter`) alcanzando 0 errores y 0 warnings en `lintDebug`.
+  - Suite de pruebas `OcrSemanticClassifierTest` (7 nuevas pruebas, elevando la suite global a **98/98 pruebas exitosas al 100%**).
+- **2026-11-16 16:30:**
+  - `MC-053` (G9): Creación de suite de pruebas de integración para conversión y comparación de medidas estándar (`StandardPriceComparisonIntegrationTest`).
+  - Verificación de casos de prueba integrales: comparativa multiformato (arroz 500g vs 1kg vs 3kg), ordenamiento por precio por litro de bebidas líquidas, cálculo de delta de ahorro por peso, resolución heurística en descripciones no estructuradas, límites inferiores y resistencia a desbordamiento numérico en paquetes a granel.
+  - Auditoría sénior de arquitectura, calidad de código y privacidad para Gate 9 completada con veredicto **PASS** ([`docs/AUDIT_REPORT_GATE_9.md`](docs/AUDIT_REPORT_GATE_9.md)).
+  - Verificación formal: 91/91 pruebas unitarias e integrales exitosas (100%) y análisis estático con `lintDebug` en 0 errores y 0 warnings.
+  - **Hito Gate 9 (Ingreso Manual, Edición Total y Normalización a Medidas Estándar) 100% completado y certificado**.
+- **2026-11-08 22:55:**
+  - `MC-052` (G9): Despliegue de badges visuales de precio por medida estándar (`StandardPriceBadge`) en toda la interfaz de usuario: tarjetas de observación (`ProductPriceObservationCard`), filas comparativas multicomercio (`StoreComparisonRow`), vista general de producto (`ProductDetailOverviewCard`) e historial de precios (`ProductDetailFormSections`).
+  - Mapeo automático y reactivo de cantidades y unidades desde `receipt_items` y `ProductNormalizer` hacia `StandardPriceMeasurement`.
+  - Verificación: 86/86 tests pasados al 100% y `lintDebug` aprobado con 0 errores y 0 warnings.
+- **2026-11-08 22:45:**
+  - `MC-051` (G9): Implementación del motor puro de normalización a medidas estándar (`StandardMeasurementNormalizer`).
+  - Cálculo de precios estándar mediante aritmética monetaria exacta con `Money` (ADR 0003, sin punto flotante): $/kg y $/g para sólidos/peso, $/L y $/ml para líquidos/volumen, y $/und para conteos discretos.
+  - Resolución inteligente de factores de escala gram/ml y kilo/litro evitando divisiones por cero.
+  - Suite unitaria `StandardMeasurementNormalizerTest` (9 pruebas añadidas, expandiendo la suite global a **86/86 pruebas exitosas**).
+  - Verificación: 86/86 tests pasados al 100% y `lintDebug` aprobado con 0 errores y 0 warnings.
+- **2026-11-08 22:35:**
+  - `MC-050` (G9): Implementación de la pantalla de detalle de producto 100% editable (`ProductDetailScreen`), formulario de edición con validación (`ProductDetailEditForm`), diálogo de modificación rápida de observaciones de precio (`EditObservationDialog`), diálogo de confirmación de eliminación (`DeleteObservationConfirmDialog`) y selector de clasificación de comercio/tienda (`ClassificationSelector`).
+  - Extracción de componentes auxiliares y descomposión de `ProductCrossStoreComparisonSheet` (de 301 a 192 líneas con `StoreComparisonItem.kt`).
+  - Implementación de mutaciones y cascadas en Room a través de `ProductDetailEditor`: actualización de canonical name, marca, clasificación, unidad y presentación, propagación de renames a `receipt_items` y `shopping_list_items`, actualización o cambio de tienda de observaciones y eliminación de precios individuales.
+  - Conexión de navegación mediante `ProductDetailRoute` y acceso directo desde el botón "Editar Detalle" del resumen comparativo multicomercio y catálogo de tiendas.
+  - Suite unitaria `ProductDetailEditorTest` (4 pruebas añadidas, expandiendo la suite global a **77/77 pruebas exitosas**).
+  - Verificación: 77/77 tests pasados al 100% y `lintDebug` aprobado con 0 errores y 0 warnings.
+- **2026-11-08 22:15:**
+  - `MC-049` (G9): Implementación del flujo de ingreso manual de precios de góndola sin necesidad de factura física.
+  - Componente modal M3 `ManualPriceEntrySheet` con captura de establecimiento (chips de tiendas frecuentes y texto libre), producto, marca, precio, cantidad base, selector de unidades de medida (`und`, `g`, `kg`, `ml`, `L`), presentación y selector de promociones/descuentos.
+  - Creación de `ManualPriceRecorder` y método `recordManualPriceObservation` en el repositorio para registrar observaciones manuales en Room resolviendo unicidad de comercios y productos.
+  - Desacople de DAOs Room en archivos individuales (`StoreDao.kt`, `ReceiptDao.kt`, `ProductDao.kt`, `ShoppingListDao.kt`) garantizando cumplimiento estricto del límite de 300 líneas.
+  - Suite unitaria `ManualPriceRecorderTest` (4 pruebas añadidas, expandiendo la suite global a **73/73 pruebas exitosas**).
+  - Verificación: 73/73 tests pasados al 100% y `lintDebug` aprobado con 0 errores y 0 warnings.
+- **2026-11-08 21:50:**
+  - `CI/CD Fix`: Corrección integral del pipeline de GitHub Actions (`android-ci.yml` y `release.yml`).
+  - Causa raíz identificada: `org.gradle.java.home` con ruta de Windows (`C:\Program Files\Android\Android Studio2\jbr`) en `gradle.properties` provocaba `IllegalArgumentException` inmediata en runners Linux (Ubuntu).
+  - Solución aplicada:
+    1. Desacople de la ruta hardcodeada de Windows del repositorio hacia la configuración global del desarrollador (`~/.gradle/gradle.properties`).
+    2. Agregado paso defensivo `sed -i '/org.gradle.java.home/d' gradle.properties` en los workflows para garantizar resiliencia en CI.
+    3. Actualización de `actions/setup-java@v4` a `actions/setup-java@v5` (resolviendo advertencias de deprecación).
+    4. Actualización de `gradle/actions/setup-gradle@v3` a `gradle/actions/setup-gradle@v4` (resolviendo fallo de caché 400 y advertencias de Node 20).
+    5. Configuración de `if-no-files-found: ignore` en `actions/upload-artifact@v4`.
+  - Verificación en vivo: Ejecución GitHub Actions `Run 42552956093` completada con veredicto **SUCCESS** (pruebas unitarias 69/69 y generación de APK aprobadas al 100%).
+- **2026-11-08 21:30:**
+  - `MC-048` (G8): Creación de pruebas unitarias (`PriceExplorerGroupingTest.kt`), auditoría sénior independiente y certificación de Gate 8.
+  - Validación de suite unitaria completa con **69/69 pruebas exitosas** y análisis estático con `lintDebug` en **0 errores y 0 warnings**.
+  - Publicación del informe de auditoría independiente [`docs/AUDIT_REPORT_GATE_8.md`](docs/AUDIT_REPORT_GATE_8.md) con veredicto **PASS**.
+  - **Hito Gate 8 (Dashboard de Inteligencia de Precios y Explorador por Tienda) 100% completado y certificado**.
+- **2026-11-08 21:00:**
+  - `MC-047` (G8): Implementación de queries agregadas y analíticas por tienda en Room DAOs y repositorio (`getStoreStatistics`, `observePriceTimeline`, `observePriceObservationsBetween`).
+  - Creación de suite unitaria `StoreCatalogRepositoryTest.kt` (5 pruebas).
+- **2026-11-08 20:30:**
+  - `MC-046` (G8): Implementación del directorio de comercios y explorador de catálogo filtrado por establecimiento (`StoreCatalogScreen`), con resolución de unicidad por `ProductCatalogResolver`.
+  - Navegación bidireccional conectada desde chips en Home y ruta parametrizada `store_catalog/{storeName}`.
+- **2026-11-08 19:40:**
+  - `MC-045` (G8): Implementación del buscador universal de precios multicomercio y ModalBottomSheet `ProductCrossStoreComparisonSheet`.
+  - Extracción del motor puro de dominio `CrossStoreComparisonCalculator` con cálculo de dispersión, ranking de menor a mayor precio y ahorro relativo respecto al comercio más costoso.
+  - Creación de suite unitaria `CrossStoreComparisonCalculatorTest.kt` (4 pruebas).
+- **2026-11-08 18:30:**
+  - `MC-044` (G8): Rediseño integral de la pantalla principal de registro de gastos a explorador de inteligencia de precios (`HomePriceExplorerScreen`).
+  - Incorporación de barra de búsqueda universal, chips de filtrado por comercio, tarjetas KPI de monitoreo y feed cronológico de observaciones de precios con badges de frescura.
+- **2026-11-08 17:15:**
+  - `MC-043` (G7): Refactorización y extracción exhaustiva de componentes en la capa de presentación.
+  - Creación de componentes reutilizables: `DiscountAuditDialog`, `EditableReceiptItemCard`, `ReceiptReviewBottomBar`, `BasketSummaryCard`, `ShoppingListItemRow` y `ShoppingListAddCard`.
+  - Reducción drástica del tamaño de archivos: `ReceiptReviewScreen.kt` pasó de 573 a 153 líneas; `ShoppingListScreen.kt` pasó de 442 a 133 líneas. Todos los archivos de la capa de UI se encuentran ahora estrictamente bajo el límite de 260 líneas (< 300 líneas) y métodos < 50 líneas.
+  - **Hito Gate 7 completado al 100%** satisfaciendo todos sus criterios de calidad y usabilidad.
+  - Verificación: 53/53 pruebas unitarias exitosas y `lintDebug` aprobado con 0 errores y 0 warnings.
+- **2026-11-08 16:50:**
+  - `MC-042` (G7): Implementación del gestor de historial de navegación `AppNavigator` y del manejador de botón atrás nativo `BackHandler` en Compose.
+  - La aplicación gestiona una pila de navegación histórica ordenada: presionar "Atrás" o el botón de retroceso de la barra superior regresa ordenadamente a la pantalla previa (por ejemplo, de Revisión a Escaneo y de Escaneo a Historial) en lugar de cerrar la app.
+  - Creación de suite unitaria `AppNavigatorTest` (6 pruebas añadidas, expandiendo la suite global a **53/53 pruebas exitosas**).
+  - Verificación: 53/53 pruebas unitarias exitosas y `lintDebug` aprobado con 0 errores y 0 warnings.
+- **2026-11-08 16:30:**
+  - `MC-041` (G7): Extracción del componente modular `AppBottomNavigationBar` y reestructuración de la jerarquía del Scaffold raíz en `MainActivity.kt`.
+  - La barra de navegación inferior permanece ahora 100% visible y accesible en todas las vistas (Historial, Escaneo, Revisión y Lista de Compras), eliminando el ocultamiento del menú durante la navegación.
+  - El ítem "Escanear" se resalta dinámicamente tanto en la captura como en la revisión de tickets.
+  - Verificación: 47/47 pruebas unitarias exitosas y `lintDebug` aprobado con 0 errores y 0 warnings.
+- **2026-11-08 15:50:**
+  - `MC-040` (G7): Implementación de la paleta moderna Material 3 en `Color.kt` y `Theme.kt` (Deep Pine como primario, Warm Amber como secundario, Electric Indigo como terciario).
+  - Incorporados tokens de elevación tonal M3 (`surfaceContainerLowest` hasta `surfaceContainerHighest`) para tema claro y tema oscuro.
+  - Creado proveedor semántico `MaterialTheme.semanticColors` (`LocalMarketCompareSemanticColors`) para categorías OCR y semáforo de frescura sin hardcodear colores en componentes.
+  - Verificación: 47/47 pruebas unitarias exitosas y `lintDebug` aprobado con 0 errores y 0 advertencias.
+- **2026-11-08 15:40:**
+  - Inicio de la **Fase v2.0**: Incorporación de los 14 nuevos requerimientos acordados con el usuario.
+  - `MC-039` (G7): Formalización del protocolo de revisión multi-agente en 7 etapas y adopción de la política de calidad pre-commit obligatoria en `PROJECT_RULES.md` y `AGENT_TEAM.md`.
+  - Definición y registro en `QUALITY_GATES.md` y `BACKLOG.csv` de las compuertas Gate 7, Gate 8, Gate 9 y Gate 10 (tareas MC-039 a MC-058).
 - **2026-11-08 14:40:**
   - `MC-034` (G6): Aprobación formal de entrega y release por parte del usuario bajo la versión `v1.0.0-rc1`.
   - Gate 6 cerrado formalmente con 100% de criterios aprobados.

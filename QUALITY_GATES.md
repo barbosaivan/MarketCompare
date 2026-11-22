@@ -53,6 +53,46 @@ Aprobación humana requerida antes de una implementación amplia.
 - [x] Dashboard y documentación actualizados (`DASHBOARD.md`, `README.md`, `docs/*`).
 - [x] Usuario aprueba la entrega final (MC-034): Aprobado formalmente bajo la versión v1.0.0-rc1.
 
+## Gate 7 — Sistema de Diseño M3, Navegación Persistente y Backstack (v2.0)
+- [x] Protocolo multi-agente y checklist de calidad pre-commit formalmente adoptados (MC-039).
+- [x] Nueva paleta de colores Material 3 implementada (Deep Pine, Warm Amber, Electric Indigo) con soporte de temas claro/oscuro y tonal surfaces (MC-040).
+- [x] Barra de navegación inferior (`NavigationBar`) persistente sin ocultarse al navegar en vistas secundarias (MC-041).
+- [x] Gestión del botón atrás (`BackHandler`) predecible: retrocede ordenadamente entre pantallas sin salir de la aplicación (MC-042).
+- [x] Componentes UI reutilizables y modulares extraídos en `presentation/components/` (MC-043).
+- [x] Métodos < 50 líneas y clases < 300 líneas en todos los archivos afectados (MC-043).
+- [x] Pruebas unitarias actualizadas (53/53 pasadas al 100%) y `lintDebug` con 0 errores y 0 warnings (MC-043).
+- [x] Auditor sénior firma el informe de compuerta (PASS verificado).
+
+## Gate 8 — Dashboard de Inteligencia de Precios y Explorador por Tienda (v2.0)
+- [x] Pantalla principal reorientada a consulta y comparación de precios (eliminando el protagonismo del gasto total) (MC-044).
+- [x] Buscador universal de productos con comparación multicomercio en tiempo real (MC-045).
+- [x] Directorio y explorador de establecimientos: listado de productos y precios filtrados por tienda/supermercado (MC-046).
+- [x] Métricas de mejor precio y fecha de última actualización por comercio (MC-047).
+- [x] Pruebas de dominio y repositorio para consultas agrupadas por tienda (MC-048).
+- [x] Auditor sénior firma el informe de compuerta (PASS verificado en docs/AUDIT_REPORT_GATE_8.md).
+
+## Gate 9 — Ingreso Manual, Edición Total y Normalización a Medidas Estándar (v2.0)
+- [x] Formulario intuitivo de ingreso manual de precios de góndola (sin necesidad de factura) (MC-049).
+- [x] Pantalla de detalle de producto 100% editable (nombre, marca, clasificación tienda/supermercado, unidad, precio) (MC-050).
+- [x] Cálculo y visualización automática del precio por medida estándar (MC-051, MC-052):
+  - $/Litro y $/ml para líquidos.
+  - $/Kilogramo y $/g para sólidos/peso.
+  - $/Unidad para conteos.
+- [x] Pruebas unitarias de conversión de medidas estándar con aritmética `Money` (MC-051, MC-053).
+- [x] Auditor sénior firma el informe de compuerta (PASS verificado en docs/AUDIT_REPORT_GATE_9.md).
+
+## Gate 10 — Escaneo OCR Visual e Interactivo con Bounding Boxes (v2.0)
+- [x] Visor fotográfico de ticket en alta resolución con zoom y paneo táctil en pantalla de revisión (MC-055).
+- [x] Superposición de capas de color semánticas sobre la foto (Bounding Boxes de ML Kit):
+  - 🔵 Azul: Tienda / NIT / Encabezado.
+  - 🟢 Verde: Productos reconocidos.
+  - 🟡 Dorado: Precios e importes.
+  - 🟣 Morado: Cantidades y unidades.
+  - 🔴 Rojo: Descuentos y beneficios.
+- [x] Selección táctil sobre la foto para inspeccionar, confirmar o reasignar datos reconocidos (MC-057).
+- [x] Gestión eficiente de memoria y reciclaje de bitmaps comprobada (MC-054, MC-055).
+- [x] Suite de pruebas y auditoría sénior de release v2.0 (MC-058, PASS en docs/AUDIT_REPORT_GATE_10_AND_V2_RELEASE.md).
+
 ## Clasificación de defectos
 - P0: pérdida/corrupción de datos, fuga de secretos, incumplimiento de no persistencia API.
 - P1: flujo principal bloqueado, precios incorrectos, descuentos falsos, comparación de variantes incompatibles.

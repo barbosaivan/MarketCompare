@@ -7,9 +7,39 @@
     <string name="action_cancel">Cancelar</string>
     <string name="action_confirm">Confirmar</string>
     <string name="action_save">Guardar</string>
+    <string name="nav_prices">Precios</string>
     <string name="nav_history">Historial</string>
     <string name="nav_scan">Escanear</string>
     <string name="nav_shopping_list">Lista</string>
+    
+    <!-- Explorador de Precios (MC-044) -->
+    <string name="home_price_explorer_title">Explorador de Precios</string>
+    <string name="home_search_hint">Buscar producto o comparar precios…</string>
+    <string name="home_search_clear">Limpiar búsqueda</string>
+    <string name="home_chip_all_stores">Todas las tiendas</string>
+    <string name="home_kpi_monitored_products">Productos</string>
+    <string name="home_kpi_stores_tracked">Tiendas</string>
+    <string name="home_kpi_best_deal">Mejor oferta</string>
+    <string name="home_kpi_best_deal_none">Sin datos</string>
+    <string name="home_empty_title">Sin registros de precios aún</string>
+    <string name="home_empty_description">Escanea tus facturas para registrar y comparar precios de productos entre tiendas.</string>
+    <string name="home_empty_search">No se encontraron productos para \"%1$s\"</string>
+    <string name="home_badge_best_price">Mejor precio</string>
+    <string name="home_receipts_collapsible_title">Facturas archivadas (%1$d)</string>
+    <string name="home_receipts_collapsible_subtitle">Toca para ver o consultar tus tickets confirmados</string>
+    <string name="home_fab_scan">Escanear Factura</string>
+    <string name="home_price_observation_date">Registrado el %1$s</string>
+    <string name="home_store_filter_label">Filtrar por comercio:</string>
+    <string name="home_view_store_catalog">Ver catálogo de tienda</string>
+    
+    <!-- Catálogo de Tienda (MC-046) -->
+    <string name="store_catalog_title">Catálogo de Tienda</string>
+    <string name="store_catalog_search_hint">Buscar productos en %1$s…</string>
+    <string name="store_catalog_products_count">%1$d productos disponibles</string>
+    <string name="store_catalog_empty">No hay productos registrados aún para este comercio.</string>
+    <string name="store_catalog_empty_search">No se encontraron productos para \"%1$s\" en este comercio.</string>
+    <string name="store_card_last_visit">Último registro: %1$s</string>
+    <string name="store_card_address">Dirección: %1$s</string>
     
     <!-- Historial de compras -->
     <string name="history_title">Mis Compras Confirmadas</string>
@@ -72,8 +102,18 @@
     <string name="dialog_variant_mismatch_message">El producto seleccionado:\n• %1$s\n\nDifiere en tamaño o empaque del detectado en el recibo:\n• %2$s\n\nLas comparativas de precios requieren presentaciones equivalentes. ¿Confirmas que deseas asociar esta variante deliberadamente?</string>
     <string name="dialog_variant_mismatch_confirm">Asignar variante</string>
     
-    <!-- Comparación de precios -->
+    <!-- Comparación de precios (MC-045) -->
     <string name="compare_title">Comparativa de Precios</string>
+    <string name="compare_sheet_title">Comparativa Multicomercio</string>
+    <string name="compare_sheet_best_deal_title">Mejor precio encontrado</string>
+    <string name="compare_sheet_savings">Ahorras hasta %1$s (%2$.1f%%) en %3$s</string>
+    <string name="compare_sheet_single_store">Solo registrado en %1$s</string>
+    <string name="compare_sheet_stores_count">%1$d comercios comparados</string>
+    <string name="compare_sheet_add_to_list">Agregar a lista de compras</string>
+    <string name="compare_sheet_rank">#%1$d</string>
+    <string name="compare_sheet_price_delta">+%1$s (+%2$.1f%%)</string>
+    <string name="compare_sheet_cheapest_badge">Más económico</string>
+    <string name="compare_sheet_close">Cerrar</string>
     <string name="compare_local_source">Tu compra real</string>
     <string name="compare_external_source">Referencia externa (Tiempo real)</string>
     <string name="compare_external_offline">Servicio de cotización externa no disponible</string>
@@ -100,8 +140,96 @@
     <string name="basket_badge_recent">Confirmado</string>
     <string name="basket_disclaimer">Estimación calculada exclusivamente con tus compras locales confirmadas. Los precios desactualizados (> 30 días) o desconocidos se identifican explícitamente.</string>
 
+    <!-- Ingreso manual de precios de góndola (MC-049) -->
+    <string name="manual_entry_title">Registrar Precio de Góndola</string>
+    <string name="manual_entry_subtitle">Registra precios observados directamente en la tienda sin necesidad de factura física.</string>
+    <string name="manual_entry_store_label">Establecimiento o Comercio *</string>
+    <string name="manual_entry_store_hint">Ej. Éxito, D1, Ara, Carulla…</string>
+    <string name="manual_entry_product_label">Nombre del Producto *</string>
+    <string name="manual_entry_product_hint">Ej. Leche entera 1.1L, Arroz Diana 1kg…</string>
+    <string name="manual_entry_brand_label">Marca (opcional)</string>
+    <string name="manual_entry_brand_hint">Ej. Alquería, Colanta, Alpina…</string>
+    <string name="manual_entry_price_label">Precio Observado en Góndola (COP) *</string>
+    <string name="manual_entry_price_hint">Ej. 4500</string>
+    <string name="manual_entry_quantity_label">Cantidad base</string>
+    <string name="manual_entry_unit_label">Unidad de medida</string>
+    <string name="manual_entry_presentation_label">Presentación o empaque (opcional)</string>
+    <string name="manual_entry_presentation_hint">Ej. Bolsa, Botella, Caja, Paquete</string>
+    <string name="manual_entry_discount_switch">¿Es precio con descuento o promoción?</string>
+    <string name="manual_entry_discount_type_label">Tipo de oferta o descuento</string>
+    <string name="manual_entry_regular_price_label">Precio regular sin oferta (COP, opcional)</string>
+    <string name="manual_entry_save_action">Guardar Precio</string>
+    <string name="manual_entry_success_message">Precio de góndola registrado exitosamente.</string>
+    <string name="home_fab_manual_entry">Registrar Precio</string>
+    <string name="store_catalog_add_price_button">+ Registrar precio aquí</string>
+
+    <!-- Detalle de Producto y Edición Total (MC-050) -->
+    <string name="product_detail_title">Detalle de Producto</string>
+    <string name="product_detail_edit_action">Editar</string>
+    <string name="product_detail_save_action">Guardar Cambios</string>
+    <string name="product_detail_cancel_action">Cancelar</string>
+    <string name="product_detail_name_label">Nombre del Producto *</string>
+    <string name="product_detail_brand_label">Marca (opcional)</string>
+    <string name="product_detail_category_label">Clasificación / Categoría</string>
+    <string name="product_detail_base_quantity_label">Cantidad base</string>
+    <string name="product_detail_unit_label">Unidad de medida</string>
+    <string name="product_detail_presentation_label">Presentación o empaque</string>
+    <string name="product_detail_observations_title">Historial de Precios por Tienda</string>
+    <string name="product_detail_add_observation">+ Agregar Precio</string>
+    <string name="product_detail_edit_observation">Editar Precio</string>
+    <string name="product_detail_delete_observation">Eliminar</string>
+    <string name="product_detail_delete_observation_confirm">¿Deseas eliminar este registro de precio?</string>
+    <string name="product_detail_store_label">Comercio / Tienda *</string>
+    <string name="product_detail_price_label">Precio (COP) *</string>
+    <string name="product_detail_empty_observations">No hay registros de precio para este producto.</string>
+    <string name="product_detail_save_success">Producto actualizado exitosamente.</string>
+    <string name="product_detail_observation_deleted">Observación eliminada.</string>
+    <string name="product_detail_not_found">Producto no encontrado.</string>
+
     <!-- Estados comunes -->
     <string name="state_loading">Cargando…</string>
     <string name="state_error">Ocurrió un error inesperado</string>
     <string name="state_retry">Reintentar</string>
+
+    <!-- Visor de Foto de Factura e Interacción OCR (Gate 10 / MC-055) -->
+    <string name="review_action_view_photo">Ver foto del ticket</string>
+    <string name="review_photo_viewer_title">Foto Original del Ticket</string>
+    <string name="review_photo_zoom_in">Acercar</string>
+    <string name="review_photo_zoom_out">Alejar</string>
+    <string name="review_photo_zoom_reset">Restablecer</string>
+    <string name="review_photo_zoom_percent">%1$d%%</string>
+    <string name="review_photo_loading">Cargando fotografía del ticket…</string>
+    <string name="review_photo_error">No se pudo cargar la imagen original del ticket</string>
+    <string name="review_photo_toggle_overlay">Capa OCR</string>
+    <string name="review_photo_banner_title">Foto original disponible</string>
+    <string name="review_photo_banner_hint">Compara visualmente los valores reconocidos con el ticket original.</string>
+    <string name="review_photo_banner_action">Inspeccionar Foto</string>
+
+    <!-- Capas semánticas OCR (MC-056) -->
+    <string name="ocr_category_store">Tienda</string>
+    <string name="ocr_category_product">Productos</string>
+    <string name="ocr_category_price">Precios</string>
+    <string name="ocr_category_quantity">Cantidades</string>
+    <string name="ocr_category_discount">Descuentos</string>
+    <string name="ocr_category_other">Otros</string>
+    <string name="ocr_overlay_hide">Ocultar capas</string>
+    <string name="ocr_overlay_show">Mostrar capas</string>
+
+    <!-- Selección táctil y reasignación de campos OCR (MC-057) -->
+    <string name="ocr_assign_title">Asignar texto detectado</string>
+    <string name="ocr_assign_to_store">Tienda</string>
+    <string name="ocr_assign_to_item">Ítem</string>
+    <string name="ocr_assign_desc">Descripción</string>
+    <string name="ocr_assign_price">Precio</string>
+    <string name="ocr_assign_qty">Cantidad</string>
+    <string name="ocr_assign_discount">Descuento</string>
+    <string name="ocr_assign_new_item">+ Nuevo ítem</string>
+    <string name="ocr_assign_dismiss">Cerrar</string>
+    <string name="ocr_assign_item_selector">Asignar al ítem:</string>
+    <string name="ocr_assign_success_store">Tienda actualizada: %1$s</string>
+    <string name="ocr_assign_success_desc">Descripción actualizada en ítem %1$d</string>
+    <string name="ocr_assign_success_price">Precio actualizado en ítem %1$d: %2$s</string>
+    <string name="ocr_assign_success_qty">Cantidad actualizada en ítem %1$d: %2$s</string>
+    <string name="ocr_assign_success_discount">Descuento actualizado en ítem %1$d: %2$s</string>
+    <string name="ocr_assign_success_new">Nuevo ítem creado a partir de OCR</string>
 </resources>

@@ -10,7 +10,10 @@ data class ReceiptDraft(
     val detectedTotal: Money?,
     val rawText: String,
     val items: List<ReceiptItemDraft>,
-    val rawDocumentUri: String? = null
+    val rawDocumentUri: String? = null,
+    val ocrBlocks: List<OcrElementBox> = emptyList(),
+    val imageWidth: Int = 0,
+    val imageHeight: Int = 0
 )
 
 data class ReceiptItemDraft(
