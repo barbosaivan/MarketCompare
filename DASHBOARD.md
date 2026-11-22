@@ -19,15 +19,15 @@
 ## KPIs
 | Indicador | Valor actual |
 |---|---:|
-| Tareas totales | 60 |
-| DONE con evidencia | 54 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-060) |
+| Tareas totales | 61 |
+| DONE con evidencia | 55 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-061) |
 | En progreso | 0 |
 | Pendientes (TODO) | 3 (MC-024, MC-025 dependientes de API externa) |
 | Bloqueadas | 3 (MC-003, MC-022, MC-023 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.4 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**121/121 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**123/123 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
