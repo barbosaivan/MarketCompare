@@ -9,6 +9,7 @@ import android.os.ParcelFileDescriptor
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.graphics.createBitmap
+import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
@@ -23,7 +24,7 @@ object ReceiptImageLoader {
     suspend fun loadBitmap(context: Context, uriString: String?): ImageBitmap? = withContext(Dispatchers.IO) {
         if (uriString.isNullOrBlank()) return@withContext null
         runCatching {
-            val uri = Uri.parse(uriString)
+            val uri = uriString.toUri()
             val mimeType = context.contentResolver.getType(uri) ?: ""
             val isPdf = mimeType.contains("pdf", ignoreCase = true) || uriString.endsWith(".pdf", ignoreCase = true)
 

@@ -177,6 +177,14 @@ fun ReceiptReviewScreen(
         ReceiptPhotoViewerDialog(
             imageUri = draft.rawDocumentUri,
             ocrBlocks = draft.ocrBlocks,
+            items = items,
+            onAssignStore = { newStore -> storeName = newStore },
+            onUpdateItem = { updatedItem ->
+                items = items.map { if (it.id == updatedItem.id) updatedItem else it }
+            },
+            onAddItem = { newItem ->
+                items = items + newItem
+            },
             onDismiss = { showPhotoViewer = false }
         )
     }

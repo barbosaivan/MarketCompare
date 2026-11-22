@@ -214,4 +214,22 @@
     <string name="ocr_category_other">Otros</string>
     <string name="ocr_overlay_hide">Ocultar capas</string>
     <string name="ocr_overlay_show">Mostrar capas</string>
+
+    <!-- Selección táctil y reasignación de campos OCR (MC-057) -->
+    <string name="ocr_assign_title">Asignar texto detectado</string>
+    <string name="ocr_assign_to_store">Tienda</string>
+    <string name="ocr_assign_to_item">Ítem</string>
+    <string name="ocr_assign_desc">Descripción</string>
+    <string name="ocr_assign_price">Precio</string>
+    <string name="ocr_assign_qty">Cantidad</string>
+    <string name="ocr_assign_discount">Descuento</string>
+    <string name="ocr_assign_new_item">+ Nuevo ítem</string>
+    <string name="ocr_assign_dismiss">Cerrar</string>
+    <string name="ocr_assign_item_selector">Asignar al ítem:</string>
+    <string name="ocr_assign_success_store">Tienda actualizada: %1$s</string>
+    <string name="ocr_assign_success_desc">Descripción actualizada en ítem %1$d</string>
+    <string name="ocr_assign_success_price">Precio actualizado en ítem %1$d: %2$s</string>
+    <string name="ocr_assign_success_qty">Cantidad actualizada en ítem %1$d: %2$s</string>
+    <string name="ocr_assign_success_discount">Descuento actualizado en ítem %1$d: %2$s</string>
+    <string name="ocr_assign_success_new">Nuevo ítem creado a partir de OCR</string>
 </resources>
