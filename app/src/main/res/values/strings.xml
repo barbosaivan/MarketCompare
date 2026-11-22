@@ -204,4 +204,14 @@
     <string name="review_photo_banner_title">Foto original disponible</string>
     <string name="review_photo_banner_hint">Compara visualmente los valores reconocidos con el ticket original.</string>
     <string name="review_photo_banner_action">Inspeccionar Foto</string>
+
+    <!-- Capas semánticas OCR (MC-056) -->
+    <string name="ocr_category_store">Tienda</string>
+    <string name="ocr_category_product">Productos</string>
+    <string name="ocr_category_price">Precios</string>
+    <string name="ocr_category_quantity">Cantidades</string>
+    <string name="ocr_category_discount">Descuentos</string>
+    <string name="ocr_category_other">Otros</string>
+    <string name="ocr_overlay_hide">Ocultar capas</string>
+    <string name="ocr_overlay_show">Mostrar capas</string>
 </resources>
