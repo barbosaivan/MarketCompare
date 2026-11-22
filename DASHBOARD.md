@@ -1,13 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Fase v2.0 en ejecución. Gate 7, Gate 8 y Gate 9 completados y aprobados. Gate 10 (OCR Visual con Bounding Boxes) en progreso, completadas tareas MC-054, MC-055 y MC-056.
+> Estado actual: Fase v2.0 en ejecución. Gate 7, Gate 8 y Gate 9 completados y aprobados. Gate 10 (OCR Visual con Bounding Boxes) en progreso, completadas tareas MC-054, MC-055, MC-056 y MC-057.
 
 ## Resumen
 - Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
 - Compuerta activa: `GATE 10 — OCR Visual con Bounding Boxes y Capas Semánticas (IN_PROGRESS)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `develop`
+- Rama de trabajo activa: `feat/MC-057-touch-selection-and-remapping`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,19 +20,19 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 50 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-056) |
+| DONE con evidencia | 51 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-057) |
 | En progreso | 0 |
-| Pendientes (TODO) | 7 (MC-057 a MC-058) |
+| Pendientes (TODO) | 6 (MC-058) |
 | Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**109/109 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**119/119 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
 | Hito Gate 9 (Ingreso Manual y Medidas Estándar) | DONE / APROBADO (2026-11-16) |
-| Hito Gate 10 (OCR Visual con Bounding Boxes) | IN_PROGRESS (MC-054, MC-055 y MC-056 completadas) |
+| Hito Gate 10 (OCR Visual con Bounding Boxes) | IN_PROGRESS (MC-054, MC-055, MC-056 y MC-057 completadas) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -47,14 +47,14 @@
 | G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G8 Dashboard de Precios y Tiendas | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G9 Ingreso Manual y Medidas Estándar | DONE | Auditor sénior + Tech Lead (2026-11-16) |
-| G10 OCR Visual y Bounding Boxes | IN_PROGRESS | Auditor sénior + Usuario (MC-054, MC-055 y MC-056 completadas) |
+| G10 OCR Visual y Bounding Boxes | IN_PROGRESS | Auditor sénior + Usuario (MC-054, MC-055, MC-056 y MC-057 completadas) |
 
 ## Control de Versiones, Git y CI/CD
 | Campo | Estado |
 |---|---|
 | Rama base de releases | `main` (protegida para versiones estables con tags) |
-| Rama de base de desarrollo | `develop` (integración activa y destino de PRs) |
-| Rama de trabajo activa | `develop` |
+| Rama base de desarrollo | `develop` (integración activa y destino de PRs) |
+| Rama de trabajo activa | `feat/MC-057-touch-selection-and-remapping` |
 | Estado de repositorio | Conectado y sincronizado con GitHub |
 | Remoto configurado | `origin` (`https://github.com/barbosaivan/MarketCompare.git`) |
 | Integración Continua (CI) | GitHub Actions EXITOSO (Run 42552956093 - 100% verde en `develop`) |
@@ -62,6 +62,20 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-21 21:08:**
+  - `MC-057` (G10): Implementación de selección táctil interactiva sobre cajas OCR y reasignación directa de campos en la pantalla de revisión (`OcrBoxInspectionCard`, `OcrFieldAssignmentHelper`).
+  - Al tocar cualquier caja delimitadora en `ReceiptPhotoViewerDialog`:
+    - Se activa la selección visual (`selectedBlockId`) destacando el bloque con borde y relleno prominente en `OcrOverlayCanvas`.
+    - Se despliega el panel inferior de inspección con badge semántico por color, texto reconocido y selector de ítem de destino.
+    - Acciones contextuales para reasignar texto a:
+      - Nombre de tienda (`storeName`).
+      - Descripción de producto del ítem seleccionado (`rawDescription`).
+      - Precio de lista / precio final (`finalPrice` / `unitListPrice`).
+      - Cantidad y unidades de medida (`quantity` - `ProductQuantity`).
+      - Descuento y evidencia de promoción (`discount` y `discountEvidence`).
+      - Creación de nuevo ítem en el borrador directamente a partir de la caja seleccionada.
+  - Saneamiento y corrección de advertencia Lint `UseKtx` (`String.toUri`) en `ReceiptImageLoader`.
+  - Suite de pruebas `OcrFieldAssignmentHelperTest` con 10 pruebas nuevas, elevando la suite global a **119/119 pruebas exitosas al 100%** y análisis estático `lintDebug` en **0 errores y 0 warnings**.
 - **2026-11-21 20:38:**
   - `MC-056` (G10): Renderizado de capas semánticas codificadas por color sobre la foto del recibo (`OcrOverlayCanvas`).
   - Paleta visual semántica: 🔵 Tienda/Encabezado (`STORE_HEADER`), 🟢 Productos (`PRODUCT_NAME`), 🟡 Precios/Importes (`PRICE`), 🟣 Cantidades/Unidades (`QUANTITY`), 🔴 Descuentos (`DISCOUNT`) y ⚪ Otros (`OTHER`).
