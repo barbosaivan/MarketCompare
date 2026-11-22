@@ -50,7 +50,9 @@ import com.barbosa.marketcompare.domain.model.ReceiptDraft
 import com.barbosa.marketcompare.domain.parser.OcrSemanticClassifier
 import com.barbosa.marketcompare.domain.parser.ReceiptParser
 import com.barbosa.marketcompare.platform.ocr.DocumentTextExtractor
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,13 +73,16 @@ fun ReceiptCaptureScreen(
     var isProcessing by remember { mutableStateOf(false) }
     var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
 
-    fun processUri(uri: Uri, errorMsg: String) {
+    fun processUri(sourceUri: Uri, errorMsg: String) {
         isProcessing = true
         scope.launch {
-            val result = textExtractor.extractOcrFromUri(uri)
+            val persistentUri = withContext(Dispatchers.IO) {
+                copyToInternalStorage(context, sourceUri)
+            }
+            val result = textExtractor.extractOcrFromUri(persistentUri)
             isProcessing = false
             result.onSuccess { payload ->
-                val initialDraft = ReceiptParser.parse(payload.fullText, uri.toString())
+                val initialDraft = ReceiptParser.parse(payload.fullText, persistentUri.toString())
                 val enrichedDraft = OcrSemanticClassifier.enrichDraft(initialDraft, payload)
                 onDraftReady(enrichedDraft)
             }.onFailure {
@@ -216,4 +221,26 @@ fun ReceiptCaptureScreen(
             }
         }
     }
+}
+
+private fun copyToInternalStorage(context: android.content.Context, sourceUri: Uri): Uri {
+    return runCatching {
+        val mimeType = context.contentResolver.getType(sourceUri) ?: ""
+        val isPdf = mimeType.contains("pdf", ignoreCase = true) || sourceUri.toString().endsWith(".pdf", ignoreCase = true)
+        val ext = if (isPdf) "pdf" else "jpg"
+        val dir = File(context.cacheDir, "receipt_documents").apply { mkdirs() }
+        val destFile = File(dir, "receipt_${System.currentTimeMillis()}.$ext")
+        val stream = if (sourceUri.scheme == "file") {
+            sourceUri.path?.let { File(it).inputStream() }
+        } else {
+            context.contentResolver.openInputStream(sourceUri)
+        } ?: return sourceUri
+
+        stream.use { input ->
+            destFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+        Uri.fromFile(destFile)
+    }.getOrElse { sourceUri }
 }

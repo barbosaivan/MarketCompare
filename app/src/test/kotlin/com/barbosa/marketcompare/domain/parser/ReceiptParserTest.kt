@@ -112,5 +112,82 @@ class ReceiptParserTest {
         assertTrue(draft.items.none { it.rawDescription.contains("AUTORIZACION") })
         assertTrue(draft.items.none { it.rawDescription.contains("CUFE") })
     }
+
+    @Test
+    fun `parse real D1 physical receipt extracts all items barcode quantities promo and total`() {
+        val rawReceipt = """
+            TIENDAS D1
+            NIT 900.276.962-1
+            2 2 UN 4,990 7700304457908 TOMATE CHONTO 9,980 6
+            3 1 UN 6,990 0000000000092 PINAS GOLDEN 6,990 6
+            4 1 UN 3,500 7700304959693 CEBOLLA LARGA 3,500 6
+            5 4 UN 4,990 0000000000084 AGUACATE 19,960 6
+            Pague 1 lleve 2P Aguacate Var -9980
+            6 1 UN 2,990 7702011161987 DULCES DUROS 2,990 A
+            7 1 UN 1,990 7702026151744 PROTECTORES D 1,990 5
+            8 1 UN 5,990 7700304601714 ARVEJA VERDE 5,990 A
+            19 2 UN 2,400 0000077047779 NUCITA TOY 14 4,800 A
+            TOTAL 106,730
+            FORMA DE PAGO: CONTADO - VALOR PAGADO 106,730
+            TARJ CRE/DEB $
+        """.trimIndent()
+
+        val draft = ReceiptParser.parse(rawReceipt)
+
+        assertEquals("D1", draft.detectedStoreName)
+        assertEquals("900.276.962-1", draft.detectedTaxId)
+        assertEquals(Money(106730L, "COP"), draft.detectedTotal)
+        assertEquals(8, draft.items.size)
+
+        // Item 0: Tomate chonto
+        val tomate = draft.items[0]
+        assertEquals("TOMATE CHONTO", tomate.rawDescription)
+        assertEquals(2L, tomate.quantity.value)
+        assertEquals(Money(4990L, "COP"), tomate.unitListPrice)
+        assertEquals(Money(9980L, "COP"), tomate.finalPrice)
+
+        // Item 3: Aguacate con promo
+        val aguacate = draft.items[3]
+        assertEquals("AGUACATE", aguacate.rawDescription)
+        assertEquals(4L, aguacate.quantity.value)
+        assertEquals(Money(9980L, "COP"), aguacate.discount)
+        assertEquals(DiscountType.PROMOTION_2X1, aguacate.discountType)
+        assertEquals(Money(9980L, "COP"), aguacate.finalPrice)
+
+        // Item 7: Nucita
+        val nucita = draft.items[7]
+        assertEquals("NUCITA TOY 14", nucita.rawDescription)
+        assertEquals(2L, nucita.quantity.value)
+        assertEquals(Money(2400L, "COP"), nucita.unitListPrice)
+        assertEquals(Money(4800L, "COP"), nucita.finalPrice)
+    }
+
+    @Test
+    fun `parse real D1 electronic invoice extracts store date and decimal prices correctly`() {
+        val rawReceipt = """
+            D 1 S A S
+            TIENDA-6A100129
+            FACTURA ELECTRÓNICA DE VENTA N: H8E8200379
+            FECHA: 2026-11-06 20:45:07
+            NUM. DOCUMENTO: 1007301911
+            1 7700304389865 PAPEL HIG 3H ULTRASU 7.100,00
+            2 7700304056583 TORTILLA BURRITO 8 U 7.250,00
+            3 7700304349395 SALSA MAYONESA CON C 6.300,00
+            15 7701101360279 HAMBURGUESA RANCHERA 19.990,00
+            TOTAL 40.640,00
+        """.trimIndent()
+
+        val draft = ReceiptParser.parse(rawReceipt)
+
+        assertEquals("D1", draft.detectedStoreName)
+        assertEquals(4, draft.items.size)
+        assertEquals(Money(40640L, "COP"), draft.detectedTotal)
+
+        assertEquals("PAPEL HIG 3H ULTRASU", draft.items[0].rawDescription)
+        assertEquals(Money(7100L, "COP"), draft.items[0].finalPrice)
+
+        assertEquals("HAMBURGUESA RANCHERA", draft.items[3].rawDescription)
+        assertEquals(Money(19990L, "COP"), draft.items[3].finalPrice)
+    }
 }
 
