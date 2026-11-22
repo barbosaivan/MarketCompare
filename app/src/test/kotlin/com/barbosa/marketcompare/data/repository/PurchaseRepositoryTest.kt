@@ -291,5 +291,16 @@ class PurchaseRepositoryTest {
         assertEquals(Money(15500L, "COP"), summary?.lowestPrice)
         assertEquals(Money(2500L, "COP"), summary?.maxSavings)
     }
+
+    @Test
+    fun `deleteStore deletes receipts and store from DAOs`() = runTest {
+        coEvery { receiptDao.deleteReceiptsByStoreName("Éxito") } returns Unit
+        coEvery { storeDao.deleteStoreByName("Éxito") } returns Unit
+
+        repository.deleteStore("Éxito")
+
+        coVerify(exactly = 1) { receiptDao.deleteReceiptsByStoreName("Éxito") }
+        coVerify(exactly = 1) { storeDao.deleteStoreByName("Éxito") }
+    }
 }
 
