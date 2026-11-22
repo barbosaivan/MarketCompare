@@ -176,6 +176,7 @@ fun ReceiptReviewScreen(
     if (showPhotoViewer && !draft.rawDocumentUri.isNullOrBlank()) {
         ReceiptPhotoViewerDialog(
             imageUri = draft.rawDocumentUri,
+            ocrBlocks = draft.ocrBlocks,
             onDismiss = { showPhotoViewer = false }
         )
     }

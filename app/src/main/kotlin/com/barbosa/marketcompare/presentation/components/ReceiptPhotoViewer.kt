@@ -44,15 +44,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.barbosa.marketcompare.R
+import com.barbosa.marketcompare.domain.model.OcrElementBox
+import com.barbosa.marketcompare.domain.model.OcrSemanticCategory
 import com.barbosa.marketcompare.platform.ocr.ReceiptImageLoader
 
 /**
- * Visor interactivo de foto de factura con gestos multitáctiles de zoom y paneo (MC-055).
+ * Visor interactivo de foto de factura con gestos multitáctiles de zoom y paneo (MC-055, MC-056).
  */
 @Composable
 fun ReceiptPhotoViewer(
     imageUri: String?,
     modifier: Modifier = Modifier,
+    ocrBlocks: List<OcrElementBox> = emptyList(),
+    showOverlays: Boolean = true,
+    visibleCategories: Set<OcrSemanticCategory> = OcrSemanticCategory.entries.toSet(),
+    selectedBlockId: String? = null,
+    onBlockClick: ((OcrElementBox) -> Unit)? = null,
     zoomPanState: ZoomPanState = rememberZoomPanState(),
     showControls: Boolean = true,
     overlayContent: @Composable (BoxScope.(zoomPanState: ZoomPanState, imageWidth: Float, imageHeight: Float) -> Unit)? = null
@@ -119,6 +126,15 @@ fun ReceiptPhotoViewer(
                             bitmap = currentBitmap,
                             contentDescription = stringResource(R.string.review_photo_viewer_title)
                         )
+                        if (showOverlays && ocrBlocks.isNotEmpty()) {
+                            OcrOverlayCanvas(
+                                ocrBlocks = ocrBlocks,
+                                visibleCategories = visibleCategories,
+                                selectedBlockId = selectedBlockId,
+                                onBlockClick = onBlockClick,
+                                modifier = Modifier.matchParentSize()
+                            )
+                        }
                         overlayContent?.invoke(this, zoomPanState, currentBitmap.width.toFloat(), currentBitmap.height.toFloat())
                     }
                 }
