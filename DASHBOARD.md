@@ -7,7 +7,7 @@
 - Compuerta activa: `GATE 10 — OCR Visual con Bounding Boxes y Capas Semánticas (IN_PROGRESS)`
 - Estado global: `IN_PROGRESS`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `feat/MC-055-receipt-photo-viewer`
+- Rama de trabajo activa: `develop`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
