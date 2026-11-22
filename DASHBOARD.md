@@ -1,13 +1,13 @@
 # MarketCompare — Dashboard de proyecto
 
-> Estado actual: Fase v2.0 en ejecución. Gate 7, Gate 8 y Gate 9 completados y aprobados. Gate 10 (OCR Visual con Bounding Boxes) en progreso, completadas tareas MC-054, MC-055, MC-056 y MC-057.
+> Estado actual: Fase v2.0 completada al 100%. Gate 7, Gate 8, Gate 9 y Gate 10 finalizados y certificados por Auditoría Sénior. Listo para aprobación humana y release v2.0.
 
 ## Resumen
 - Fase actual: `FASE v2.0 — Mejoras de Usabilidad, Arquitectura M3 y Catálogo`
-- Compuerta activa: `GATE 10 — OCR Visual con Bounding Boxes y Capas Semánticas (IN_PROGRESS)`
-- Estado global: `IN_PROGRESS`
+- Compuerta activa: `GATE 10 — OCR Visual con Bounding Boxes y Capas Semánticas (DONE / CERTIFICADO)`
+- Estado global: `READY_FOR_HUMAN_APPROVAL`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `develop`
+- Rama de trabajo activa: `audit/MC-058-gate-10-and-v2-release-audit`
 - Rama de release estable: `main` (Tag `v1.0.0-rc1`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -20,19 +20,19 @@
 | Indicador | Valor actual |
 |---|---:|
 | Tareas totales | 58 |
-| DONE con evidencia | 51 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-057) |
+| DONE con evidencia | 52 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-058) |
 | En progreso | 0 |
-| Pendientes (TODO) | 6 (MC-058) |
-| Bloqueadas | 1 (MC-003 / MC-022 - API externa a la espera de credenciales oficiales) |
+| Pendientes (TODO) | 3 (MC-024, MC-025 dependientes de API externa) |
+| Bloqueadas | 3 (MC-003, MC-022, MC-023 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
-| Última compilación | `assembleDebug` EXITOSA (APK generado 65.5 MB) |
+| Última compilación | `assembleDebug` EXITOSA (APK generado 65.4 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
 | Última suite de tests | `testDebugUnitTest` EXITOSA (**119/119 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
 | Hito Gate 9 (Ingreso Manual y Medidas Estándar) | DONE / APROBADO (2026-11-16) |
-| Hito Gate 10 (OCR Visual con Bounding Boxes) | IN_PROGRESS (MC-054, MC-055, MC-056 y MC-057 completadas) |
+| Hito Gate 10 (OCR Visual con Bounding Boxes) | DONE / CERTIFICADO (2026-11-21) |
 
 ## Hitos
 | Hito | Estado | Aprobación |
@@ -47,7 +47,7 @@
 | G7 Sistema M3, Navegación y Backstack | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G8 Dashboard de Precios y Tiendas | DONE | Auditor sénior + Tech Lead (2026-11-08) |
 | G9 Ingreso Manual y Medidas Estándar | DONE | Auditor sénior + Tech Lead (2026-11-16) |
-| G10 OCR Visual y Bounding Boxes | IN_PROGRESS | Auditor sénior + Usuario (MC-054, MC-055, MC-056 y MC-057 completadas) |
+| G10 OCR Visual y Bounding Boxes | DONE | Auditor sénior (PASS 2026-11-21) |
 
 ## Control de Versiones, Git y CI/CD
 | Campo | Estado |
@@ -62,6 +62,17 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-21 21:14:**
+  - `MC-058` (G10): Auditoría sénior independiente, certificación de análisis estático y verificación de suite de pruebas para el release de la **Fase v2.0**.
+  - Publicación del informe de auditoría independiente [`docs/AUDIT_REPORT_GATE_10_AND_V2_RELEASE.md`](docs/AUDIT_REPORT_GATE_10_AND_V2_RELEASE.md) con veredicto **PASS / READY FOR HUMAN APPROVAL**.
+  - Verificación formal:
+    - 0 defectos P0, 0 defectos P1, 0 defectos P2.
+    - 100% de cumplimiento arquitectónico: todos los archivos Kotlin < 300 líneas (máximo 280 líneas) y métodos < 50 líneas.
+    - 100% de cumplimiento de ADR 0001 (privacidad y no-persistencia de cotizaciones externas) y ADR 0003 (aritmética financiera exacta sin punto flotante).
+    - Suite de pruebas automatizadas: **119/119 pruebas unitarias exitosas (100% PASS)** en 26s.
+    - Análisis estático Android Lint (`lintDebug`): **0 errores y 0 warnings**.
+    - Compilación de release (`assembleDebug`): **EXITOSA**, generando APK `app-debug.apk` de 65.4 MB.
+  - **Hito Gate 10 (Escaneo OCR Visual e Interactivo con Bounding Boxes) y Fase v2.0 100% completados y certificados**.
 - **2026-11-21 21:08:**
   - `MC-057` (G10): Implementación de selección táctil interactiva sobre cajas OCR y reasignación directa de campos en la pantalla de revisión (`OcrBoxInspectionCard`, `OcrFieldAssignmentHelper`).
   - Al tocar cualquier caja delimitadora en `ReceiptPhotoViewerDialog`:
