@@ -56,6 +56,7 @@ interface PurchaseRepository {
     suspend fun updateProduct(product: Product, previousName: String? = null)
     suspend fun updateObservation(observationId: String, newPrice: Money, newQuantity: ProductQuantity, newStoreName: String? = null)
     suspend fun deleteObservation(observationId: String)
+    suspend fun deleteStore(storeName: String)
 
     // Lista de compras y canasta estimada (MC-029)
     fun getShoppingListWithEstimates(): Flow<List<ShoppingListItem>>

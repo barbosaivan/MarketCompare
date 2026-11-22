@@ -72,5 +72,8 @@ interface StoreDao {
         LIMIT 1
     """)
     suspend fun getStoreStatistics(storeName: String): StoreStatsQueryResult?
+
+    @Query("DELETE FROM stores WHERE LOWER(TRIM(name)) = LOWER(TRIM(:storeName))")
+    suspend fun deleteStoreByName(storeName: String)
 }
 

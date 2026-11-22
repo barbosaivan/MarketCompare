@@ -177,5 +177,8 @@ interface ReceiptDao {
 
     @Query("UPDATE receipts SET storeId = :storeId WHERE id = :receiptId")
     suspend fun updateReceiptStore(receiptId: String, storeId: String)
+
+    @Query("DELETE FROM receipts WHERE storeId IN (SELECT id FROM stores WHERE LOWER(TRIM(name)) = LOWER(TRIM(:storeName)))")
+    suspend fun deleteReceiptsByStoreName(storeName: String)
 }
 

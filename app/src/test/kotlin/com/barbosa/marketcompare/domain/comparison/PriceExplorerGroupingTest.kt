@@ -128,5 +128,19 @@ class PriceExplorerGroupingTest {
         val bestDeal = observations.minByOrNull { it.unitPrice.amountMinor }?.unitPrice
         assertEquals(Money(1500L, "COP"), bestDeal)
     }
+
+    @Test
+    fun `grouping by store clusters observations under each store name`() {
+        val observations = listOf(
+            ProductPriceObservationItem(id = "1", productId = null, productName = "Pan", storeName = "D1", unitPrice = Money(2500L, "COP"), observedAtTimestamp = 1L),
+            ProductPriceObservationItem(id = "2", productId = null, productName = "Queso", storeName = "D1", unitPrice = Money(5000L, "COP"), observedAtTimestamp = 2L),
+            ProductPriceObservationItem(id = "3", productId = null, productName = "Leche", storeName = "Éxito", unitPrice = Money(3800L, "COP"), observedAtTimestamp = 3L)
+        )
+
+        val grouped = observations.groupBy { it.storeName }
+        assertEquals(2, grouped.keys.size)
+        assertEquals(2, grouped["D1"]?.size)
+        assertEquals(1, grouped["Éxito"]?.size)
+    }
 }
 

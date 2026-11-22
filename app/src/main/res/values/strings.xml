@@ -31,6 +31,12 @@
     <string name="home_price_observation_date">Registrado el %1$s</string>
     <string name="home_store_filter_label">Filtrar por comercio:</string>
     <string name="home_view_store_catalog">Ver catálogo de tienda</string>
+    <string name="home_store_products_count">%1$d producto(s)</string>
+    <string name="home_dialog_delete_product_title">Eliminar producto</string>
+    <string name="home_dialog_delete_product_message">¿Deseas eliminar definitivamente el registro de precio de «%1$s» en %2$s? Esta acción no se puede deshacer.</string>
+    <string name="home_dialog_delete_store_title">Eliminar tienda</string>
+    <string name="home_dialog_delete_store_message">¿Deseas eliminar definitivamente la tienda «%1$s»? Se borrarán todos los productos y observaciones de precio asociados a esta tienda. Esta acción no se puede deshacer.</string>
+    <string name="home_dialog_delete_store_confirm">Eliminar tienda</string>
     
     <!-- Catálogo de Tienda (MC-046) -->
     <string name="store_catalog_title">Catálogo de Tienda</string>

@@ -136,6 +136,16 @@ class MainActivity : ComponentActivity() {
                                         onNavigateToStoreCatalog = { storeName ->
                                             navigator.pushScreen(Screen.StoreCatalog.createRoute(storeName))
                                         },
+                                        onDeleteObservation = { obsId ->
+                                            scope.launch {
+                                                repository.deleteObservation(obsId)
+                                            }
+                                        },
+                                        onDeleteStore = { storeName ->
+                                            scope.launch {
+                                                repository.deleteStore(storeName)
+                                            }
+                                        },
                                         onSaveManualPrice = { store, prod, price, qty, brand, pres, disc, discType ->
                                             scope.launch {
                                                 repository.recordManualPriceObservation(

@@ -7,7 +7,7 @@
 - Compuerta activa: `GATE 10 — OCR Visual con Bounding Boxes y Capas Semánticas (DONE / CERTIFICADO)`
 - Estado global: `DONE / RELEASE v2.0.0`
 - Rama de integración activa: `develop`
-- Rama de trabajo activa: `develop`
+- Rama de trabajo activa: `feat/MC-059-home-store-grouping-and-deletion`
 - Rama de release estable: `main` (Tag `v2.0.0`)
 - Bloqueos conocidos: API externa de precios (`MC-003` / `MC-022` - BLOCKED por falta de clave API del proveedor oficial).
 - Plataforma: Android (Target/Compile SDK 37, Min SDK 26, Kotlin 2.2.10, AGP 9.2.1, Compose 2026.05.01, Room 2.8.4, ML Kit 16.0.1, CameraX 1.5.0-alpha06).
@@ -19,15 +19,15 @@
 ## KPIs
 | Indicador | Valor actual |
 |---|---:|
-| Tareas totales | 58 |
-| DONE con evidencia | 52 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-058) |
+| Tareas totales | 59 |
+| DONE con evidencia | 53 (MC-001, MC-002, MC-004 a MC-021, MC-026 a MC-059) |
 | En progreso | 0 |
 | Pendientes (TODO) | 3 (MC-024, MC-025 dependientes de API externa) |
 | Bloqueadas | 3 (MC-003, MC-022, MC-023 - API externa a la espera de credenciales oficiales) |
 | Defectos P0/P1 abiertos | 0 |
 | Última compilación | `assembleDebug` EXITOSA (APK generado 65.4 MB) |
 | Último análisis estático | `lintDebug` EXITOSO (**0 errores, 0 warnings**) |
-| Última suite de tests | `testDebugUnitTest` EXITOSA (**119/119 tests pasados**) |
+| Última suite de tests | `testDebugUnitTest` EXITOSA (**121/121 tests pasados**) |
 | Hito Gate 6 (Calidad final y release v1.0.0-rc1) | APROBADO (2026-11-08) |
 | Hito Gate 7 (Diseño M3, Navegación y Backstack) | COMPLETADO (2026-11-08) |
 | Hito Gate 8 (Dashboard de Precios y Tiendas) | DONE / APROBADO (2026-11-08) |
@@ -62,6 +62,16 @@
 | Push remoto | `PUSHED` (`main`, `develop`, `feat/*`, `qa/*`, `audit/*`, `docs/*`) |
 
 ## Registro de cambios (Changelog)
+- **2026-11-21 21:50:**
+  - `MC-059` (G8): Refactorización integral de la pantalla principal (`HomePriceExplorerScreen`) y adición de borrado interactivo destructivo:
+    - Simplificación del botón flotante (FAB) a un único botón con icono `+` sin texto (`FloatingActionButton`), eliminando el botón redundante de escaneo.
+    - Eliminación del botón duplicado en la esquina superior derecha del TopAppBar.
+    - Eliminación de la tarjeta resumen de KPIs (productos, tiendas y mejor oferta) para despejar la vista.
+    - Agrupación ordenada de productos por tiendas (`HomeStoreSectionHeader`) con contador de productos y acción rápida de catálogo.
+    - Mantenimiento y optimización de los chips de filtrado horizontal por tienda (`StoreFilterChips`).
+    - Soporte para eliminación con pulsación prolongada (`onLongClick`) en tiendas y productos, con diálogos de advertencia y confirmación (`DeleteStoreConfirmationDialog`, `DeleteProductConfirmationDialog`).
+    - Borrado en cascada para tiendas: al eliminar una tienda se eliminan atómicamente sus recibos y todas sus observaciones asociadas en Room.
+    - Pruebas unitarias expandidas a **121/121 pruebas pasadas (100%)** y `lintDebug` aprobado con **0 errores y 0 warnings**.
 - **2026-11-21 21:14:**
   - `MC-058` (G10): Auditoría sénior independiente, certificación de análisis estático y verificación de suite de pruebas para el release de la **Fase v2.0**.
   - Publicación del informe de auditoría independiente [`docs/AUDIT_REPORT_GATE_10_AND_V2_RELEASE.md`](docs/AUDIT_REPORT_GATE_10_AND_V2_RELEASE.md) con veredicto **PASS / READY FOR HUMAN APPROVAL**.

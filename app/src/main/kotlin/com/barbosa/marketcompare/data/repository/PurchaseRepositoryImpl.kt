@@ -169,6 +169,11 @@ class PurchaseRepositoryImpl(
     override suspend fun deleteObservation(observationId: String) =
         productDetailEditor.deleteObservation(observationId)
 
+    override suspend fun deleteStore(storeName: String) {
+        receiptDao.deleteReceiptsByStoreName(storeName)
+        storeDao.deleteStoreByName(storeName)
+    }
+
     override fun getAllProducts(): Flow<List<Product>> =
         productDao.getAllProducts().map { entities -> entities.map { it.toDomain() } }
 
